@@ -11,7 +11,9 @@
         </header>
 
         <div id="content">
-
+            <nav>
+                <?php include'navChampionnat.php'?>
+            </nav>
         </div>
         <footer>
             <?php include'html/footer.php' ?>
