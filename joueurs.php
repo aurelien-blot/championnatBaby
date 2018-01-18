@@ -18,7 +18,7 @@
 <div id="content">
 	<div class="wrap">
 		<nav>
-			<?php include'include/navJoueurs'; ?>
+			<?php include'include/navJoueurs.php'; ?>
 		</nav>
 	</div>
 </div>
