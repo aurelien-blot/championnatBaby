@@ -15,9 +15,7 @@
             <nav>
                 <?php include 'include/navChamp.php' ?>
             </nav>
-            <p>Bonjour <?php if (isset($_SESSION['nom'])){
-                    echo($_SESSION['nom']);
-                }; ?></p>
+
         </div>
         <footer>
             <?php include 'include/footer.php' ?>
