@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <html>
     <head>
@@ -14,6 +15,7 @@
             <nav>
                 <?php include'navChamp.php'?>
             </nav>
+            <p>Bonjour <?php echo($_SESSION['nom']); ?></p>
         </div>
         <footer>
             <?php include'footer.php' ?>

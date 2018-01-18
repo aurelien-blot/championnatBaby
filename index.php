@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!doctype html>
 <html>
     <head>
@@ -7,7 +8,11 @@
     </head>
     <body>
         <header>
-            <?php include'html/banniere.php' ?>
+            <a href="index.php"><h1>CHAMPIONNAT DE BABYFOOT</h1></a>
+            <div id="connexion">
+                <a href="html/connexion.php"><button id="boutonConnexion">Connexion</button></a>
+                <a href="html/creationCompte.php"><button id="boutonCreationCompte">Créer un compte</button></a>
+            </div>
         </header>
 
         <div id="content">

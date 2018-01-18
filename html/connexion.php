@@ -11,7 +11,7 @@
 </header>
 
 <div id="content">
-    <form method="post" action="creationCompte.php">
+    <form method="post" action="under_connexion.php">
         <label for="pseudo">Nom : </label>
         <input id="pseudo" type="text">
         <label for="mdp">Mot de passe : </label>

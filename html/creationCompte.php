@@ -14,7 +14,9 @@
     <p>Merci de créer votre compte :</p>
     <form method="post" action="creationCompte.php">
         <label for="nom">Nom : </label>
-        <input id="pseudo" type="text">
+        <input id="nom" type="text">
+        <label for="prenom">Nom : </label>
+        <input id="prenom" type="text">
         <label for="pseudo">Pseudo : </label>
         <input id="pseudo" type="text">
         <label for="mdp">Mot de passe : </label>
