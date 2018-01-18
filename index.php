@@ -17,9 +17,9 @@
         <div id="content">
 			<div class="wrap">
 				<?php include'include/menuPrincipal.php' ?>
+				<a id="lienChampionnat" href="championnat.php">Championnats</a>
+            	<a id="lienJoueurs" href="joueurs.php">Joueurs</a>
 			</div>
-            <a id="lienChampionnat" href="championnat.php">Championnats</a>
-            <a id="lienJoueurs" href="joueurs.php">Joueurs</a>
         </div>
         <footer>
 			<div class="wrap">
