@@ -14,7 +14,9 @@
 
         <div id="content">
 			<div class="wrap">
-				<?php include'include/menuPrincipal.php' ?>
+				<nav>
+					<?php include'include/navChamp.php'?>
+				</nav>
 			</div>
         </div>
         <footer>

@@ -1,4 +1,4 @@
-<?php include'html/menuPrincipal.php' ?>
+<?php include'include/menuPrincipal.php' ?>
 <ul>
     <li><a></a></li>
     <li><a></a></li>
