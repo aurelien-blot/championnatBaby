@@ -11,8 +11,8 @@
         </header>
 
         <div id="content">
-            <a id="lienChampionnat" href="html/championnat.php">Championnats</a>
-            <a id="lienJoueurs" href="html/joueurs.php">Joueurs</a>
+			<?php include'html/menuPrincipal.php' ?>
+			dqdfqedfqed
 
         </div>
         <footer>
