@@ -7,7 +7,7 @@
 </head>
 <body>
 <header>
-    <?php include'html/banniere.php' ?>
+    <?php include'banniere.php' ?>
 </header>
 
 <div id="content">
