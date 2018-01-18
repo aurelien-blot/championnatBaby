@@ -8,16 +8,12 @@
     </head>
     <body>
         <header>
-            <a href="index.php"><h1>CHAMPIONNAT DE BABYFOOT</h1></a>
-            <div id="connexion">
-                <a href="html/connexion.php"><button id="boutonConnexion">Connexion</button></a>
-                <a href="html/creationCompte.php"><button id="boutonCreationCompte">Créer un compte</button></a>
-            </div>
+        <?php include'html/banniere.php';?>
         </header>
 
         <div id="content">
-            <a id="lienChampionnat" href="html/championnat.php">Championnats</a>
-            <a id="lienJoueurs" href="html/joueurs.php">Joueurs</a>
+            <a id="lienChampionnat" href="championnat.php">Championnats</a>
+            <a id="lienJoueurs" href="joueurs.php">Joueurs</a>
 
         </div>
         <footer>

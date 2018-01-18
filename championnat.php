@@ -4,21 +4,21 @@
     <head>
         <meta charset="UTF-8">
         <title>Championnat de babyfoot</title>
-        <link rel="stylesheet" type="text/css" href="../css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
     </head>
     <body>
         <header>
-            <?php include'banniere.php' ?>
+            <?php include 'html/banniere.php' ?>
         </header>
 
         <div id="content">
             <nav>
-                <?php include'navChamp.php'?>
+                <?php include 'html/navChamp.php' ?>
             </nav>
             <p>Bonjour <?php echo($_SESSION['nom']); ?></p>
         </div>
         <footer>
-            <?php include'footer.php' ?>
+            <?php include 'html/footer.php' ?>
         </footer>
     </body>
 </html>

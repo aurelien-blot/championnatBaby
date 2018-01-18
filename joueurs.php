@@ -8,16 +8,16 @@
 </head>
 <body>
 <header>
-    <?php include'banniere.php' ?>
+    <?php include'html/banniere.php' ?>
 </header>
 
 <div id="content">
     <nav>
-        <?php include'navJoueurs'?>
+        <?php include'html/navJoueurs.php'?>
     </nav>
 </div>
 <footer>
-    <?php include'footer.php' ?>
+    <?php include'html/footer.php' ?>
 </footer>
 </body>
 </html>

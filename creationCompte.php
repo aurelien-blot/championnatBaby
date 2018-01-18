@@ -7,28 +7,28 @@
 </head>
 <body>
 <header>
-    <?php include'banniere.php' ?>
+    <?php include'html/banniere.php' ?>
 </header>
 
 <div id="content">
     <p>Merci de créer votre compte :</p>
     <form method="post" action="creationCompte.php">
         <label for="nom">Nom : </label>
-        <input id="nom" type="text">
+        <input name="nom" type="text">
         <label for="prenom">Nom : </label>
-        <input id="prenom" type="text">
+        <input name="prenom" type="text">
         <label for="pseudo">Pseudo : </label>
-        <input id="pseudo" type="text">
+        <input name="pseudo" type="text">
         <label for="mdp">Mot de passe : </label>
-        <input id="mdp" type="password">
+        <input name="mdp" type="password">
         <label for="mdp2">Confirmer Mot de passe : </label>
-        <input id="mdp2" type="password">
+        <input name="mdp2" type="password">
         <input type="submit" id="submit" value="Valider">
 
     </form>
 </div>
 <footer>
-    <?php include'footer.php' ?>
+    <?php include'html/footer.php' ?>
 </footer>
 </body>
 </html>

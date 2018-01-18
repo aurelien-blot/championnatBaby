@@ -7,21 +7,22 @@
 </head>
 <body>
 <header>
-    <?php include'banniere.php' ?>
+    <?php include'html/banniere.php' ?>
 </header>
 
 <div id="content">
     <form method="post" action="under_connexion.php">
-        <label for="pseudo">Nom : </label>
-        <input id="pseudo" type="text">
+        <label for="nom">Nom : </label>
+        <input name="nom" type="text">
         <label for="mdp">Mot de passe : </label>
-        <input id="mdp" type="password">
+        <input name="mdp" type="password">
         <input type="submit" id="submit" value="Valider">
 
     </form>
 </div>
 <footer>
-    <?php include'footer.php' ?>
+    <?php include'html/footer.php' ?>
 </footer>
+<script src="../js/script.js"></script>
 </body>
 </html>
