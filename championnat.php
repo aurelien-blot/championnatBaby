@@ -8,17 +8,19 @@
     </head>
     <body>
         <header>
-            <?php include 'html/banniere.php' ?>
+            <?php include 'include/banniere.php' ?>
         </header>
 
         <div id="content">
             <nav>
-                <?php include 'html/navChamp.php' ?>
+                <?php include 'include/navChamp.php' ?>
             </nav>
-            <p>Bonjour <?php echo($_SESSION['nom']); ?></p>
+            <p>Bonjour <?php if (isset($_SESSION['nom'])){
+                    echo($_SESSION['nom']);
+                }; ?></p>
         </div>
         <footer>
-            <?php include 'html/footer.php' ?>
+            <?php include 'include/footer.php' ?>
         </footer>
     </body>
 </html>

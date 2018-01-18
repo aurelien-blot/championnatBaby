@@ -1,4 +1,6 @@
 <?php
+//$_SESSION['nom'] = "";
 session_destroy();
-header('location:championnat.php')
+$sessionouverte = false;
+header('location:../index.php')
 ?>

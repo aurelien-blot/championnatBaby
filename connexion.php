@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <html>
 <head>
@@ -7,11 +8,11 @@
 </head>
 <body>
 <header>
-    <?php include'html/banniere.php' ?>
+    <a href="index.php"><h1>CHAMPIONNAT DE BABYFOOT</h1></a>
 </header>
 
 <div id="content">
-    <form method="post" action="under_connexion.php">
+    <form method="post" action="include/under_connexion.php">
         <label for="nom">Nom : </label>
         <input name="nom" type="text">
         <label for="mdp">Mot de passe : </label>
@@ -21,7 +22,7 @@
     </form>
 </div>
 <footer>
-    <?php include'html/footer.php' ?>
+    <?php include'include/footer.php' ?>
 </footer>
 <script src="../js/script.js"></script>
 </body>
