@@ -7,14 +7,21 @@
 </head>
 <body>
 <header>
-    <?php include'html/banniere.php' ?>
+    <?php include'banniere.php' ?>
 </header>
 
 <div id="content">
+    <form method="post" action="creationCompte.php">
+        <label for="pseudo">Nom : </label>
+        <input id="pseudo" type="text">
+        <label for="mdp">Mot de passe : </label>
+        <input id="mdp" type="password">
+        <input type="submit" id="submit" value="Valider">
 
+    </form>
 </div>
 <footer>
-    <?php include'html/footer.php' ?>
+    <?php include'footer.php' ?>
 </footer>
 </body>
 </html>

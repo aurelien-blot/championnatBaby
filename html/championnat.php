@@ -7,7 +7,7 @@
     </head>
     <body>
         <header>
-            <?php include'html/banniere.php' ?>
+            <?php include'banniere.php' ?>
         </header>
 
         <div id="content">
@@ -16,7 +16,7 @@
             </nav>
         </div>
         <footer>
-            <?php include'html/footer.php' ?>
+            <?php include'footer.php' ?>
         </footer>
     </body>
 </html>
