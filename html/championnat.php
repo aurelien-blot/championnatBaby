@@ -12,7 +12,7 @@
 
         <div id="content">
             <nav>
-                <?php include'navChampionnat.php'?>
+                <?php include'navChamp.php'?>
             </nav>
         </div>
         <footer>
