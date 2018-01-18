@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!doctype html>
 <html>
     <head>
@@ -7,6 +8,7 @@
     </head>
     <body>
         <header>
+
 			<div class="wrap">
             	<?php include'include/banniere.php' ?>
 			</div>
@@ -22,7 +24,7 @@
         <footer>
 			<div class="wrap">
             	<?php include'include/footer.php' ?>
-			</div>
+          </div>
         </footer>
     </body>
 </html>

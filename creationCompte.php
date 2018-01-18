@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Championnat de babyfoot</title>
+
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
@@ -35,6 +36,7 @@
 	<div class="wrap">
     	<?php include'include/footer.php' ?>
 	</div>
+
 </footer>
 </body>
 </html>

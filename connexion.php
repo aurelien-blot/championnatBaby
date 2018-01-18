@@ -1,8 +1,12 @@
+
+<?php session_start(); ?>
+
 <!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Championnat de babyfoot</title>
+
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
@@ -14,14 +18,14 @@
 
 <div id="content">
 	<div class="wrap">
-		<form method="post" action="creationCompte.php">
-			<label for="pseudo">Nom : </label>
-			<input id="pseudo" type="text">
-			<label for="mdp">Mot de passe : </label>
-			<input id="mdp" type="password">
-			<input type="submit" id="submit" value="Valider">
+		<form method="post" action="include/under_connexion.php">
+        <label for="nom">Nom : </label>
+        <input name="nom" type="text">
+        <label for="mdp">Mot de passe : </label>
+        <input name="mdp" type="password">
+        <input type="submit" id="submit" value="Valider">
 
-		</form>
+    </form>
 	</div>
 </div>
 <footer>
@@ -29,5 +33,8 @@
     	<?php include'include/footer.php' ?>
 	</div>
 </footer>
+
+<script src="../js/script.js"></script>
+
 </body>
 </html>

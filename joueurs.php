@@ -1,8 +1,11 @@
+<?php session_start() ?>
+
 <!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Championnat de babyfoot</title>
+
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
@@ -15,7 +18,7 @@
 <div id="content">
 	<div class="wrap">
 		<nav>
-			<?php include'include/navJoueurs.php'; ?>
+			<?php include'include/navJoueurs'; ?>
 		</nav>
 	</div>
 </div>
@@ -23,6 +26,7 @@
 	<div class="wrap">
     	<?php include'include/footer.php'; ?>
 	</div>
+
 </footer>
 </body>
 </html>
