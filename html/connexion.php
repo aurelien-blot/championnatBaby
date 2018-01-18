@@ -7,14 +7,14 @@
 </head>
 <body>
 <header>
-
+    <?php include'html/banniere.php' ?>
 </header>
 
 <div id="content">
 
 </div>
 <footer>
-
+    <?php include'html/footer.php' ?>
 </footer>
 </body>
 </html>
