@@ -8,16 +8,24 @@
     </head>
     <body>
         <header>
-        <?php include'include/banniere.php';?>
+
+			<div class="wrap">
+            	<?php include'include/banniere.php' ?>
+			</div>
         </header>
 
         <div id="content">
+			<div class="wrap">
+				<?php include'include/menuPrincipal.php' ?>
+			</div>
             <a id="lienChampionnat" href="championnat.php">Championnats</a>
             <a id="lienJoueurs" href="joueurs.php">Joueurs</a>
-
         </div>
         <footer>
-            <?php include'include/footer.php' ?>
+			<div class="wrap">
+            	<?php include'include/footer.php' ?>
+			</div>
+
         </footer>
     </body>
 </html>

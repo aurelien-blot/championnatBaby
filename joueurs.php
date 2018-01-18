@@ -1,23 +1,32 @@
 <?php session_start() ?>
+
 <!doctype html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Championnat de babyfoot</title>
-    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
 <header>
-    <?php include'include/banniere.php' ?>
+	<div class="wrap">
+    	<?php include'include/banniere.php'; ?>
+	</div>
 </header>
 
 <div id="content">
-    <nav>
-        <?php include'include/navJoueurs'?>
-    </nav>
+	<div class="wrap">
+		<nav>
+			<?php include'include/navJoueurs'; ?>
+		</nav>
+	</div>
 </div>
 <footer>
-    <?php include'include/footer.php' ?>
+	<div class="wrap">
+    	<?php include'include/footer.php'; ?>
+	</div>
+
 </footer>
 </body>
 </html>

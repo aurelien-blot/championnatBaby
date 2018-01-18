@@ -8,17 +8,23 @@
     </head>
     <body>
         <header>
-            <?php include 'include/banniere.php' ?>
+
+			<div class="wrap">
+            	<?php include'include/banniere.php' ?>
+			</div>
         </header>
 
         <div id="content">
-            <nav>
-                <?php include 'include/navChamp.php' ?>
-            </nav>
-
+			<div class="wrap">
+				<nav>
+					<?php include'include/navChamp.php'?>
+				</nav>
+			</div>
         </div>
         <footer>
-            <?php include 'include/footer.php' ?>
+			<div class="wrap">
+            	<?php include'include/footer.php' ?>
+          </div>
         </footer>
     </body>
 </html>
