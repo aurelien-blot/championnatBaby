@@ -1,4 +1,6 @@
-<?php session_start() ?>
+<?php session_start();
+include'include/connexionBdd.php';
+?>
 <!doctype html>
 <html>
     <head>

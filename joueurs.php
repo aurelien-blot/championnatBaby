@@ -1,4 +1,7 @@
-<?php session_start() ?>
+<?php session_start();
+include'include/connexionBdd.php';
+$listeJoueurs = $bdd->query('SELECT * FROM joueurs ORDER BY nom');
+?>
 
 <!doctype html>
 <html>
@@ -20,6 +23,17 @@
 		<nav>
 			<?php include'include/navJoueurs.php'; ?>
 		</nav>
+        <?php
+        if(!isset($_GET['idJ'])) {
+            while ($donnees = $listeJoueurs->fetch()) {
+                ?>
+                <a href="joueurs.php?idJ=<?php echo $donnees['id_Joueur']; ?>"><img id="photoJoueur"
+                                                                                    src="<?php echo $donnees['photo']; ?>"></a>
+                <p id="nomJoueur"><?php echo $donnees['surnom']; ?></p>
+                <?php
+            }
+        }
+        ?>
 	</div>
 </div>
 <footer>
