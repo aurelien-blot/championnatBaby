@@ -2,6 +2,7 @@
 include'include/connexionBdd.php';
 $listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY nomChamp');
 ?>
+
 <!doctype html>
 <html>
     <head>
