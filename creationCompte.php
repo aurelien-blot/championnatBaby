@@ -17,24 +17,30 @@
 <div id="content">
 	<div class="wrap">
 		<p>Merci de créer votre compte :</p>
-		<form method="post" action="creationCompte.php" onsubmit="return verifAll(this)">
+		<form method="post" action="include/under_creationcompte.php" onsubmit="return verifAll(this)">
 			<label for="nom">Nom : </label>
-			<input id="nom" type="text" onblur="verifPseudo(this)" required>
+			<input name="nom" type="text" onblur="verifPseudo(this)" required>
 
 			<label for="prenom">Prénom : </label>
-			<input id="prenom" type="text" onblur="verifPseudo(this)" required>
+			<input name="prenom" type="text" onblur="verifPseudo(this)" required>
 
 			<label for="pseudo">Pseudo : </label>
-			<input id="pseudo" type="text" onblur="verifPseudo(this)" required>
+			<input name="pseudo" type="text" onblur="verifPseudo(this)" required>
 
 			<label for="photo">Photo : </label>
-			<input id="photo" type="file">
+			<input name="photo" type="file">
 
 			<label for="mdp1">Mot de passe : </label>
-			<input id="mdp1" type="password" onblur="verifPseudo(this)" required>
+			<input name="mdp1" type="password" onblur="verifPseudo(this)" required>
 
 			<label for="mdp2">Confirmer Mot de passe : </label>
-			<input id="mdp2" type="password" required>
+			<input name="mdp2" type="password" required>
+
+			<label for="defaut">Votre plus gros défaut : </label>
+			<input name="defaut" type="text" required>
+
+			<label for="qualite">Si vous en avez, une qualité : </label>
+			<input name="qualite" type="text" required>
 
 			<input type="submit" id="submit" value="Valider">
 

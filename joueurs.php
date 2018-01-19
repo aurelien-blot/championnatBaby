@@ -48,7 +48,7 @@ if(isset($_GET['idJ'])){
                 <img src="<?php echo $donnees['photo']; ?>">
                 <h3 id="nomCompletJoueur"><?php echo $donnees['nom']; ?> <?php echo $donnees['prenom']; ?></h3>
                 <h3>Championnats remportés : <?php echo $donnees['victoireChamp']; ?></h3>
-                <p>Qualité : <?php echo $donnees['qualité']; ?></p>
+                <p>Qualité : <?php echo $donnees['qualite']; ?></p>
                 <p>Défaut : <?php echo $donnees['defaut']; ?></p>
                 <p>Meilleure performance : <?php echo $donnees['meilleureperformance']; ?></p>
                 <?php
