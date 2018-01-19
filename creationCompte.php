@@ -17,17 +17,25 @@
 <div id="content">
 	<div class="wrap">
 		<p>Merci de créer votre compte :</p>
-		<form method="post" action="creationCompte.php">
+		<form method="post" action="creationCompte.php" onsubmit="return verifAll(this)">
 			<label for="nom">Nom : </label>
-			<input id="pseudo" type="text">
+			<input id="nom" type="text" onblur="verifPseudo(this)" required>
+
+			<label for="prenom">Prénom : </label>
+			<input id="prenom" type="text" onblur="verifPseudo(this)" required>
+
 			<label for="pseudo">Pseudo : </label>
-			<input id="pseudo" type="text">
+			<input id="pseudo" type="text" onblur="verifPseudo(this)" required>
+
 			<label for="photo">Photo : </label>
 			<input id="photo" type="file">
-			<label for="mdp">Mot de passe : </label>
-			<input id="mdp" type="password">
+
+			<label for="mdp1">Mot de passe : </label>
+			<input id="mdp1" type="password" onblur="verifPseudo(this)" required>
+
 			<label for="mdp2">Confirmer Mot de passe : </label>
-			<input id="mdp2" type="password">
+			<input id="mdp2" type="password" required>
+
 			<input type="submit" id="submit" value="Valider">
 
 		</form>
@@ -39,5 +47,7 @@
 	</div>
 
 </footer>
+
+	<script src="js/verifform.js"></script>
 </body>
 </html>
