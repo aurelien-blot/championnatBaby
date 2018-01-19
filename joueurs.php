@@ -1,8 +1,11 @@
 <?php session_start();
 include'include/connexionBdd.php';
 $listeJoueurs = $bdd->query('SELECT * FROM joueurs ORDER BY nom');
-$detailJoueur = $bdd->prepare('SELECT * FROM joueurs WHERE id_Joueur =?');
-$detailJoueur->execute(array($_GET['idJ']));
+if(isset($_GET['idJ'])){
+    $detailJoueur = $bdd->prepare('SELECT * FROM joueurs WHERE id_Joueur =?');
+    $detailJoueur->execute(array($_GET['idJ']));
+}
+
 ?>
 
 <!doctype html>

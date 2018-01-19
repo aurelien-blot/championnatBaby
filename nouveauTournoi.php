@@ -24,20 +24,27 @@ include'include/connexionBdd.php';
         <?php
             $nbreJoueurs = $_GET['nbreJoueurs'];
            if(!isset($nbreJoueurs)){
-               ?>
-               <form method="get" action="nouveauTournoi.php">
-                <label for="nbreJoueurs">Nombre de participants au tournoi :</label>
-                <select name="nbreJoueurs">
+        ?>
+        <form method="get" action="nouveauTournoi.php">
+            <label for="nbreJoueurs">Nombre de participants au tournoi :</label>
+            <select name="nbreJoueurs">
                 <option value="8" selected>8 joueurs</option>
                 <option value="10">10 joueurs</option>
-                </select>
-                <input type="submit" value="Valider"/>
-                   <?php
-           }
+            </select>
+            <input type="submit" value="Valider"/>
+            <?php
+            }
            else if(isset($nbreJoueurs AND (($nbreJoueurs ==8)OR ($nbreJoueurs==10))){
+                ?>
 
+               <?php
                for($i =1; $i <= $nbreJoueurs; $i++){
                     ?>
+                   <label for="joueur<?php echo($i);?>">Joueur <?php echo($i);?> :</label>
+                   <select name="joueur<?php echo($i);?>">
+
+                   </select>
+                   <?php
                }
 
            }
