@@ -17,7 +17,7 @@ include'include/connexionBdd.php';
 			</div>
         </header>
 
-        <div id="content">
+		<div id="content">
 			<div class="wrap">
 
 			</div>
