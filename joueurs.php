@@ -12,13 +12,14 @@
 <header>
 	<div class="wrap">
     	<?php include'include/banniere.php'; ?>
+		<?php include'include/navJoueurs.php'; ?>
 	</div>
 </header>
 
 <div id="content">
 	<div class="wrap">
 		<nav>
-			<?php include'include/navJoueurs'; ?>
+
 		</nav>
 	</div>
 </div>

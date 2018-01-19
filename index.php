@@ -11,14 +11,13 @@
 
 			<div class="wrap">
             	<?php include'include/banniere.php' ?>
+				<?php include'include/menuPrincipal.php' ?>
 			</div>
         </header>
 
         <div id="content">
 			<div class="wrap">
-				<?php include'include/menuPrincipal.php' ?>
-				<a id="lienChampionnat" href="championnat.php">Championnats</a>
-            	<a id="lienJoueurs" href="joueurs.php">Joueurs</a>
+
 			</div>
         </div>
         <footer>

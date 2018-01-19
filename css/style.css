@@ -1,10 +1,20 @@
 body{
-
+	margin: 0;
 }
 
 .wrap{
 	max-width: 1200px;
 	margin :0 auto;
+}
+
+header{
+	background-color: beige;
+	padding-bottom: 0.67em;
+}
+
+a.banniere{
+	padding-top: 0.67em;
+    display: block;
 }
 
 .menuPrincipal{

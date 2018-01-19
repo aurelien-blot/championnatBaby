@@ -1,6 +1,11 @@
 <?php session_start();
 include'include/connexionBdd.php';
-$listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY nomChamp');
+$createChampionnat = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
+
+$nbreJoueurs = 12;
+$dateDebut = 12-12-1912;
+
+
 ?>
 <!doctype html>
 <html>
@@ -14,25 +19,23 @@ $listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY nomChamp');
 
 			<div class="wrap">
             	<?php include'include/banniere.php' ?>
-				<nav>
-					<?php include'include/navChamp.php'?>
-				</nav>
 			</div>
         </header>
+		<nav>
+			<div class="wrap">
+				<?php include'include/navChamp.php'?>
+			</div>
+		</nav>
 
         <div id="content">
 			<div class="wrap">
-
-				<?php
-        			if(!isset($_GET['idC'])) {
-            			while ($donnees = $listeCompet->fetch()) {
-                ?>
-                <a href="championnat.php?idC=<?php echo $donnees['id_competition']; ?>"><?php echo $donnees['nomChamp']; ?></a>
-                <p id="dateDebut"><?php echo $donnees['nbreJoueurs']; ?></p>
-                <?php
-            }
-        }
-        ?>
+				<input id="libelle" valeur="concombre">
+				<?php $nomChamp = document.getElementById("libelle"); ?>
+				<?php $createChampionnat -> execute(array(
+					'nomChamp' => $nomChamp,
+					'nbreJoueurs' => $nbreJoueurs,
+					'dateDebut' => $dateDebut
+				)); ?>
 
 			</div>
         </div>

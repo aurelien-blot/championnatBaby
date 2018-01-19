@@ -9,12 +9,13 @@
 <header>
 	<div class="wrap">
     	<?php include'include/banniere.php' ?>
+		<?php include'include/navJoueurs.php'; ?>
 	</div>
 </header>
 
 <div id="content">
 	<div class="wrap">
-		<?php include'include/navJoueurs.php'; ?>
+
 		<img src="https://ca.slack-edge.com/T7RRX26PJ-U7VFVGFQC-08cee5af78e7-512"	/><!--php...-->
 		<h2>Elvisio</h2><!--php...-->
 		<p>Elvis</p><!--php...-->
