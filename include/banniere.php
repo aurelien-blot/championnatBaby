@@ -1,4 +1,4 @@
-<a href="index.php"><h1>CHAMPIONNAT DE BABYFOOT</h1></a>
+<a href="index.php" class="banniere"><h1>CHAMPIONNAT DE BABYFOOT</h1></a>
 <div id="connexion">
 
             <a href="connexion.php"><button id="boutonConnexion">Connexion</button></a>

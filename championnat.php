@@ -1,5 +1,7 @@
 <?php session_start();
-include'include/connexionBdd.php';?>
+include'include/connexionBdd.php';
+$listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY nomChamp');
+?>
 
 <!doctype html>
 <html>
@@ -13,14 +15,26 @@ include'include/connexionBdd.php';?>
 
 			<div class="wrap">
             	<?php include'include/banniere.php' ?>
+				<nav>
+					<?php include'include/navChamp.php'?>
+				</nav>
 			</div>
         </header>
 
         <div id="content">
 			<div class="wrap">
-				<nav>
-					<?php include'include/navChamp.php'?>
-				</nav>
+
+				<?php
+        			if(!isset($_GET['idC'])) {
+            			while ($donnees = $listeCompet->fetch()) {
+                ?>
+                <a href="championnat.php?idC=<?php echo $donnees['id_competition']; ?>"><?php echo $donnees['nomChamp']; ?></a>
+                <p id="dateDebut"><?php echo $donnees['nbreJoueurs']; ?></p>
+                <?php
+            }
+        }
+        ?>
+
 			</div>
         </div>
         <footer>
