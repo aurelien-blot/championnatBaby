@@ -6,7 +6,7 @@ $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, d
 $insertCompet->execute(array(
     'nomChamp' => $_POST['nomChamp'],
     'nbreJoueurs' => $nbreJoueurs,
-    'dateDebut' => '20080101'
+    'dateDebut' => $_POST['dateDebut']
 ));//$_POST['dateDebut']
 $insertCompet->closeCursor();
 $reqIdC = $bdd->prepare('SELECT * FROM competitions WHERE nomChamp = ?');
@@ -97,12 +97,12 @@ $equipe['joueur2']=$listeJoueurs3[1];
 $listeEquipes[]=$equipe;
 
 // FIN DE CREATION DES EQUIPES
-
+/*
 foreach ($listeEquipes as $equipe){
     echo ("Equipe : ".$equipe['idE']." Joueur 1 :".$equipe['joueur1']." / Joueur 2 : ".$equipe['joueur2']);
     ?><br><?php
 }
-
+*/
 //ENTREE DES EQUIPES DANS LA BDD;
 
 $reqIdC->execute(array($_POST['nomChamp'] ));
@@ -138,19 +138,27 @@ while($donnees = $reqEC->fetch()){
     $listeEquipes2[]=$donnees['id_Equipe'];
 }
 $reqEC->closeCursor();
-$reqMatchsE = $bdd->prepare('INSERT INTO matchs (equipe1, equipe2, id_compet) VALUES (:equipe1, :equipe2, :id_compet)');
+$reqMatchsE = $bdd->prepare('INSERT INTO matchs (equipe1, equipe2, id_compet, type_match) VALUES (:equipe1, :equipe2, :id_compet, :type_match)');
 
 for($o=0;$o<=2;$o++){
-    $equipe1 = $listeEquipes2[o];
+    $equipe1 = $listeEquipes2[$o];
+    $o++;
+    $equipe2 = $listeEquipes2[$o];
     $reqMatchsE->execute(array(
         'equipe1' => $equipe1,
         'equipe2' => $equipe2,
-        'id_compet' => $compet));
+        'id_compet' => $compet,
+        'type_match'=> "demi"
+        ));
 }
+$reqMatchsE->closeCursor();
+$reqSuiteMatchs=$bdd->prepare('INSERT INTO matchs (id_compet, type_match) VALUES (:id_compet, :type_match)');
 
+$reqSuiteMatchs->execute(array(
+    'id_compet' => $compet,
+    'type_match'=> "finale"
+));
 
-
-
-
+header('location:../championnat.php?idC='.$compet);
 
 ?>
