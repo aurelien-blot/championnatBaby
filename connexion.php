@@ -8,6 +8,7 @@ include'include/connexionBdd.php';?>
     <title>Championnat de babyfoot</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+
 </head>
 <body>
 <header>
@@ -20,7 +21,7 @@ include'include/connexionBdd.php';?>
 	<div class="wrap">
 		<form method="post" action="include/under_connexion.php">
         <label for="nom">Nom : </label>
-        <input name="nom" type="text">
+        <input name="nom" type="text" />
         <label for="mdp">Mot de passe : </label>
         <input name="mdp" type="password">
         <input type="submit" id="submit" value="Valider">
@@ -35,6 +36,7 @@ include'include/connexionBdd.php';?>
 </footer>
 
 <script src="../js/script.js"></script>
+
 
 </body>
 </html>
