@@ -79,3 +79,6 @@ function verifAll(f){
 
 
 }
+
+
+

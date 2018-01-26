@@ -17,7 +17,7 @@
 <div id="content">
 	<div class="wrap">
 		<p>Merci de créer votre compte :</p>
-		<form method="post" action="include/under_creationcompte.php" onsubmit="return verifAll(this)">
+		<form method="post" action="include/under_creationcompte.php" onsubmit="return verifAll(this)" enctype="multipart/form-data">
 			<label for="nom">Nom : </label>
 			<input name="nom" type="text" onblur="verifPseudo(this)" required>
 
@@ -28,7 +28,8 @@
 			<input name="pseudo" type="text" onblur="verifPseudo(this)" required>
 
 			<label for="photo">Photo : </label>
-			<input name="photo" type="file">
+			<input type="hidden" name="MAX_FILE_SIZE" value="12345" />
+			<input name="photo" type="file" id="photo">
 
 			<label for="mdp1">Mot de passe : </label>
 			<input name="mdp1" type="password" onblur="verifPseudo(this)" required>
