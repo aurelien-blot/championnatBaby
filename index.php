@@ -1,3 +1,6 @@
+<?php session_start();
+include'include/connexionBdd.php';
+?>
 <!doctype html>
 <html>
     <head>
@@ -7,16 +10,23 @@
     </head>
     <body>
         <header>
-            <?php include'html/banniere.php' ?>
+
+			<div class="wrap">
+            	<?php include'include/banniere.php' ?>
+				<?php include'include/menuPrincipal.php' ?>
+			</div>
         </header>
 
-        <div id="content">
-            <a id="lienChampionnat" href="html/championnat.php">Championnats</a>
-            <a id="lienJoueurs" href="html/joueurs.php">Joueurs</a>
+		<div id="content">
+			<div class="wrap">
 
+			</div>
         </div>
         <footer>
-            <?php include'html/footer.php' ?>
+			<div class="wrap">
+            	<?php include'include/footer.php' ?>
+			</div>
+
         </footer>
     </body>
 </html>

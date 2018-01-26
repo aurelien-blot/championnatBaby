@@ -1,1 +1,68 @@
+body{
+	margin: 0;
+}
 
+.wrap{
+	max-width: 1200px;
+	margin :0 auto;
+}
+
+header{
+	background-color: beige;
+	padding-bottom: 0.67em;
+}
+
+a.banniere{
+	padding-top: 0.67em;
+    display: block;
+}
+
+.menuPrincipal{
+}
+
+.iconeMatch{
+	width: 210px;
+	border: 1px solid black;
+}
+.finale{
+	margin: auto;
+}
+.demi{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-bottom: 30px;
+}
+.iconeEquipe img{
+	width: 80px;
+
+}
+.iconeEquipe{
+	display: flex;
+	border: solid 1px black;
+	flex-direction: column;
+	width: 210px;
+
+}
+.iconeMatch{
+	display: flex;
+	flex-direction: column;
+
+}
+.iconeJoueurs {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.iconeJoueur{
+	border: 1px solid black;
+	width: 99px;
+}
+
+#boutonModif{
+	margin: auto;
+}
+.iconeEquipes{
+	display: flex;
+	justify-content: space-between;
+}
