@@ -6,6 +6,8 @@ $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id
 $reqJE = $bdd->prepare('SELECT J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_Equipe = ?');
 $detailCompet = $bdd->prepare('SELECT * FROM competitions WHERE competitions.id_competition = ?');
 $detailCompet->execute(array($_GET['modif']));
+$reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_compet = ?');
+
 ?>
 <!doctype html>
 <html>
@@ -65,29 +67,29 @@ $detailCompet->execute(array($_GET['modif']));
 
                     ?>
                     <div class="iconeMatch">
-                        <form action="include/under_modifChamp.php" method="post">
+                        <form action="include/under_modifChamp.php?modifM=<?php echo($donnees2['id_Match']);?>" method="post">
                             <label for="vainq">Vainqueur :</label>
-                            <select>
-                                <option name="vainq" value="<?php echo($donnees2['equipe1']);?>">Equipe 1 :</option>
-                                <option name="vainq" value="<?php echo($donnees2['equipe2']);?>">Equipe 2 :</option>
+                            <select name="vainq">
+                                <option  value="<?php echo($donnees2['equipe1']);?>">Equipe <?php echo($donnees2['equipe1']);?> :</option>
+                                <option  value="<?php echo($donnees2['equipe2']);?>">Equipe <?php echo($donnees2['equipe2']);?> :</option>
 
                             </select>
-                            <label for="butEquipe1">Equipe 1 :</label>
-                            <select>
+                            <label for="butEquipe1">Equipe <?php echo($donnees2['equipe1']);?> :</label>
+                            <select name="butEquipe1">
                                 <?php
-                                for($i=0;$i<=10;$i++){
+                                for($i=0;$i<=15 ;$i++){
                                     ?>
-                                    <option name="butEquipe1" value="<?php echo($i);?>"><?php echo($i);?></option>
+                                    <option  value="<?php echo($i);?>"><?php echo($i);?></option>
                                     <?php
                                 }
                                 ?>
                             </select>
-                            <label for="butEquipe2">Equipe 2 :</label>
-                            <select>
+                            <label for="butEquipe2">Equipe <?php echo($donnees2['equipe2']);?> :</label>
+                            <select name="butEquipe2">
                                 <?php
-                                for($i=0;$i<=10;$i++){
+                                for($i=0;$i<=15;$i++){
                                     ?>
-                                    <option name="butEquipe2" value="<?php echo($i);?>"><?php echo($i);?></option>
+                                    <option  value="<?php echo($i);?>"><?php echo($i);?></option>
                                     <?php
                                 }
                                 ?>
@@ -97,7 +99,7 @@ $detailCompet->execute(array($_GET['modif']));
 
                         <p>score : <span></span></p>
                         <div class="iconeEquipe">
-                        <p>Equipe 1:</p>
+                        <p>Equipe <?php echo($donnees2['equipe1']);?>:</p>
                         <?php
                         //AFFICHAGE DES JOUEURS EQUIPE 1
                         $reqJE->execute(array($donnees2['equipe1']));
@@ -118,7 +120,7 @@ $detailCompet->execute(array($_GET['modif']));
                         $reqJE->closeCursor();?>
                         </div>
                         <div class="iconeEquipe">
-                            <p>Equipe 2:</p>
+                            <p>Equipe <?php echo($donnees2['equipe2']);?>:</p>
                             <?php
                             //AFFICHAGE DES JOUEURS EQUIPE 2
                             $reqJE->execute(array($donnees2['equipe2']));
@@ -142,6 +144,28 @@ $detailCompet->execute(array($_GET['modif']));
                     <?php
                 }
                 ?>
+    </div>
+    <div class="iconeEquipes">
+        <?php
+        $reqEquipes->execute(array($_GET['modif']));
+        while($donnees4 = $reqEquipes->fetch()){
+            ?>
+            <div class="iconeEquipe">
+                <p>Equipe <?php echo($donnees4['id_Equipe']);?></p>
+                <div class="iconeJoueurs">
+                    <div class="iconeJoueur">
+                        <img src="<?php echo($donnees4['J1img']);?>" />
+                        <p><?php echo($donnees4['J1p']);?></p>
+                    </div>
+                    <div class="iconeJoueur">
+                        <img src="<?php echo($donnees4['J2img']);?>" />
+                        <p><?php echo($donnees4['J2p']);?></p>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
     </div>
 
 </div>

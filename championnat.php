@@ -140,7 +140,7 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                                 $reqJE->closeCursor();?>
                                 </div>
                                 <div class="iconeEquipe">
-                                    <p>Equipe <?php echo($donnees2['equipe2 ']);?>:</p>
+                                    <p>Equipe <?php echo($donnees2['equipe2']);?> :</p>
                                     <?php
                                     //AFFICHAGE DES JOUEURS EQUIPE 2
                                     $reqJE->execute(array($donnees2['equipe2']));
