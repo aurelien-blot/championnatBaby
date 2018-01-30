@@ -117,7 +117,15 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
 
                             ?>
                             <div class="iconeMatch">
-                                <p>score : <span></span></p>
+                                <?php
+                                if(isset($donnees2['vainqueur'])){
+                                    ?>
+                                    <p>Vainqueur : <?php echo($donnees2['vainqueur']) ?></p>
+                                    <p>Score :<?php echo($donnees2['butEquipe1']) ?> / <?php echo($donnees2['butEquipe2']) ?></p>
+                                    <?php
+                                }
+                                ?>
+
                                 <div class="iconeEquipe">
                                 <p>Equipe <?php echo($donnees2['equipe1']);?> :</p>
                                 <?php
