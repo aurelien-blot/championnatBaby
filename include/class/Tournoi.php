@@ -13,6 +13,73 @@ class Tournoi
     private $listeEquipes;
     private $listeJoueurs;
     private $nbreEquipes;
+    private $dateDebut;
+    private $nomTournoi;
+    private $listeMatchs;
+
+    /**
+     * @return mixed
+     */
+    public function getListeMatchs()
+    {
+        return $this->listeMatchs;
+    }
+
+    /**
+     * @param mixed $listeMatchs
+     */
+    public function setListeMatchs($listeMatchs)
+    {
+        $this->listeMatchs = $listeMatchs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNomTournoi()
+    {
+        return $this->nomTournoi;
+    }
+
+    /**
+     * @param mixed $nomTournoi
+     */
+    public function setNomTournoi($nomTournoi)
+    {
+        $this->nomTournoi = $nomTournoi;
+    }
+
+    /**
+     * @return float|int
+     */
+    public function getNbreEquipes()
+    {
+        return $this->nbreEquipes;
+    }
+
+    /**
+     * @param float|int $nbreEquipes
+     */
+    public function setNbreEquipes($nbreEquipes)
+    {
+        $this->nbreEquipes = $nbreEquipes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateDebut()
+    {
+        return $this->dateDebut;
+    }
+
+    /**
+     * @param mixed $dateDebut
+     */
+    public function setDateDebut($dateDebut)
+    {
+        $this->dateDebut = $dateDebut;
+    }
 
     /**
      * @return mixed
@@ -81,13 +148,15 @@ class Tournoi
 
 
 
-    public function __construct($nbreJ)
+    public function __construct($nbreJ, $nomCompet)
     {
         $this->fini=false;
         $this->nbreJoueurs=(intval($nbreJ));
         $this->nbreEquipes=($this->nbreJoueurs/2);
+        $this->nomTournoi = $nomCompet;
         $this->listeEquipes = array();
         $this->listeJoueurs =array();
+        $this->listeMatchs= array();
     }
 
     public function ajouterJoueur(Joueur $joueur)
@@ -95,16 +164,10 @@ class Tournoi
         $this->listeJoueurs[]=$joueur;
     }
 
-    public function melangerListeJoueurs(){
-        $liste = $this->listeJoueurs;
-        $listeRand=array();
-
-        return $listeRand;
-    }
     public function creerEquipes(){
 
         $nbreJoueursRestantATrier = $this->listeJoueurs;
-
+        shuffle($nbreJoueursRestantATrier);
         for($i=0;$i<(count($nbreJoueursRestantATrier));$i){
             $rand=$i;
 
@@ -116,14 +179,38 @@ class Tournoi
 
             $joueur2 = $nbreJoueursRestantATrier[$rand];
 
-            echo($joueur->getNom());
-            echo($joueur2->getNom());
-
             $equipe= new Equipe($joueur, $joueur2);
             $this->listeEquipes[]=$equipe;
             unset($nbreJoueursRestantATrier[$i]);
             unset($nbreJoueursRestantATrier[$rand]);
             $nbreJoueursRestantATrier = array_values($nbreJoueursRestantATrier);
+        }
+    }
+
+    public function organiserMatchs(){
+        $equipesTournoi = $this->listeEquipes;
+        if(count($equipesTournoi) ==4){
+            $match1=  new Match('demiFinale');
+            $match2=  new Match('demiFinale');
+            $match3=  new Match('finale');
+            $this->listeMatchs[]=$match1;
+            $this->listeMatchs[]=$match2;
+            $this->listeMatchs[]=$match3;
+            $match1->setEquipesMatch($equipesTournoi[0],$equipesTournoi[1]);
+            $match2->setEquipesMatch($equipesTournoi[2],$equipesTournoi[3]);
+
+        }
+        else if(count($equipesTournoi)==6){
+
+        }
+    }
+    public function detaillerMatchs($type){
+        foreach($this->listeMatchs as $match){
+            $typeMatchTest =$match->getTypeMatch();
+            if($typeMatchTest==$type){
+
+                echo('zea');
+            }
         }
     }
 

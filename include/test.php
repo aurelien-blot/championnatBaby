@@ -2,8 +2,9 @@
 require 'class/Tournoi.php';
 require 'class/Joueur.php';
 require 'class/Equipe.php';
+require 'class/Match.php';
 
-$tournoi1 = new Tournoi(8);
+$tournoi1 = new Tournoi(8, 'Championnat des Seniors');
 $j1 = new Joueur('j1');
 $j2 = new Joueur('j2');
 $j3 = new Joueur('j3');
@@ -28,24 +29,23 @@ foreach ($list1 as $jtest){
     echo($jtest->getNom());
 
 }
-/*
+echo('<br/>');
+echo('<br/>');
+
 $tournoi1->creerEquipes();
 
-echo(count($tournoi1->getListeEquipes()));
 $compteur =1;
 foreach ($tournoi1->getListeEquipes() as $eTest){
-    echo('equipe '.$compteur);
+    echo('equipe '.$compteur.' :  ');
     foreach($eTest->getJoueursEquipe() as $EP){
-        echo($EP->getNom());
+        echo($EP->getNom().' ');
     };
+    echo('<br/>');
     $compteur++;
 
 }
-*/
-echo('TEST !!!');
-$list2 =$tournoi1->melangerListeJoueurs($list1);
-foreach($list2 as $tt){
-    echo ($tt->getNom());
-};
+echo('<br/>');
+
+$tournoi1->organiserMatchs();
 
 ?>
