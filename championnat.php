@@ -6,8 +6,34 @@ $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id
 $reqJE = $bdd->prepare('SELECT J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_Equipe = ?');
 $reqCencours = $bdd->query('SELECT * FROM competitions WHERE terminee = 0 ORDER BY dateDebut DESC ');
 $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_compet = ?');
-?>
 
+function afficherIconeEquipe($donnees, $req ){
+    ?>
+    <div class="iconeEquipe">
+    <p>Equipe <?php echo($donnees);?> :</p>
+    <?php
+    //AFFICHAGE DES JOUEURS EQUIPE 1
+    $req->execute(array($donnees));
+    while($donnees3 = $req->fetch()){
+        ?>
+    <div class="iconeJoueurs">
+        <div class="iconeJoueur">
+        <a href="joueurs.php?idJ=<?php echo($donnees3['J1id']);?>"><img src="<?php echo($donnees3['J1img']);?>" /></a>
+        <p><?php echo($donnees3['J1p']);?></p>
+        </div>
+        <div class="iconeJoueur">
+            <a href="joueurs.php?idJ=<?php echo($donnees3['J2id']);?>"><img src="<?php echo($donnees3['J2img']);?>" /></a>
+        <p><?php echo($donnees3['J2p']);?></p>
+        </div>
+    </div>
+        <?php
+    }
+    $req->closeCursor();?>
+    </div>
+<?php
+}
+
+?>
 <!doctype html>
 <html>
     <head>
@@ -89,22 +115,47 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                         while ($donnees2 = $matchsCompet->fetch()){
                             ?>
                             <div class="iconeMatch finale">
-                                <div class="iconeMatch">
-                                    <div class="iconeEquipe">
-                                        <p>Equipe <?php echo($donnees2['equipe1']);?> :</p>
+                                    <?php
+                                if(isset($donnees2['vainqueur'])){
+                                    ?>
+                                    <p>Vainqueur : <?php echo($donnees2['vainqueur']) ?></p>
+                                    <p>Score :<?php echo($donnees2['butEquipe1']) ?> / <?php echo($donnees2['butEquipe2']) ?></p>
+                                    <?php
+                                    }
+                                    ?>
+                                    <?php
+                                    if(isset ($donnees2['equipe1'])) {
+                                        afficherIconeEquipe($donnees2['equipe1'], $reqJE);
+                                        if(isset ($donnees2['equipe2'])) {
+                                            afficherIconeEquipe($donnees2['equipe2'], $reqJE);
+                                        }
+                                        else{
+                                            ?>
+                                            <div class="iconeEquipe">
+                                                <p>Equipe : </p>
+                                            </div>
+                                            <?php
 
-                                        <p><?php echo($donnees2['equipe1']);?></p>
-                                        <p>Equipe <?php echo($donnees2['equipe2']);?> :</p>
-                                        <p><?php echo($donnees2['equipe2']);?></p>
-                                    </div>
+                                        }
+                                    }
+                                    else{
+                                        ?>
+                                        <div class="iconeEquipe">
+                                            <p>Equipe : </p>
+                                        </div>
+                                        <div class="iconeEquipe">
+                                            <p>Equipe : </p>
+                                        </div>
+                                        <?php
 
+                                    }
+
+
+                                    ?>
                                 </div>
-
-
-                            </div>
                             <?php
                         }
-
+                        $matchsCompet->closeCursor();
                         ?>
                         <div class="demi">
                         <?php
@@ -125,49 +176,11 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                                     <?php
                                 }
                                 ?>
-
-                                <div class="iconeEquipe">
-                                <p>Equipe <?php echo($donnees2['equipe1']);?> :</p>
                                 <?php
-                                //AFFICHAGE DES JOUEURS EQUIPE 1
-                                $reqJE->execute(array($donnees2['equipe1']));
-                                while($donnees3 = $reqJE->fetch()){
-                                    ?>
-                                <div class="iconeJoueurs">
-                                    <div class="iconeJoueur">
-                                    <a href="joueurs.php?idJ=<?php echo($donnees3['J1id']);?>"><img src="<?php echo($donnees3['J1img']);?>" /></a>
-                                    <p><?php echo($donnees3['J1p']);?></p>
-                                    </div>
-                                    <div class="iconeJoueur">
-                                        <a href="joueurs.php?idJ=<?php echo($donnees3['J2id']);?>"><img src="<?php echo($donnees3['J2img']);?>" /></a>
-                                    <p><?php echo($donnees3['J2p']);?></p>
-                                    </div>
-                                </div>
-                                    <?php
-                                }
-                                $reqJE->closeCursor();?>
-                                </div>
-                                <div class="iconeEquipe">
-                                    <p>Equipe <?php echo($donnees2['equipe2']);?> :</p>
-                                    <?php
-                                    //AFFICHAGE DES JOUEURS EQUIPE 2
-                                    $reqJE->execute(array($donnees2['equipe2']));
-                                    while($donnees3 = $reqJE->fetch()){
-                                        ?>
-                                        <div class="iconeJoueurs">
-                                            <div class="iconeJoueur">
-                                                <a href="joueurs.php?idJ=<?php echo($donnees3['J1id']);?>"><img src="<?php echo($donnees3['J1img']);?>" /></a>
-                                                <p><?php echo($donnees3['J1p']);?></p>
-                                            </div>
-                                            <div class="iconeJoueur">
-                                                <a href="joueurs.php?idJ=<?php echo($donnees3['J2id']);?>"><img src="<?php echo($donnees3['J2img']);?>" /></a>
-                                                <p><?php echo($donnees3['J2p']);?></p>
-                                            </div>
-                                        </div>
-                                        <?php
-                                    }
-                                    $reqJE->closeCursor();?>
-                                </div>
+                                afficherIconeEquipe($donnees2['equipe1'], $reqJE );
+                                afficherIconeEquipe($donnees2['equipe2'], $reqJE );
+                               ?>
+
                             </div>
                             <?php
                         }
@@ -177,6 +190,7 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                             <?php
                             $reqEquipes->execute(array($_GET['idC']));
                             while($donnees4 = $reqEquipes->fetch()){
+
                                 ?>
                                 <div class="iconeEquipe">
                                     <p>Equipe <?php echo($donnees4['id_Equipe']);?></p>
