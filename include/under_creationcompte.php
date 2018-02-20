@@ -1,5 +1,5 @@
 <?php session_start();
-include'connexionBdd.php';
+include 'connexionBdd.php';
 $reponse = $bdd->query('SELECT * FROM joueurs');
 
 

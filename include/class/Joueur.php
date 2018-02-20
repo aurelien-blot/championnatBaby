@@ -8,17 +8,11 @@
 
 class Joueur
 {
+    //region Attributs
     private $nom;
 
-    /**
-     * Joueur constructor.
-     * @param $nom
-     */
-    public function __construct($nom)
-    {
-        $this->nom = $nom;
-    }
-
+//endregion
+    //region Getters/Setters
     /**
      * @return mixed
      */
@@ -34,6 +28,20 @@ class Joueur
     {
         $this->nom = $nom;
     }
+    //endregion
+    //region Constructeurs
 
+    /**
+     * Joueur constructor.
+     * @param $nom
+     */
+    public function __construct($nom)
+    {
+        $this->nom = $nom;
+    }
+    //endregion
+
+//region Methods
+//endregion
 
 }

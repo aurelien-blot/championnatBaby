@@ -1,5 +1,5 @@
 <?php session_start();
-include'include/connexionBdd.php';
+include 'include/connexionBdd.php';
 $listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY dateDebut DESC');
 $detailCompet = $bdd->prepare('SELECT * FROM competitions WHERE competitions.id_competition = ?');
 $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id_compet AND matchs.type_match = :type_match');

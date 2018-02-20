@@ -1,9 +1,6 @@
 <?php
-require 'class/Tournoi.php';
-require 'class/Joueur.php';
-require 'class/Equipe.php';
-require 'class/Match.php';
-include '../connexionBdd.php';
+
+include 'utilCompil.php';
 
 $tournoi1 = new Tournoi(8, 'Championnat des Seniors');
 $j1 = new Joueur('j1');
@@ -48,6 +45,7 @@ foreach ($tournoi1->getListeEquipes() as $eTest){
 echo('<br/>');
 
 $tournoi1->organiserMatchs();
-$tournoi1->detaillerMatchs('demiFinale');
+
+$tournoi1->detaillerMatchs('finale');
 
 ?>

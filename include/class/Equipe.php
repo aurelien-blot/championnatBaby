@@ -8,9 +8,13 @@
 
 class Equipe
 {
+
+    //region Attributs
+
     private $joueursEquipe;
     private $nomEquipe;
-
+    //endregion
+    //region Getters/Setters
     /**
      * @return string
      */
@@ -50,6 +54,8 @@ class Equipe
      * Equipe constructor.
      * @param $joueursEquipe
      */
+    //endregion
+    //region Constructeurs
     public function __construct(Joueur $joueur1, Joueur $joueur2)
     {
         $this->joueursEquipe = array();
@@ -59,5 +65,9 @@ class Equipe
 
 
     }
+    //endregion
 
+    //region Methods
+
+    //endregion
 }

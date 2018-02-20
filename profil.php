@@ -1,4 +1,4 @@
-<?php include'include/connexionBdd.php';?>
+<?php include 'include/connexionBdd.php';?>
 <!doctype html>
 <html>
 <head>

@@ -1,5 +1,5 @@
 <?php
-include 'connexionBdd.php';
+include 'utilCompil.php';
 
 $nbreJoueurs = intval($_GET['nbreJoueurs']);
 $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');

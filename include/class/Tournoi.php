@@ -8,6 +8,8 @@
 
 class Tournoi
 {
+    //region Attributs
+    private $idCompet;
     private $fini;
     private $nbreJoueurs;
     private $listeEquipes;
@@ -16,7 +18,24 @@ class Tournoi
     private $dateDebut;
     private $nomTournoi;
     private $listeMatchs;
+//endregion
 
+//region Getters/Setters
+    /**
+     * @return mixed
+     */
+    public function getIdCompet()
+    {
+        return $this->idCompet;
+    }
+
+    /**
+     * @param mixed $idCompet
+     */
+    public function setIdCompet($idCompet)
+    {
+        $this->idCompet = $idCompet;
+    }
     /**
      * @return mixed
      */
@@ -145,8 +164,9 @@ class Tournoi
         $this->listeEquipes = $listeEquipes;
     }
 
+//endregion
 
-
+//region Constructeur
 
     public function __construct($nbreJ, $nomCompet)
     {
@@ -158,8 +178,7 @@ class Tournoi
         $this->listeJoueurs =array();
         $this->listeMatchs= array();
         $this->dateDebut=null;
-
-
+/*
         $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
         $insertCompet->execute(array(
             'nomChamp' => $this->nomTournoi,
@@ -167,8 +186,11 @@ class Tournoi
             'dateDebut'=>$this->dateDebut
         ));
         $insertCompet->closeCursor();
+*/
     }
+//endregion
 
+//region Methods
     public function ajouterJoueur(Joueur $joueur)
     {
         $this->listeJoueurs[]=$joueur;
@@ -196,7 +218,20 @@ class Tournoi
             $nbreJoueursRestantATrier = array_values($nbreJoueursRestantATrier);
         }
     }
+    /*
+    public function insertEquipes(){
+        $reqPushEC= $bdd->prepare('INSERT INTO equipes(joueur1, joueur2, id_compet) VALUES(:joueur1, :joueur2, :id_compet)');
 
+        for($i=0; $i<count($this->listeEquipes);) {
+            $reqPushEC->execute(array(
+                'joueur1' =>(($this->listeEquipes[$i])->setJoueursEquipe()[0]->getNom()),
+                'joueur2' => (($this->listeEquipes[$i])->setJoueursEquipe()[1]->getNom()),
+                'id_compet' => $this->idCompet
+            ));
+        }
+
+    }
+*/
     public function organiserMatchs(){
         $equipesTournoi = $this->listeEquipes;
         if(count($equipesTournoi) ==4){
@@ -214,18 +249,41 @@ class Tournoi
 
         }
     }
+
+    public  function afficherNomEquipe($equipeMatch){
+        if($equipeMatch ==null){
+            return 'inconnue';
+        }
+        return ($equipeMatch->getNomEquipe());
+
+    }
     public function detaillerMatchs($type){
         echo($this->nomTournoi.' : <br/>');
 
         foreach($this->listeMatchs as $match){
-            $equipe1Match=$match->getEquipesMatch()[0];
-            $equipe2Match=$match->getEquipesMatch()[1];
+
+            $nomEquipe1= $this->afficherNomEquipe($match->getEquipesMatch()[0]);
+            $nomEquipe2= $this->afficherNomEquipe($match->getEquipesMatch()[1]);
+
             $typeMatchTest =$match->getTypeMatch();
             if($typeMatchTest==$type){
-
-                echo('Demi-finale : ('.$equipe1Match->getNomEquipe().') vs ('.$equipe2Match->getNomEquipe().')<br />');
+                if($typeMatchTest == 'demiFinale'){
+                    $labelType='Demi-finale';
+                }
+                else if($typeMatchTest == 'finale'){
+                    $labelType='Finale';
+                }
+                else if($typeMatchTest == 'poule'){
+                    $labelType='Poule';
+                }
+                echo($labelType.' : ('.$nomEquipe1.') vs ('.$nomEquipe2.')<br />');
             }
         }
     }
 
+    public function findIdCompet(){
+
+    }
+
+    //endregion
 }

@@ -8,22 +8,14 @@
 
 class Match
 {
+    //region Attributs
     private $equipesMatch;
     private $vainqueurMatch;
     private $matchFini;
     private $typeMatch;
+//endregion
 
-    /**
-     * Match constructor.
-     */
-    public function __construct($type)
-    {
-        $this->equipesMatch= array();
-        $this->matchFini =false;
-        $this->vainqueurMatch = null;
-        $this->typeMatch = $type;
-    }
-
+    //region Getters/Setters
     /**
      * @return mixed
      */
@@ -89,5 +81,23 @@ class Match
         $this->matchFini = $matchFini;
     }
 
+//endregion
+
+    //region Constructeur
+    /**
+     * Match constructor.
+     */
+    public function __construct($type)
+    {
+        $this->equipesMatch= array();
+        $this->matchFini =false;
+        $this->vainqueurMatch = null;
+        $this->typeMatch = $type;
+    }
+//endregion
+
+//region Methods
+
+//endregion
 
 }

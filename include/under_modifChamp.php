@@ -1,5 +1,5 @@
 <?php
-include 'connexionBdd.php';
+include 'utilCompil.php';
 $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
 
 $insModifScore->execute(array(

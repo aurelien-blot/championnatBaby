@@ -1,5 +1,5 @@
 <?php session_start();
-include'include/connexionBdd.php';
+include 'include/connexionBdd.php';
 $listeJoueurs = $bdd->query('SELECT * FROM joueurs ORDER BY nom');
 
 $detailJoueur = $bdd->prepare('SELECT * FROM joueurs WHERE id_Joueur =?');
