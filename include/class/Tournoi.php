@@ -157,6 +157,16 @@ class Tournoi
         $this->listeEquipes = array();
         $this->listeJoueurs =array();
         $this->listeMatchs= array();
+        $this->dateDebut=null;
+
+
+        $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
+        $insertCompet->execute(array(
+            'nomChamp' => $this->nomTournoi,
+            'nbreJoueurs' => $this->nbreJoueurs,
+            'dateDebut'=>$this->dateDebut
+        ));
+        $insertCompet->closeCursor();
     }
 
     public function ajouterJoueur(Joueur $joueur)
@@ -205,11 +215,15 @@ class Tournoi
         }
     }
     public function detaillerMatchs($type){
+        echo($this->nomTournoi.' : <br/>');
+
         foreach($this->listeMatchs as $match){
+            $equipe1Match=$match->getEquipesMatch()[0];
+            $equipe2Match=$match->getEquipesMatch()[1];
             $typeMatchTest =$match->getTypeMatch();
             if($typeMatchTest==$type){
 
-                echo('zea');
+                echo('Demi-finale : ('.$equipe1Match->getNomEquipe().') vs ('.$equipe2Match->getNomEquipe().')<br />');
             }
         }
     }
