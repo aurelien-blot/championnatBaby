@@ -7,7 +7,8 @@ $insertCompet->execute(array(
     'nomChamp' => $_POST['nomChamp'],
     'nbreJoueurs' => $nbreJoueurs,
     'dateDebut' => $_POST['dateDebut']
-));//$_POST['dateDebut']
+));
+
 $insertCompet->closeCursor();
 $reqIdC = $bdd->prepare('SELECT * FROM competitions WHERE nomChamp = ?');
 $nbreParticipants = 8;

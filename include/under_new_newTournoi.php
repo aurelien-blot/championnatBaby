@@ -8,11 +8,11 @@
 
 include 'utilCompil.php';
 
-$tournoiX = new Tournoi($_POST['nbreJoueurs'], $_POST['nomChamp']);
+$tournoiX = new Tournoi($_POST['nbreJoueurs'], $_POST['nomChamp'], $_POST['dateDebut'],$bdd);
 
+/*
 $tournoiX->ajouterJoueur();
 $tournoiX->creerEquipes();
 $tournoiX->organiserMatchs();
-
-$tournoiX
+*/
 ?>

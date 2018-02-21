@@ -2,7 +2,8 @@
 
 include 'utilCompil.php';
 
-$tournoi1 = new Tournoi(8, 'Championnat des Seniors');
+$tournoi1 = new Tournoi(8, 'Championnat des Seniors', $bdd);
+
 $j1 = new Joueur('j1');
 $j2 = new Joueur('j2');
 $j3 = new Joueur('j3');
@@ -46,6 +47,6 @@ echo('<br/>');
 
 $tournoi1->organiserMatchs();
 
-$tournoi1->detaillerMatchs('finale');
+$tournoi1->detaillerMatchs('demiFinale');
 
 ?>

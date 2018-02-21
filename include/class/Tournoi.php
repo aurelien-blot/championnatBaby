@@ -6,6 +6,7 @@
  * Time: 14:39
  */
 
+
 class Tournoi
 {
     //region Attributs
@@ -168,7 +169,7 @@ class Tournoi
 
 //region Constructeur
 
-    public function __construct($nbreJ, $nomCompet)
+    public function __construct($nbreJ, $nomCompet, $date, $bdd)
     {
         $this->fini=false;
         $this->nbreJoueurs=(intval($nbreJ));
@@ -178,15 +179,15 @@ class Tournoi
         $this->listeJoueurs =array();
         $this->listeMatchs= array();
         $this->dateDebut=null;
-/*
+
         $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
         $insertCompet->execute(array(
             'nomChamp' => $this->nomTournoi,
             'nbreJoueurs' => $this->nbreJoueurs,
-            'dateDebut'=>$this->dateDebut
+            'dateDebut'=>$date
         ));
-        $insertCompet->closeCursor();
-*/
+
+
     }
 //endregion
 
@@ -218,7 +219,7 @@ class Tournoi
             $nbreJoueursRestantATrier = array_values($nbreJoueursRestantATrier);
         }
     }
-    /*
+
     public function insertEquipes(){
         $reqPushEC= $bdd->prepare('INSERT INTO equipes(joueur1, joueur2, id_compet) VALUES(:joueur1, :joueur2, :id_compet)');
 
@@ -231,7 +232,7 @@ class Tournoi
         }
 
     }
-*/
+
     public function organiserMatchs(){
         $equipesTournoi = $this->listeEquipes;
         if(count($equipesTournoi) ==4){
