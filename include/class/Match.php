@@ -15,6 +15,10 @@ class Match
     private $matchFini;
     private $typeMatch;
 
+
+//endregion
+
+    //region Getters/Setters
     /**
      * @return mixed
      */
@@ -30,9 +34,6 @@ class Match
     {
         $this->idMatch = $idMatch;
     }
-//endregion
-
-    //region Getters/Setters
 
     /**
      * @return mixed
