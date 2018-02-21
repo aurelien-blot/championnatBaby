@@ -10,11 +10,28 @@ class Equipe
 {
 
     //region Attributs
-
+    private $idEquipe;
     private $joueursEquipe;
     private $nomEquipe;
     //endregion
     //region Getters/Setters
+    /**
+     * @return mixed
+     */
+    public function getIdEquipe()
+    {
+        return $this->idEquipe;
+    }
+
+    /**
+     * @param mixed $idEquipe
+     */
+    public function setIdEquipe($idEquipe)
+    {
+        $this->idEquipe = $idEquipe;
+    }
+
+
     /**
      * @return string
      */

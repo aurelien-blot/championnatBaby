@@ -9,13 +9,31 @@
 class Match
 {
     //region Attributs
+    private $idMatch;
     private $equipesMatch;
     private $vainqueurMatch;
     private $matchFini;
     private $typeMatch;
+
+    /**
+     * @return mixed
+     */
+    public function getIdMatch()
+    {
+        return $this->idMatch;
+    }
+
+    /**
+     * @param mixed $idMatch
+     */
+    public function setIdMatch($idMatch)
+    {
+        $this->idMatch = $idMatch;
+    }
 //endregion
 
     //region Getters/Setters
+
     /**
      * @return mixed
      */

@@ -1,6 +1,7 @@
 <?php
 try
 {
+    //$bdd = new PDO('mysql:host=localhost;dbname=championnatbaby;charset=utf8', 'root', '');
     $bdd = new PDO('mysql:host=localhost;dbname=championnatbaby;charset=utf8', 'root', '');
 
 }

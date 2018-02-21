@@ -281,8 +281,12 @@ class Tournoi
         }
     }
 
-    public function findIdCompet(){
+    public static function findTournoi($idTournoi){
 
+        $reqIdC = $bdd->prepare('SELECT * FROM competitions WHERE id_compet = ?');
+        $reqIdC->execute(array($idTournoi));
+        $repReqIdC = $reqIdC->fetch(PDO::FETCH_ASSOC);
+        return $repReqIdC;
     }
 
     //endregion

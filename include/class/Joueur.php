@@ -9,6 +9,7 @@
 class Joueur
 {
     //region Attributs
+    private $idJoueur;
     private $nom;
 
 //endregion
@@ -28,6 +29,23 @@ class Joueur
     {
         $this->nom = $nom;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdJoueur()
+    {
+        return $this->idJoueur;
+    }
+
+    /**
+     * @param mixed $idJoueur
+     */
+    public function setIdJoueur($idJoueur)
+    {
+        $this->idJoueur = $idJoueur;
+    }
+
     //endregion
     //region Constructeurs
 
