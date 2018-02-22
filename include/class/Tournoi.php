@@ -169,7 +169,7 @@ class Tournoi
 
 //region Constructeur
 
-    public function __construct($nbreJ, $nomCompet, $date, $bdd)
+    public function __construct($nomCompet,$nbreJ, $date, $bdd)
     {
         $this->fini=false;
         $this->nbreJoueurs=(intval($nbreJ));
@@ -220,7 +220,7 @@ class Tournoi
         }
     }
 
-    public function insertEquipes(){
+    public function insertEquipes($bdd){
         $reqPushEC= $bdd->prepare('INSERT INTO equipes(joueur1, joueur2, id_compet) VALUES(:joueur1, :joueur2, :id_compet)');
 
         for($i=0; $i<count($this->listeEquipes);) {
@@ -282,12 +282,18 @@ class Tournoi
         }
     }
 
-    public static function findTournoi($idTournoi){
+    public static function findTournoi($idTournoi, $bdd){
 
-        $reqIdC = $bdd->prepare('SELECT * FROM competitions WHERE id_compet = ?');
-        $reqIdC->execute(array($idTournoi));
-        $repReqIdC = $reqIdC->fetch(PDO::FETCH_ASSOC);
-        return $repReqIdC;
+        $detailTournoi = $bdd->prepare('SELECT * FROM competitions WHERE id_competition =?');
+        $detailTournoi->execute(array($idTournoi));
+        $tournoiX=null;
+
+        while ($donnees =  $detailTournoi->fetch()){
+            $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
+            $tournoiX->setIdCompet($idTournoi);
+        }
+        return $tournoiX;
+
     }
 
     //endregion
