@@ -14,6 +14,10 @@ class Match
     private $vainqueurMatch;
     private $matchFini;
     private $typeMatch;
+    private $equipe1;
+    private $equipe2;
+    private $butsEquipe1;
+    private $butsEquipe2;
 
 
 
@@ -101,23 +105,110 @@ class Match
         $this->matchFini = $matchFini;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getEquipe1()
+    {
+        return $this->equipe1;
+    }
+
+    /**
+     * @param mixed $equipe1
+     */
+    public function setEquipe1($equipe1)
+    {
+        $this->equipe1 = $equipe1;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEquipe2()
+    {
+        return $this->equipe2;
+    }
+
+    /**
+     * @param mixed $equipe2
+     */
+    public function setEquipe2($equipe2)
+    {
+        $this->equipe2 = $equipe2;
+    }
+
+    /**
+     * @return int
+     */
+    public function getButsEquipe1()
+    {
+        return $this->butsEquipe1;
+    }
+
+    /**
+     * @param int $butsEquipe1
+     */
+    public function setButsEquipe1($butsEquipe1)
+    {
+        $this->butsEquipe1 = $butsEquipe1;
+    }
+
+    /**
+     * @return int
+     */
+    public function getButsEquipe2()
+    {
+        return $this->butsEquipe2;
+    }
+
+    /**
+     * @param int $butsEquipe2
+     */
+    public function setButsEquipe2($butsEquipe2)
+    {
+        $this->butsEquipe2 = $butsEquipe2;
+    }
+
 //endregion
 
     //region Constructeur
     /**
      * Match constructor.
      */
-    public function __construct($type)
+    public function __construct($type, $equipe1, $equipe2)
     {
         $this->equipesMatch= array();
+        $this->equipe1=$equipe1;
+        $this->equipe2=$equipe2;
+        $this->butsEquipe1=0;
+        $this->butsEquipe2=0;
+        $this->equipesMatch[0]=$this->equipe1;
+        $this->equipesMatch[1]=$this->equipe2;
         $this->matchFini =false;
         $this->vainqueurMatch = null;
-        $this->typeMatch = $type;
+        $this->typeMatch = $type;// VEFIFIER VRAIE BDD
     }
+
 //endregion
 
 //region Methods
+    public static function findMatch($idMatch, $bdd){
 
+        $detailMatch = $bdd->prepare('SELECT * FROM matchs WHERE id_Match =?');
+        $detailMatch->execute(array($idMatch));
+        $MatchX=null;
+
+        while ($donnees =  $detailMatch->fetch()){
+            $MatchX = new Match($donnees['type'],$donnees['equipe1'],$donnees['equipe2']);
+            $MatchX->setIdMatch($idMatch);
+            $MatchX->setButsEquipe1($donnees['butsEquipe1']);
+            $MatchX->setButsEquipe2($donnees['butsEquipe2']);
+            $MatchX->setVainqueurMatch($donnees['vainqueur']);
+
+        }
+        return $MatchX;
+
+    }
 //endregion
 
 }
