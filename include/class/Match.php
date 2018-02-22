@@ -199,10 +199,10 @@ class Match
         $MatchX=null;
 
         while ($donnees =  $detailMatch->fetch()){
-            $MatchX = new Match($donnees['type'],$donnees['equipe1'],$donnees['equipe2']);
+            $MatchX = new Match($donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
             $MatchX->setIdMatch($idMatch);
-            $MatchX->setButsEquipe1($donnees['butsEquipe1']);
-            $MatchX->setButsEquipe2($donnees['butsEquipe2']);
+            $MatchX->setButsEquipe1($donnees['butEquipe1']);
+            $MatchX->setButsEquipe2($donnees['butEquipe2']);
             $MatchX->setVainqueurMatch($donnees['vainqueur']);
 
         }

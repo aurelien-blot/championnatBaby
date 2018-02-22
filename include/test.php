@@ -2,6 +2,18 @@
 
 include 'utilCompil.php';
 
+$tournoi1 =Tournoi::findTournoi(1,$bdd);
+echo($tournoi1->getNomTournoi().'  -   '.$tournoi1->getNbreJoueurs());
+
+$equipe1= Equipe::findEquipe(5,$bdd);
+echo($equipe1->getIdEquipe());
+
+$match1 = Match::findMatch(3, $bdd);
+echo($match1->getEquipe1().'   -   '.$match1->getEquipe2());
+
+$joueur1= Joueur::findJoueur(7,$bdd);
+echo($joueur1->getNom());
+/*
 $tournoi1 = new Tournoi(8, 'Championnat des Seniors', $bdd);
 
 $j1 = new Joueur('j1');
@@ -48,5 +60,5 @@ echo('<br/>');
 $tournoi1->organiserMatchs();
 
 $tournoi1->detaillerMatchs('demiFinale');
-
+*/
 ?>

@@ -108,12 +108,11 @@ class Equipe
      */
     //endregion
     //region Constructeurs
-    public function __construct(Joueur $joueur1, Joueur $joueur2)
+    public function __construct($joueur1, $joueur2)
     {
         $this->joueursEquipe = array();
         $this->joueursEquipe[]= $joueur1;
         $this->joueursEquipe[]= $joueur2;
-        $this->nomEquipe=($joueur1->getNom()).' - '.($joueur2->getNom());
         $this->joueur1 = $joueur1;
         $this->joueur2 = $joueur2;
 
