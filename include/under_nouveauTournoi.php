@@ -2,14 +2,18 @@
 include 'utilCompil.php';
 
 $nbreJoueurs = intval($_GET['nbreJoueurs']);
+/*
 $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
 $insertCompet->execute(array(
     'nomChamp' => $_POST['nomChamp'],
     'nbreJoueurs' => $nbreJoueurs,
     'dateDebut' => $_POST['dateDebut']
 ));
+*/
+$tournoiX = new Tournoi($_POST['nbreJoueurs'], $_POST['nomChamp'], $_POST['dateDebut'],$bdd);
 
-$insertCompet->closeCursor();
+//$insertCompet->closeCursor();
+
 $reqIdC = $bdd->prepare('SELECT * FROM competitions WHERE nomChamp = ?');
 $nbreParticipants = 8;
 

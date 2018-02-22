@@ -16,6 +16,7 @@ class Match
     private $typeMatch;
 
 
+
 //endregion
 
     //region Getters/Setters
