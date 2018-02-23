@@ -296,5 +296,15 @@ class Tournoi
 
     }
 
+    public static function listerTournoiAll($bdd){
+        $listTournoiAll= array();
+        $listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY dateDebut DESC');
+        while ($donnees =  $listeCompet->fetch()){
+            $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
+            $tournoiX->setIdCompet($donnees['id_compet']);
+            $listTournoiAll[]=$tournoiX;
+        }
+        return $listTournoiAll;
+    }
     //endregion
 }

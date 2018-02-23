@@ -209,6 +209,22 @@ class Match
         return $MatchX;
 
     }
+
+    public static function listerMatchFromTournoi($idTournoi, $bdd){
+        $listMatchFromTournoi = array();
+        $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id_compet');
+        $matchsCompet->execute(array(
+            'id_compet'=> $idTournoi));
+        while ($donnees =  $matchsCompet->fetch()){
+            $MatchX = new Match($donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
+            $MatchX->setIdMatch($donnees['id_Match']);
+            $MatchX->setButsEquipe1($donnees['butEquipe1']);
+            $MatchX->setButsEquipe2($donnees['butEquipe2']);
+            $MatchX->setVainqueurMatch($donnees['vainqueur']);
+            $listMatchFromTournoi[]=$MatchX;
+        }
+        return $listMatchFromTournoi;
+    }
 //endregion
 
 }

@@ -1,8 +1,13 @@
 <?php session_start();
 include 'include/utilCompil.php';
-$listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY dateDebut DESC');
-$detailCompet = $bdd->prepare('SELECT * FROM competitions WHERE competitions.id_competition = ?');
+//$listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY dateDebut DESC');
+Tournoi::listerTournoiAll($bdd);
+//$detailCompet = $bdd->prepare('SELECT * FROM competitions WHERE competitions.id_competition = ?')
+
+
 $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id_compet AND matchs.type_match = :type_match');
+
+
 $reqJE = $bdd->prepare('SELECT J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_Equipe = ?');
 $reqCencours = $bdd->query('SELECT * FROM competitions WHERE terminee = 0 ORDER BY dateDebut DESC ');
 $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_compet = ?');
@@ -91,17 +96,18 @@ function afficherIconeEquipe($donnees, $req ){
 
                 // SI ON VEUT VOIR UN CHAMPIONNAT EN PARTICULIER
                 else if(isset($_GET['idC'])){
-                    $detailCompet->execute(array($_GET['idC']));
+                    $tournoi1 =Tournoi::findTournoi($_GET['idC'],$bdd);
+                    //$detailCompet->execute(array($_GET['idC']));
 
-                    while($donnees = $detailCompet->fetch()){
+                    //while($donnees = $detailCompet->fetch()){
                     ?>
-                    <h1><?php echo($donnees['nomChamp']);?></h1>
+                    <h1><?php echo($tournoi1->getNomTournoi());?></h1>
                         <p>A commencé le : <?php echo($donnees['dateDebut']);?></p>
                     <?php
                         //SI LE CHAMPIONNAT EST TERMINE ON INDIQUERA LE VAINQUEUR !
-                    if($donnees['terminee']==1){
+                    if($tournoi1->getFini()==1){
 
-                    }
+                    //}
 
                     // ON DEBUTE LE SCHEMA DU CHAMPIONNAT PAR LE DIV competX
                     ?>
