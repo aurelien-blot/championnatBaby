@@ -10,6 +10,7 @@ function loadClasses(){
     require 'class/Joueur.php';
     require 'class/Equipe.php';
     require 'class/Match.php';
+    require 'class/ConnexionBdd.php';
 }
 
 spl_autoload_register('loadClasses');

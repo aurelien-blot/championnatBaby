@@ -11,14 +11,33 @@ class Equipe
 
     //region Attributs
     private $idEquipe;
+    private $idTournoiEquipe;
     private $joueursEquipe;
     private $nomEquipe;
     private $joueur1;
-    private $joueur2;
+
 
 
     //endregion
     //region Getters/Setters
+
+    /**
+     * @return mixed
+     */
+    public function getIdTournoiEquipe()
+    {
+        return $this->idTournoiEquipe;
+    }
+
+    /**
+     * @param mixed $idTournoiEquipe
+     */
+    public function setIdTournoiEquipe($idTournoiEquipe)
+    {
+        $this->idTournoiEquipe = $idTournoiEquipe;
+    }
+    private $joueur2;
+
     /**
      * @return mixed
      */
@@ -108,19 +127,40 @@ class Equipe
      */
     //endregion
     //region Constructeurs
-    public function __construct($joueur1, $joueur2)
+    public function __construct($idTournoiEquipe,Joueur $joueur1, Joueur $joueur2)
     {
+        $this->idTournoiEquipe=$idTournoiEquipe;
         $this->joueursEquipe = array();
         $this->joueursEquipe[]= $joueur1;
         $this->joueursEquipe[]= $joueur2;
         $this->joueur1 = $joueur1;
         $this->joueur2 = $joueur2;
+        $this->nomEquipe= ($joueur1->getPrenom().' - '.$joueur2->getPrenom());
 
 
     }
     //endregion
 
     //region Methods
+
+    public function insertEquipes($bdd){
+
+
+        $reqPushE= $bdd->prepare('INSERT INTO equipes(joueur1, joueur2, id_compet) VALUES(:joueur1, :joueur2, :id_compet)');
+        $reqPushE->execute(array(
+            'joueur1' =>($this->joueur1->getIdJoueur()),
+            'joueur2' => ($this->joueur2->getIdJoueur()),
+            'id_compet' => ($this->idTournoiEquipe)
+        ));
+        $reqPushE->closeCursor();
+
+        $idDerniereEquipe = $bdd->query('SELECT * FROM equipes ORDER BY id_Equipe DESC LIMIT 1');
+        while ($donnee = $idDerniereEquipe->fetch()) {
+            $this->idEquipe = intval($donnee['id_Equipe']);
+        }
+        $idDerniereEquipe->closeCursor();
+
+    }
 
     public static function findEquipe($idEquipe, $bdd){
 
@@ -135,5 +175,6 @@ class Equipe
         return $equipeX;
 
     }
+
     //endregion
 }

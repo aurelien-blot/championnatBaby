@@ -189,7 +189,25 @@ class Joueur
     //endregion
 
 //region Methods
+    public function insertJoueur($bdd){
 
+            $reqPushJ= $bdd->prepare('INSERT INTO joueurs (nom, prenom, surnom, meilleureperformance, defaut, qualite, photo ) VALUES(:nom, :prenom, :surnom, :meilleureperformance, :defaut, :qualite, :photo)');
+            $reqPushJ->execute(array(
+                'nom' =>$this->nom,
+                'prenom' => $this->prenom,
+                'surnom' => $this->surnom,
+                'meilleureperformance' =>$this->meilleureperformance,
+                'defaut' =>$this->defaut,
+                'qualite' =>$this->qualite,
+                'photo' =>$this->photo
+                ));
+            $reqPushJ->closeCursor();
+        $idDernierJoueur= $bdd->query('SELECT * FROM joueurs ORDER BY id_Joueur DESC LIMIT 1');
+        while ($donnee = $idDernierJoueur->fetch()) {
+            $this->idJoueur = $donnee['id_Joueur'];
+            $idDernierJoueur->closeCursor();
+        }
+    }
 
 public static function findJoueur($idJoueur, $bdd){
 
@@ -201,6 +219,7 @@ public static function findJoueur($idJoueur, $bdd){
         $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['meilleureperformance'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
         $joueurX->setIdJoueur($idJoueur);
     }
+    $detailJoueur->closeCursor();
     return $joueurX;
 
 }

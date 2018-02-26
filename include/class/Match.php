@@ -18,12 +18,31 @@ class Match
     private $equipe2;
     private $butsEquipe1;
     private $butsEquipe2;
+    private $idCompetMatch;
+
+
 
 
 
 //endregion
 
     //region Getters/Setters
+    /**
+     * @return mixed
+     */
+    public function getIdCompetMatch()
+    {
+        return $this->idCompetMatch;
+    }
+
+    /**
+     * @param mixed $idCompetMatch
+     */
+    public function setIdCompetMatch($idCompetMatch)
+    {
+        $this->idCompetMatch = $idCompetMatch;
+    }
+
     /**
      * @return mixed
      */
@@ -69,8 +88,8 @@ class Match
      */
     public function setEquipesMatch($equipeMatch1, $equipeMatch2 )
     {
-        $this->equipesMatch[] = $equipeMatch1;
-        $this->equipesMatch[] = $equipeMatch2;
+        $this->equipesMatch[0] = $equipeMatch1;
+        $this->equipesMatch[1] = $equipeMatch2;
     }
 
     /**
@@ -175,15 +194,16 @@ class Match
     /**
      * Match constructor.
      */
-    public function __construct($type, $equipe1, $equipe2)
+    public function __construct($idCompetMatchX, $type, $equipe1, $equipe2)
     {
         $this->equipesMatch= array();
+        $this->idCompetMatch = intval($idCompetMatchX);
         $this->equipe1=$equipe1;
         $this->equipe2=$equipe2;
         $this->butsEquipe1=0;
         $this->butsEquipe2=0;
-        $this->equipesMatch[0]=$this->equipe1;
-        $this->equipesMatch[1]=$this->equipe2;
+        $this->equipesMatch[]=$equipe1;
+        $this->equipesMatch[]=$equipe2;
         $this->matchFini =false;
         $this->vainqueurMatch = null;
         $this->typeMatch = $type;// VEFIFIER VRAIE BDD
@@ -192,6 +212,24 @@ class Match
 //endregion
 
 //region Methods
+    public function insererMatch($connexion){
+        $insertMatch = $connexion->prepare('INSERT INTO matchs(equipe1, equipe2, id_compet, type_match) VALUES(:equipe1, :equipe2, :id_compet, :type_match)');
+
+        $insertMatch->execute(array(
+            'equipe1' => ($this->equipe1->getIdEquipe()),
+            'equipe2' => $this->equipe2->getIdEquipe(),
+            'id_compet' => $this->idCompetMatch,
+            'type_match'=>$this->getTypeMatch()
+        ));
+        $insertMatch->closeCursor();
+
+        $idDernierMatch = $connexion->query('SELECT * FROM matchs ORDER BY id_Match  DESC LIMIT 1');
+        while ($donnee = $idDernierMatch->fetch()) {
+            $this->idMatch = intval($donnee['id_Match']);
+
+        }
+        $idDernierMatch->closeCursor();
+    }
     public static function findMatch($idMatch, $bdd){
 
         $detailMatch = $bdd->prepare('SELECT * FROM matchs WHERE id_Match =?');
@@ -199,7 +237,7 @@ class Match
         $MatchX=null;
 
         while ($donnees =  $detailMatch->fetch()){
-            $MatchX = new Match($donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
+            $MatchX = new Match($donnees['idCompet'], $donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
             $MatchX->setIdMatch($idMatch);
             $MatchX->setButsEquipe1($donnees['butEquipe1']);
             $MatchX->setButsEquipe2($donnees['butEquipe2']);
@@ -210,19 +248,23 @@ class Match
 
     }
 
-    public static function listerMatchFromTournoi($idTournoi, $bdd){
+    public static function listerMatchFromTournoi($idTournoi, $typeMatch, $bdd){
         $listMatchFromTournoi = array();
-        $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id_compet');
+        $matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id_compet AND matchs.type_match = :type_match');
         $matchsCompet->execute(array(
-            'id_compet'=> $idTournoi));
+            'id_compet'=> $idTournoi,
+            'type_match'=>$typeMatch
+            ));
+
         while ($donnees =  $matchsCompet->fetch()){
-            $MatchX = new Match($donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
+            $MatchX = new Match($donnees['id_compet'], $donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
             $MatchX->setIdMatch($donnees['id_Match']);
             $MatchX->setButsEquipe1($donnees['butEquipe1']);
             $MatchX->setButsEquipe2($donnees['butEquipe2']);
             $MatchX->setVainqueurMatch($donnees['vainqueur']);
             $listMatchFromTournoi[]=$MatchX;
         }
+        $matchsCompet->closeCursor();
         return $listMatchFromTournoi;
     }
 //endregion

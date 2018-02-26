@@ -6,7 +6,6 @@
  * Time: 14:39
  */
 
-
 class Tournoi
 {
     //region Attributs
@@ -178,16 +177,7 @@ class Tournoi
         $this->listeEquipes = array();
         $this->listeJoueurs =array();
         $this->listeMatchs= array();
-        $this->dateDebut=null;
-
-        $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
-        $insertCompet->execute(array(
-            'nomChamp' => $this->nomTournoi,
-            'nbreJoueurs' => $this->nbreJoueurs,
-            'dateDebut'=>$date
-        ));
-
-
+        $this->dateDebut=$date;
     }
 //endregion
 
@@ -197,7 +187,7 @@ class Tournoi
         $this->listeJoueurs[]=$joueur;
     }
 
-    public function creerEquipes(){
+    public function creerEquipes($bdd){
 
         $nbreJoueursRestantATrier = $this->listeJoueurs;
         shuffle($nbreJoueursRestantATrier);
@@ -212,7 +202,8 @@ class Tournoi
 
             $joueur2 = $nbreJoueursRestantATrier[$rand];
 
-            $equipe= new Equipe($joueur, $joueur2);
+            $equipe= new Equipe($this->idCompet, $joueur, $joueur2);
+            $equipe->insertEquipes($bdd);
             $this->listeEquipes[]=$equipe;
             unset($nbreJoueursRestantATrier[$i]);
             unset($nbreJoueursRestantATrier[$rand]);
@@ -220,34 +211,50 @@ class Tournoi
         }
     }
 
-    public function insertEquipes($bdd){
-        $reqPushEC= $bdd->prepare('INSERT INTO equipes(joueur1, joueur2, id_compet) VALUES(:joueur1, :joueur2, :id_compet)');
+    public function insererTournoi($bdd){
 
-        for($i=0; $i<count($this->listeEquipes);) {
-            $reqPushEC->execute(array(
-                'joueur1' =>(($this->listeEquipes[$i])->setJoueursEquipe()[0]->getNom()),
-                'joueur2' => (($this->listeEquipes[$i])->setJoueursEquipe()[1]->getNom()),
-                'id_compet' => $this->idCompet
-            ));
+        $insertCompet = $bdd->prepare('INSERT INTO competitions(nomChamp, nbreJoueurs, dateDebut) VALUES(:nomChamp, :nbreJoueurs, :dateDebut)');
+        $insertCompet->execute(array(
+            'nomChamp' => $this->nomTournoi,
+            'nbreJoueurs' => $this->nbreJoueurs,
+            'dateDebut'=>$this->dateDebut
+        ));
+        $insertCompet->closeCursor();
+        $idDernierTournoi = $bdd->query('SELECT id_competition FROM competitions ORDER BY id_competition DESC LIMIT 1');
+        while ($donnee = $idDernierTournoi->fetch()) {
+            $this->idCompet = intval($donnee['id_competition']);
+
         }
-
+        $idDernierTournoi->closeCursor();
     }
 
-    public function organiserMatchs(){
-        $equipesTournoi = $this->listeEquipes;
-        if(count($equipesTournoi) ==4){
-            $match1=  new Match('demiFinale');
-            $match2=  new Match('demiFinale');
-            $match3=  new Match('finale');
+    public function organiserMatchs($bdd){
+
+        if(count($this->listeEquipes) ==4){
+
+            $match1=  new Match($this->idCompet,'demi', null, null);
+            $match2=  new Match($this->idCompet,'demi',null, null);
+
+            $match3=  new Match($this->idCompet,'finale',null, null);
             $this->listeMatchs[]=$match1;
             $this->listeMatchs[]=$match2;
             $this->listeMatchs[]=$match3;
-            $match1->setEquipesMatch($equipesTournoi[0],$equipesTournoi[1]);
-            $match2->setEquipesMatch($equipesTournoi[2],$equipesTournoi[3]);
+            $match1->setEquipe1($this->listeEquipes[0]);
+            $match1->setEquipe2($this->listeEquipes[1]);
+            $match2->setEquipe1($this->listeEquipes[2]);
+            $match2->setEquipe2($this->listeEquipes[3]);
 
+            foreach ($this->listeMatchs as $matchX){
+                if($matchX->getEquipe1() ==null OR $matchX->getEquipe2()==null){
+
+                }
+                else{
+                    $matchX->insererMatch($bdd);
+                }
+            }
         }
-        else if(count($equipesTournoi)==6){
-
+        else if(count($this->listeEquipes)==6){
+            echo('RATE');
         }
     }
 
@@ -292,6 +299,7 @@ class Tournoi
             $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
             $tournoiX->setIdCompet($idTournoi);
         }
+        $detailTournoi->closeCursor();
         return $tournoiX;
 
     }
@@ -301,10 +309,37 @@ class Tournoi
         $listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY dateDebut DESC');
         while ($donnees =  $listeCompet->fetch()){
             $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
-            $tournoiX->setIdCompet($donnees['id_compet']);
+            $tournoiX->setIdCompet($donnees['id_competition']);
             $listTournoiAll[]=$tournoiX;
         }
+        $listeCompet->closeCursor();
         return $listTournoiAll;
+    }
+
+    public static function listerTournoiEnCours($bdd){
+        $listTournoiEnCours= array();
+        $listeCompet = $bdd->query('SELECT * FROM competitions WHERE terminee = 0 ORDER BY dateDebut DESC');
+        while ($donnees =  $listeCompet->fetch()){
+            $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
+            $tournoiX->setIdCompet($donnees['id_competition']);
+            $listTournoiEnCours[]=$tournoiX;
+        }
+        $listeCompet->closeCursor();
+        return $listTournoiEnCours;
+    }
+
+
+    public function listerEquipesFromTournoi($bdd){
+        $listEquipesFromTournoi= array();
+        $listeEquipes= $bdd->prepare('SELECT * FROM equipes WHERE id_compet =?');
+        $listeEquipes->execute(array($this->idCompet));
+        while ($donnees =  $listeEquipes->fetch()){
+            $equipeX = new Equipe($donnees['id_compet'],Joueur::findJoueur($donnees['joueur1'], $bdd),Joueur::findJoueur($donnees['joueur2'], $bdd),$bdd);
+            $equipeX->setIdEquipe($donnees['id_Equipe']);
+            $listEquipesFromTournoi[]=$equipeX;
+        }
+        $listeEquipes->closeCursor();
+        return $listEquipesFromTournoi;
     }
     //endregion
 }

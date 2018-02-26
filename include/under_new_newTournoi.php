@@ -9,6 +9,7 @@
 include 'utilCompil.php';
 
 $tournoiX = new Tournoi($_POST['nbreJoueurs'], $_POST['nomChamp'], $_POST['dateDebut'],$bdd);
+Tournoi::insererTournoi($tournoiX,$bdd);
 
 /*
 $tournoiX->ajouterJoueur();
