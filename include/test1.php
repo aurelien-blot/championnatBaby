@@ -33,6 +33,11 @@ $tournoi1->creerEquipes($bdd);
 echo("insertEquipe : ok");
 
 
+$Jtest = new JoueurInconnu();
+echo($Jtest->getPrenom());
+$testE= new EquipeInconnue(319969);
+echo($testE->getNomEquipe());
+
 $tournoi1->organiserMatchs($bdd);
 
 

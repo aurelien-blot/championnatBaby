@@ -15,6 +15,7 @@ class Equipe
     private $joueursEquipe;
     private $nomEquipe;
     private $joueur1;
+    private $joueur2;
 
 
 
@@ -36,7 +37,7 @@ class Equipe
     {
         $this->idTournoiEquipe = $idTournoiEquipe;
     }
-    private $joueur2;
+
 
     /**
      * @return mixed
@@ -178,3 +179,5 @@ class Equipe
 
     //endregion
 }
+
+?>
