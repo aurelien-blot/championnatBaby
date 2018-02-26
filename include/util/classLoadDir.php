@@ -11,6 +11,8 @@ function loadClasses(){
     require 'include/class/Equipe.php';
     require 'include/class/Match.php';
     require 'include/class/ConnexionBdd.php';
+    require 'include/class/EquipeInconnue.php';
+    require 'include/class/JoueurInconnu.php';
 }
 
 spl_autoload_register('loadClasses');

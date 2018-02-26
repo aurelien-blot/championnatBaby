@@ -3,12 +3,11 @@
  * Created by PhpStorm.
  * User: Aurélien Blot
  * Date: 26/02/2018
- * Time: 14:29
+ * Time: 14:57
  */
 
-class JoueurInconnu extends Joueur
+class JoueurInconnu
 {
-
     //region Attributs
     private $nom;
     private $prenom;
@@ -101,7 +100,4 @@ class JoueurInconnu extends Joueur
 //region Methods
 
 //endregion
-
-
 }
-?>

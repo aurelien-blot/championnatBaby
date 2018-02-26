@@ -3,12 +3,12 @@
  * Created by PhpStorm.
  * User: Aurélien Blot
  * Date: 26/02/2018
- * Time: 14:22
+ * Time: 14:57
  */
 
-class EquipeInconnue extends Equipe
+class EquipeInconnue
 {
-    //region Attributs
+//region Attributs
     private $idTournoiEquipe;
     private $joueursEquipe;
     private $nomEquipe;
@@ -102,8 +102,4 @@ class EquipeInconnue extends Equipe
 
     //enregion
 
-
-
 }
-
-?>

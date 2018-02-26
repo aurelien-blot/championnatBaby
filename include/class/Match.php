@@ -230,6 +230,24 @@ class Match
         }
         $idDernierMatch->closeCursor();
     }
+    public function insererMatchVide($connexion){
+        $insertMatch = $connexion->prepare('INSERT INTO matchs(id_compet, type_match) VALUES(:id_compet, :type_match)');
+
+        $insertMatch->execute(array(
+            'id_compet' => $this->idCompetMatch,
+            'type_match'=>$this->getTypeMatch()
+        ));
+        $insertMatch->closeCursor();
+
+        $idDernierMatch = $connexion->query('SELECT * FROM matchs ORDER BY id_Match  DESC LIMIT 1');
+        while ($donnee = $idDernierMatch->fetch()) {
+            $this->idMatch = intval($donnee['id_Match']);
+
+        }
+        $idDernierMatch->closeCursor();
+    }
+
+
     public static function findMatch($idMatch, $bdd){
 
         $detailMatch = $bdd->prepare('SELECT * FROM matchs WHERE id_Match =?');
