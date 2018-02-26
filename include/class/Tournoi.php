@@ -248,18 +248,10 @@ class Tournoi
                 if($matchX->getEquipe1() !=null AND $matchX->getEquipe1() !=null){
                     $matchX->insererMatch($bdd);
                 }
-                elseif($matchX->getEquipe1() ==null OR $matchX->getEquipe1() ==null) {
-                    if ($matchX->getEquipe1() == null) {
 
-                        $matchX->setEquipe1(new EquipeInconnue($this->idCompet));
-                    }
-                    if ($matchX->getEquipe2() == null) {
-
-                        $matchX->setEquipe2(new EquipeInconnue($this->idCompet));
-                    }
-                    $matchX->insererMatchVide($bdd);
-                }
+                $matchX->insererMatchVide($bdd);
             }
+
         }
         else if(count($this->listeEquipes)==6){
             echo('RATE');

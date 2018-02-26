@@ -183,7 +183,7 @@ class Joueur
         $this->meilleureperformance = $meilleureperformance;
         $this->defaut = $defaut;
         $this->qualite = $qualite;
-        $this->photo = $photo;
+        $this->photo = 'img/photo_default.png';
         $this->victoireChamp = $victoireChamp;
     }
     //endregion
@@ -217,11 +217,24 @@ public static function findJoueur($idJoueur, $bdd){
 
     while ($donnees =  $detailJoueur->fetch()){
         $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['meilleureperformance'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
-        $joueurX->setIdJoueur($idJoueur);
+        $joueurX->setIdJoueur(intval($idJoueur));
     }
     $detailJoueur->closeCursor();
     return $joueurX;
 
+}
+
+public static function findAllJoueurByNom($bdd){
+    $listerJoueurs = $bdd->query('SELECT * FROM joueurs ORDER BY nom');
+    $listeJoueur=array();
+
+    while ($donnees =  $listerJoueurs->fetch()){
+        $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['meilleureperformance'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
+        $joueurX->setIdJoueur(intval($donnees['id_Joueur']));
+        $listeJoueur[]=$joueurX;
+    }
+    $listerJoueurs->closeCursor();
+    return $listeJoueur;
 }
 //endregion
 

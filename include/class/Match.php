@@ -255,13 +255,14 @@ class Match
         $MatchX=null;
 
         while ($donnees =  $detailMatch->fetch()){
-            $MatchX = new Match($donnees['idCompet'], $donnees['type_match'],$donnees['equipe1'],$donnees['equipe2']);
+            $MatchX = new Match($donnees['id_compet'], $donnees['type_match'],Equipe::findEquipe(intval($donnees['equipe1']),$bdd),Equipe::findEquipe(intval($donnees['equipe2']),$bdd));
             $MatchX->setIdMatch($idMatch);
             $MatchX->setButsEquipe1($donnees['butEquipe1']);
             $MatchX->setButsEquipe2($donnees['butEquipe2']);
             $MatchX->setVainqueurMatch($donnees['vainqueur']);
 
         }
+        $detailMatch->closeCursor();
         return $MatchX;
 
     }

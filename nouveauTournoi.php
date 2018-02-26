@@ -1,6 +1,6 @@
 <?php session_start();
-include 'include/utilCompil.php';
-$listeJoueurs2 = $bdd->query('SELECT * FROM joueurs ORDER BY nom');
+
+include 'utilCompilDir.php';
 ?>
 
 <!doctype html>
@@ -49,22 +49,16 @@ $listeJoueurs2 = $bdd->query('SELECT * FROM joueurs ORDER BY nom');
                     <input type="date" name="dateDebut" required>
                     <p>Joueurs participant au tournoi :</p>
                <?php
+                $listeJoueur=Joueur::findAllJoueurByNom($bdd);
 
-               while($donnees = $listeJoueurs2->fetch()){
-
-                   $detailJoueur['id']= $donnees['id_Joueur'];
-                   $detailJoueur['prenom']= $donnees['prenom'];
-                   $tableauJoueur[]=$detailJoueur;
-
-               }
                for($i =1; $i <= $_GET['nbreJoueurs']; $i++){
                     ?>
                    <label for="joueur<?php echo($i);?>">Joueur <?php echo($i);?> :</label>
                    <select name="joueur<?php echo($i);?>">
                     <?php
-                    foreach ($tableauJoueur as $joueur) {
+                    foreach ($listeJoueur as $joueur) {
                         ?>
-                        <option value="<?php echo($joueur['id']);?>"><?php echo($joueur['prenom']); ?></option>
+                        <option value="<?php echo($joueur->getIdJoueur());?>"><?php echo($joueur->getPrenom()); ?></option>
                         <?php
                     }
                     ?>

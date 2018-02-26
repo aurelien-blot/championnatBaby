@@ -1,220 +1,207 @@
-<?php
-session_start();
-include 'include/connexionBdd.php';
-$listeCompet = $bdd->query('SELECT * FROM competitions ORDER BY dateDebut DESC');
-$matchsCompet = $bdd ->prepare('SELECT * FROM matchs WHERE matchs.id_compet= :id_compet AND matchs.type_match = :type_match');
-$reqJE = $bdd->prepare('SELECT J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_Equipe = ?');
-$detailCompet = $bdd->prepare('SELECT * FROM competitions WHERE competitions.id_competition = ?');
-$detailCompet->execute(array($_GET['modif']));
-$reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueur AS J2id, equipes.id_Equipe, J1.prenom AS J1p, J2.prenom AS J2p, J1.photo AS J1img ,J2.photo AS J2img FROM equipes JOIN joueurs AS J1 ON equipes.joueur1 = J1.id_Joueur JOIN joueurs AS J2 ON equipes.joueur2 = J2.id_Joueur WHERE equipes.id_compet = ?');
+<?php session_start();
 
-function afficherIconeEquipe($donnees, $req ){
+include 'utilCompilDir.php';
+
+function afficherIconeEquipe($idEquipe, $bdd){
+    $equipeY = Equipe::findEquipe($idEquipe, $bdd);
     ?>
     <div class="iconeEquipe">
-        <p>Equipe <?php echo($donnees);?> :</p>
-        <?php
-        //AFFICHAGE DES JOUEURS EQUIPE 1
-        $req->execute(array($donnees));
-        while($donnees3 = $req->fetch()){
-            ?>
-            <div class="iconeJoueurs">
-                <div class="iconeJoueur">
-                    <a href="joueurs.php?idJ=<?php echo($donnees3['J1id']);?>"><img src="<?php echo($donnees3['J1img']);?>" /></a>
-                    <p><?php echo($donnees3['J1p']);?></p>
-                </div>
-                <div class="iconeJoueur">
-                    <a href="joueurs.php?idJ=<?php echo($donnees3['J2id']);?>"><img src="<?php echo($donnees3['J2img']);?>" /></a>
-                    <p><?php echo($donnees3['J2p']);?></p>
-                </div>
-            </div>
+        <p>Equipe <?php echo($equipeY->getNomEquipe());?> :</p>
+        <div class="iconeJoueurs">
             <?php
-        }
-        $req->closeCursor();?>
+            foreach($equipeY->getJoueursEquipe() as $joueurY) {
+                ?>
+                <div class="iconeJoueur">
+                    <a href="joueurs.php?idJ=<?php echo($joueurY->getIdJoueur()); ?>"><img
+                                src="<?php echo($joueurY->getPhoto()); ?>"/></a>
+                    <p><?php echo($joueurY->getPrenom()); ?></p>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
     </div>
     <?php
 }
 
-function afficherForm($donnees){
-    ?>
-    <form action="include/under_modifChamp.php?modifM=<?php echo($donnees['id_Match']);?>" method="post">
-        <label for="vainq">Vainqueur :</label>
-        <select name="vainq">
-            <option  value="<?php echo($donnees['equipe1']);?>">Equipe <?php echo($donnees['equipe1']);?> :</option>
-            <option  value="<?php echo($donnees['equipe2']);?>">Equipe <?php echo($donnees['equipe2']);?> :</option>
 
-        </select>
-        <label for="butEquipe1">Equipe <?php echo($donnees['equipe1']);?> :</label>
-        <select name="butEquipe1">
-            <?php
-            for($i=0;$i<=15 ;$i++){
-                ?>
-                <option  value="<?php echo($i);?>"><?php echo($i);?></option>
-                <?php
-            }
-            ?>
-        </select>
-        <label for="butEquipe2">Equipe <?php echo($donnees['equipe2']);?> :</label>
-        <select name="butEquipe2">
-            <?php
-            for($i=0;$i<=15;$i++){
-                ?>
-                <option  value="<?php echo($i);?>"><?php echo($i);?></option>
-                <?php
-            }
-            ?>
-        </select>
-        <input type="submit" value="Valider">
-    </form>
-    <?php
+function afficherLienListeTournoi($listeTournoi){
+    foreach ($listeTournoi as $tournoiX){
+        ?>
+        <a href="championnat.php?idC=<?php echo $tournoiX->getIdCompet(); ?>"><?php echo$tournoiX->getNomTournoi(); ?></a>
+        <p id="dateDebut">commencée le <?php echo $tournoiX->getDateDebut(); ?></p>
+
+        <?php
+    }
 }
 
+function afficherForm($idMatchX, $bdd){
+
+    $matchX = Match::findMatch(intval($idMatchX), $bdd);
+    ?>
+        <form action="include/under_modifChamp.php?modifM=<?php echo($matchX->getIdMatch()); ?>" method="post">
+
+            <label for="vainq">Vainqueur :</label>
+            <select name="vainq">
+                <option value="<?php echo($matchX->getEquipe1()->getIdEquipe()); ?>">
+                    <?php echo($matchX->getEquipe1()->getNomEquipe()); ?> :
+                </option>
+                <option value="<?php echo($matchX->getEquipe1()->getIdEquipe()); ?>">
+                    <?php echo($matchX->getEquipe2()->getNomEquipe()); ?> :
+                </option>
+
+            </select>
+
+            <label for="butEquipe1">Equipe <?php echo($matchX->getEquipe1()->getNomEquipe()); ?> :</label>
+            <select name="butEquipe1">
+                <?php
+                for ($i = 0; $i <= 15; $i++) {
+                    ?>
+                    <option value="<?php echo($i); ?>"><?php echo($i); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+            <label for="butEquipe2">Equipe <?php echo($matchX->getEquipe2()->getNomEquipe()); ?> :</label>
+            <select name="butEquipe2">
+                <?php
+                for ($i = 0; $i <= 15; $i++) {
+                    ?>
+                    <option value="<?php echo($i); ?>"><?php echo($i); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+            <input type="submit" value="Valider">
+        </form>
+    <?php
+}
 
 ?>
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Modification de Championnat</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-    </head>
-    <body>
-        <header>
+<head>
+    <meta charset="UTF-8">
+    <title>Modification de Championnat</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+<header>
 
-			<div class="wrap">
-            	<?php include'include/banniere.php' ?>
-				<?php include'include/menuPrincipal.php' ?>
-			</div>
-        </header>
+    <div class="wrap">
+        <?php include'include/banniere.php' ?>
+        <?php include'include/menuPrincipal.php' ?>
+    </div>
+</header>
 
-        <div id="content">
-			<div class="wrap">
-            <?php
-            while($donnees = $detailCompet->fetch()) {
-                ?>
-                <h1>Modif du championnat : <?php echo($donnees['nomChamp']); ?></h1>
-                <p>A commencé le : <?php echo($donnees['dateDebut']); ?></p><?php
-            }
+<div id="content">
+    <div class="wrap">
+                <?php
+
+            $tournoi1 =Tournoi::findTournoi($_GET['modif'],$bdd);
+
             ?>
+            <h1><?php echo($tournoi1->getNomTournoi());?></h1>
+            <p>A commencé le : <?php echo($tournoi1->getDateDebut());?></p>
+            <?php
+            //SI LE CHAMPIONNAT EST TERMINE ON INDIQUERA LE VAINQUEUR !
+
+            $listeMatchCompet = Match::listerMatchFromTournoi($_GET['modif'], "finale", $bdd);
+
+
+            if($tournoi1->getFini()==1) {
+                ?>
+                <h3>VAINQUEUR : <?php echo(Equipe::findEquipe(($listeMatchCompet[0]->getVainqueurMatch()),$bdd)->getNomEquipe());?></h3>
+                <?php
+            }
+            // ON DEBUTE LE SCHEMA DU CHAMPIONNAT PAR LE DIV competX
+            ?>
+
             <div class="competX">
                 <?php
-                $matchsCompet->execute(array(
-                    'id_compet'=> $_GET['modif'],
-                    'type_match'=> "finale"
-                ));
-                while ($donnees2 = $matchsCompet->fetch()){
+
+                foreach ($listeMatchCompet as $matchFinale){
                     ?>
                     <div class="iconeMatch finale">
                         <?php
 
-                        if(isset($donnees2['vainqueur'])){
+                        if(($matchFinale->getVainqueurMatch())!=null){
+                            $equipeVainqF = Equipe::findEquipe(intval($matchFinale->getVainqueurMatch()),$bdd);
                             ?>
-                            <p>Vainqueur : <?php echo($donnees2['vainqueur']) ?></p>
-                            <p>Score :<?php echo($donnees2['butEquipe1']) ?> / <?php echo($donnees2['butEquipe2']) ?></p>
-                            <?php
-                        }
-                        ?>
-                        <?php
-                        if(isset ($donnees2['equipe1']) AND  isset ($donnees2['equipe2'])) {
-                            afficherForm($donnees2);
-                        }
-                        if(isset ($donnees2['equipe1'])) {
-                            afficherIconeEquipe($donnees2['equipe1'], $reqJE);
-                            if(isset ($donnees2['equipe2'])) {
-                                afficherIconeEquipe($donnees2['equipe2'], $reqJE);
-                            }
-                            else{
-                                ?>
-                                <div class="iconeEquipe">
-                                    <p>Equipe : </p>
-                                </div>
-                                <?php
 
-                            }
+                            <p>Vainqueur : <?php echo($equipeVainqF->getNomEquipe()) ?></p>
+                            <p>Score :<?php echo $matchFinale->getButsEquipe1() ?> / <?php echo$matchFinale->getButsEquipe2() ?></p>
+                            <?php
+
                         }
                         else{
-                            ?>
-                            <div class="iconeEquipe">
-                                <p>Equipe : </p>
-                            </div>
-                            <div class="iconeEquipe">
-                                <p>Equipe : </p>
-                            </div>
-                            <?php
+
+                            afficherForm(intval($matchFinale->getIdMatch()), $bdd);
 
                         }
-
+                        afficherIconeEquipe($matchFinale->getEquipe1(), $bdd );
+                        afficherIconeEquipe($matchFinale->getEquipe2(), $bdd );
 
                         ?>
                     </div>
                     <?php
                 }
-                $matchsCompet->closeCursor();
                 ?>
-                <div class="demi">
-                <?php
-                // ON PREND TOUS LES MATCHS DE LA COMPET ET DE TYPE DEMI FINALE
-                $matchsCompet->execute(array(
-                'id_compet'=> $_GET['modif'],
-                'type_match'=> "demi"
-                ));
-                while ($donnees2 = $matchsCompet->fetch()){
-                    ?>
-                    <div class="iconeMatch">
-                        <?php
-                    afficherForm($donnees2);
-                    ?>
-                        <p>score : <span></span></p>
 
+                <div class="demi">
+                    <?php
+                    // ON PREND TOUS LES MATCHS DE LA COMPET ET DE TYPE DEMI FINALE
+                    $listeDemiFinaleTournoi= Match::listerMatchFromTournoi($_GET['modif'], 'demi', $bdd);
+
+                    foreach ($listeDemiFinaleTournoi as $demiFinale){
+                        ?>
+                        <div class="iconeMatch">
                             <?php
-                            if(isset($donnees2['vainqueur'])){
+                            //afficherForm($demiFinale);
+                            if(($demiFinale->getVainqueurMatch()!=null)){
+                                $equipeVainq = Equipe::findEquipe(intval($demiFinale->getVainqueurMatch()),$bdd);
                                 ?>
-                                <p>Vainqueur : <?php echo($donnees2['vainqueur']) ?></p>
-                                <p>Score :<?php echo($donnees2['butEquipe1']) ?> / <?php echo($donnees2['butEquipe2']) ?></p>
+                                <p>Vainqueur : <?php echo($equipeVainq->getNomEquipe()) ?></p>
+                                <p>Score :<?php echo($demiFinale->getButsEquipe1()) ?> / <?php echo($demiFinale->getButsEquipe2()) ?></p>
                                 <?php
+                            }
+                            else{
+                                afficherForm(intval($demiFinale->getIdMatch()), $bdd);
                             }
                             ?>
                             <?php
-                            afficherIconeEquipe($donnees2['equipe1'], $reqJE );
-                            afficherIconeEquipe($donnees2['equipe2'], $reqJE );
+                            afficherIconeEquipe($demiFinale->getEquipe1(), $bdd );
+                            afficherIconeEquipe($demiFinale->getEquipe2(), $bdd );
                             ?>
 
-                    </div>
-                    <?php
-                }
-                ?>
-    </div>
-    <div class="iconeEquipes">
-        <?php
-        $reqEquipes->execute(array($_GET['modif']));
-        while($donnees4 = $reqEquipes->fetch()){
-            ?>
-            <div class="iconeEquipe">
-                <p>Equipe <?php echo($donnees4['id_Equipe']);?></p>
-                <div class="iconeJoueurs">
-                    <div class="iconeJoueur">
-                        <img src="<?php echo($donnees4['J1img']);?>" />
-                        <p><?php echo($donnees4['J1p']);?></p>
-                    </div>
-                    <div class="iconeJoueur">
-                        <img src="<?php echo($donnees4['J2img']);?>" />
-                        <p><?php echo($donnees4['J2p']);?></p>
-                    </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
+                <div class="iconeEquipes">
+                    <?php
+
+                    $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['modif']), $bdd)->listerEquipesFromTournoi($bdd);
+                    foreach ($listeEquipeTournoi as $equipeZ){
+                        afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
+                    }
+                    ?>
+                </div>
+
+
             </div>
+
+
             <?php
-        }
         ?>
+
     </div>
-
 </div>
-
-			</div>
-        </div>
-        <footer>
-			<div class="wrap">
-            	<?php include'include/footer.php' ?>
-			</div>
-
-        </footer>
-    </body>
+<footer>
+    <div class="wrap">
+        <?php include'include/footer.php' ?>
+    </div>
+</footer>
+</body>
 </html>

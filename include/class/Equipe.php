@@ -128,7 +128,7 @@ class Equipe
      */
     //endregion
     //region Constructeurs
-    public function __construct($idTournoiEquipe,Joueur $joueur1, Joueur $joueur2)
+    public function __construct($idTournoiEquipe, $joueur1, $joueur2)
     {
         $this->idTournoiEquipe=$idTournoiEquipe;
         $this->joueursEquipe = array();
@@ -170,9 +170,10 @@ class Equipe
         $equipeX=null;
 
         while ($donnees =  $detailEquipe->fetch()){
-            $equipeX = new Equipe($donnees['joueur1'],$donnees['joueur2']);
+            $equipeX = new Equipe(intval($donnees['id_compet']), (Joueur::findJoueur(intval($donnees['joueur1']), $bdd)), (Joueur::findJoueur(intval($donnees['joueur2']), $bdd)));
             $equipeX->setIdEquipe($idEquipe);
         }
+        $detailEquipe->closeCursor();
         return $equipeX;
 
     }
