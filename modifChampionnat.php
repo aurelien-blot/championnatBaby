@@ -2,43 +2,13 @@
 
 include 'utilCompilDir.php';
 
-function afficherIconeEquipe($idEquipe, $bdd){
-    $equipeY = Equipe::findEquipe($idEquipe, $bdd);
-    ?>
-    <div class="iconeEquipe">
-        <p>Equipe <?php echo($equipeY->getNomEquipe());?> :</p>
-        <div class="iconeJoueurs">
-            <?php
-            foreach($equipeY->getJoueursEquipe() as $joueurY) {
-                ?>
-                <div class="iconeJoueur">
-                    <a href="joueurs.php?idJ=<?php echo($joueurY->getIdJoueur()); ?>"><img
-                                src="<?php echo($joueurY->getPhoto()); ?>"/></a>
-                    <p><?php echo($joueurY->getPrenom()); ?></p>
-                </div>
-                <?php
-            }
-            ?>
-        </div>
-    </div>
-    <?php
-}
-
-
-function afficherLienListeTournoi($listeTournoi){
-    foreach ($listeTournoi as $tournoiX){
-        ?>
-        <a href="championnat.php?idC=<?php echo $tournoiX->getIdCompet(); ?>"><?php echo$tournoiX->getNomTournoi(); ?></a>
-        <p id="dateDebut">commencée le <?php echo $tournoiX->getDateDebut(); ?></p>
-
-        <?php
-    }
-}
+include 'include/util/functionChampShared.php';
 
 function afficherForm($idMatchX, $bdd){
 
     $matchX = Match::findMatch(intval($idMatchX), $bdd);
-    ?>
+    if($matchX->getEquipe1()!=null AND $matchX->getEquipe2()!=null) {
+        ?>
         <form action="include/under_modifChamp.php?modifM=<?php echo($matchX->getIdMatch()); ?>" method="post">
 
             <label for="vainq">Vainqueur :</label>
@@ -74,7 +44,8 @@ function afficherForm($idMatchX, $bdd){
             </select>
             <input type="submit" value="Valider">
         </form>
-    <?php
+        <?php
+    }
 }
 
 ?>
@@ -153,7 +124,8 @@ function afficherForm($idMatchX, $bdd){
                     // ON PREND TOUS LES MATCHS DE LA COMPET ET DE TYPE DEMI FINALE
                     $listeDemiFinaleTournoi= Match::listerMatchFromTournoi($_GET['modif'], 'demi', $bdd);
 
-                    foreach ($listeDemiFinaleTournoi as $demiFinale){
+                    for($i=0;$i<2;$i++){
+                        $demiFinale= $listeDemiFinaleTournoi[$i];
                         ?>
                         <div class="iconeMatch">
                             <?php
@@ -170,8 +142,13 @@ function afficherForm($idMatchX, $bdd){
                             }
                             ?>
                             <?php
-                            afficherIconeEquipe($demiFinale->getEquipe1(), $bdd );
-                            afficherIconeEquipe($demiFinale->getEquipe2(), $bdd );
+                            if($i==0){
+                                afficherIconeEquipe($demiFinale->getEquipe1(), $bdd );
+                            }
+                            if($i==1){
+                                afficherIconeEquipe($demiFinale->getEquipe2(), $bdd );
+                            }
+
                             ?>
 
                         </div>
