@@ -38,8 +38,8 @@ $tournoiX->ajouterJoueur($j5);
 $tournoiX->ajouterJoueur($j6);
 $tournoiX->ajouterJoueur($j7);
 $tournoiX->ajouterJoueur($j8);
-$tournoiX->ajouterJoueur($j9);
-$tournoiX->ajouterJoueur($j10);
+//$tournoiX->ajouterJoueur($j9);
+//$tournoiX->ajouterJoueur($j10);
 
 $tournoiX->creerEquipes($bdd);
 

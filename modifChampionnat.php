@@ -270,15 +270,6 @@ function afficherForm($idMatchX, $bdd){
                                     ?>
                                 </table>
                             </div>
-                            <div class="iconeEquipes">
-                                <?php
-
-                                $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['modif']), $bdd)->listerEquipesFromTournoi($bdd);
-                                foreach ($listeEquipeTournoi as $equipeZ) {
-                                    afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
-                                }
-                                ?>
-                            </div>
                             <?php
                         }
                         ?>

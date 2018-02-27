@@ -215,6 +215,7 @@ include 'include/util/functionChampShared.php';
                                     <th>Equipe B:</th>
                                     <th>Buts A :</th>
                                     <th>Buts B :</th>
+                                    <th>Vainqueur :</th>
                                 </tr>
 
                             <?php
@@ -227,6 +228,7 @@ include 'include/util/functionChampShared.php';
                                     <td><?php echo(Equipe::findEquipe($pouleX->getEquipe2(),$bdd)->getNomEquipe());?></td>
                                     <td><?php echo($pouleX->getButsEquipe1());?></td>
                                     <td><?php echo($pouleX->getButsEquipe2());?></td>
+                                    <td><?php if($pouleX->getVainqueurMatch()!=null){echo((Equipe::findEquipe($pouleX->getEquipe1(), $bdd)->getNomEquipe()));}?></td>
                                 </tr>
                                 <?php
                             }

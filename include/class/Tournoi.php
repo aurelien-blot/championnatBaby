@@ -384,6 +384,84 @@ class Tournoi
         return $listEquipesFromTournoi;
     }
     //endregion
-}
 
+    public static function misAJourMatchFinale($idTournoi, $vainqMatch, $bdd){
+        $matchFinale= Match::listerMatchByType('finale', $idTournoi, $bdd);
+        foreach ($matchFinale as $matchZ){
+            //on insere les donnnees match
+
+            if($matchZ->getEquipe1()==null){
+                $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+                $insEquipe1->execute(array(
+                    'equipe1' => $vainqMatch,
+                    'id_Match' => $matchZ->getIdMatch()
+                ));
+                $insEquipe1->closeCursor();
+            }
+            elseif($matchZ->getEquipe2()==null){
+                $insEquipe2 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
+                $insEquipe2->execute(array(
+                    'equipe2' => $vainqMatch,
+                    'id_Match' => $matchZ->getIdMatch()
+                ));
+                $insEquipe2->closeCursor();
+            }
+        }
+
+    }
+
+    public static function misAJourMatchPoule($idTournoi, $vainqueur, $bdd){
+
+        $reqPoule = $bdd->prepare('SELECT * FROM equipes WHERE id_Equipe =?');
+        $reqPoule->execute(array($vainqueur));
+
+        while($donnees = $reqPoule->fetch()) {
+            $pointsPoules = $donnees['pointsPoule']+1;
+            $updPointsPoule = $bdd->prepare('UPDATE equipes SET pointsPoule = :pointsPoule WHERE id_Equipe = :id_Equipe');
+            $updPointsPoule->execute(array(
+                'id_Equipe'=>$vainqueur,
+                'pointsPoule'=>$pointsPoules
+            ));
+        }
+        $reqPoule->closeCursor();
+
+        $listeMatchsPoules= Match::listerMatchByType('poule',$idTournoi,$bdd);
+        $pouleTerminee =true;
+        foreach($listeMatchsPoules as $matchP){
+            if($matchP->getVainqueurMatch()==null){
+                $pouleTerminee =false;
+            }
+        }
+        if($pouleTerminee){
+            $premiereEquipe= array();
+            $reqEquipesPoules=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND pointsPoule = (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
+            $reqEquipesPoules= $bdd->execute(array(
+                'id_compet'=>$idTournoi,
+                'id_compet2'=>$idTournoi
+            ));
+            while($donnees2=$reqEquipesPoules->fetch()){
+                $premiereEquipe[]= Equipe::findEquipe(($donnees2['id_Equipe']),$bdd);
+            }
+            $reqEquipesPoules->closeCursor();
+
+            if(count($premiereEquipe)>1){
+
+            }
+
+            $idVainqueurPoule = $premiereEquipe[0]->getIdEquipe();
+            $matchFinale= Match::listerMatchByType('finale',$idTournoi,$bdd);
+            $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+            $insEquipe1->execute(array(
+                'equipe1' => $idVainqueurPoule,
+                'id_Match' => $matchFinale->getIdMatch()
+            ));
+            $insEquipe1->closeCursor();
+            //RESTE A INSERER LES EQUIPES EN MATCH DE DEMI
+
+            //$this->listeMatchs[10];
+            //$this->listeMatchs[11];
+
+        }
+    }
+}
 ?>

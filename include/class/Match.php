@@ -286,6 +286,28 @@ class Match
         $matchsCompet->closeCursor();
         return $listMatchFromTournoi;
     }
+
+    public static function listerMatchByType($typeMatch, $idTournoi, $bdd)
+    {
+
+        $listMatchs = $bdd->prepare('SELECT * FROM matchs WHERE id_compet = :id_compet AND type_match= :type_match');
+        $listMatchs->execute(array(
+            'id_compet' => $idTournoi,
+            'type_match' => $typeMatch
+        ));
+        $listeMatchByType = array();
+
+        while ($donnees = $listMatchs->fetch()) {
+            $MatchX = new Match($donnees['id_compet'], $donnees['type_match'], Equipe::findEquipe(intval($donnees['equipe1']), $bdd), Equipe::findEquipe(intval($donnees['equipe2']), $bdd));
+            $MatchX->setIdMatch($donnees['id_Match']);
+            $MatchX->setButsEquipe1($donnees['butEquipe1']);
+            $MatchX->setButsEquipe2($donnees['butEquipe2']);
+            $MatchX->setVainqueurMatch($donnees['vainqueur']);
+            $listeMatchByType[] = $MatchX;
+        }
+        $listMatchs->closeCursor();
+        return $listeMatchByType;
+    }
 //endregion
 
 }
