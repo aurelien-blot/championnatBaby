@@ -11,8 +11,9 @@ function afficherLienListeTournoi($listeTournoi){
 }
 
 function afficherIconeEquipe($idEquipe, $bdd){
-    $equipeY = Equipe::findEquipe($idEquipe, $bdd);
-    if($equipeY !==null) {
+
+    if($idEquipe !=null) {
+        $equipeY = Equipe::findEquipe($idEquipe, $bdd);
         ?>
         <div class="iconeEquipe">
             <p>Equipe <?php echo($equipeY->getNomEquipe()); ?> :</p>

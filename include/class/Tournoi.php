@@ -248,8 +248,11 @@ class Tournoi
                 if($matchX->getEquipe1() !=null AND $matchX->getEquipe1() !=null){
                     $matchX->insererMatch($bdd);
                 }
+                else{
+                    $matchX->insererMatchVide($bdd);
+                }
 
-                $matchX->insererMatchVide($bdd);
+
             }
 
         }
@@ -298,6 +301,7 @@ class Tournoi
         while ($donnees =  $detailTournoi->fetch()){
             $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
             $tournoiX->setIdCompet($idTournoi);
+            $tournoiX->setFini($donnees['terminee']);
         }
         $detailTournoi->closeCursor();
         return $tournoiX;
@@ -310,6 +314,7 @@ class Tournoi
         while ($donnees =  $listeCompet->fetch()){
             $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
             $tournoiX->setIdCompet($donnees['id_competition']);
+            $tournoiX->setFini($donnees['terminee']);
             $listTournoiAll[]=$tournoiX;
         }
         $listeCompet->closeCursor();
@@ -322,6 +327,7 @@ class Tournoi
         while ($donnees =  $listeCompet->fetch()){
             $tournoiX = new Tournoi($donnees['nomChamp'],$donnees['nbreJoueurs'],$donnees['dateDebut'],$bdd);
             $tournoiX->setIdCompet($donnees['id_competition']);
+            $tournoiX->setFini($donnees['terminee']);
             $listTournoiEnCours[]=$tournoiX;
         }
         $listeCompet->closeCursor();

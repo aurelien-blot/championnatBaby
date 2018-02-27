@@ -3,7 +3,7 @@ include 'utilCompil.php';
 
 $nbreJoueurs = intval($_GET['nbreJoueurs']);
 
-$tournoiX = new Tournoi($_POST['nomChamp'],intval($_POST['nbreJoueurs']), $_POST['dateDebut'],$bdd);
+$tournoiX = new Tournoi($_POST['nomChamp'],$nbreJoueurs, $_POST['dateDebut'],$bdd);
 $tournoiX->insererTournoi($bdd);
 
 $reqIdC = $bdd->prepare('SELECT * FROM competitions WHERE nomChamp = ?');

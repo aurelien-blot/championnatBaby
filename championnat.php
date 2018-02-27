@@ -1,8 +1,8 @@
 <?php session_start();
 
 include 'utilCompilDir.php';
-include 'include/util/functionChampShared.php';
 
+include 'include/util/functionChampShared.php';
 ?>
 <!doctype html>
 <html>
@@ -63,9 +63,11 @@ include 'include/util/functionChampShared.php';
 
 
                     if($tournoi1->getFini()==1) {
+                        $equipeWin = Equipe::findEquipe(($listeMatchCompet[0]->getVainqueurMatch()),$bdd);
                         ?>
-                        <h3>VAINQUEUR : <?php echo(Equipe::findEquipe(($listeMatchCompet[0]->getVainqueurMatch()),$bdd)->getNomEquipe());?></h3>
+                        <h3>VAINQUEUR : <?php echo($equipeWin->getNomEquipe());?></h3>
                         <?php
+                        afficherIconeEquipe($equipeWin->getIdEquipe(), $bdd );
                     }
                     // ON DEBUTE LE SCHEMA DU CHAMPIONNAT PAR LE DIV competX
                     ?>
@@ -79,8 +81,8 @@ include 'include/util/functionChampShared.php';
                                     <?php
                                 if(($matchFinale->getVainqueurMatch())!=null){
                                     ?>
-                                    <p>Vainqueur : <?php echo($matchFinale->getVainqueurMatch()) ?></p>
-                                    <p>Score :<?php echo $matchFinale->getButEquipe1() ?> / <?php echo$matchFinale->getButEquipe2() ?></p>
+                                    <p>Vainqueur : <?php echo((Equipe::findEquipe($matchFinale->getVainqueurMatch(),$bdd)->getNomEquipe())); ?></p>
+                                    <p>Score :<?php echo ($matchFinale->getButsEquipe1()); ?> / <?php echo$matchFinale->getButsEquipe2(); ?></p>
                                     <?php
                                     }
                                 afficherIconeEquipe($matchFinale->getEquipe1(), $bdd );
@@ -108,8 +110,7 @@ include 'include/util/functionChampShared.php';
                                     <p>Score :<?php echo($demiFinale->getButsEquipe1()) ?> / <?php echo($demiFinale->getButsEquipe2()) ?></p>
                                     <?php
                                 }
-                                ?>
-                                <?php
+
                                 afficherIconeEquipe($demiFinale->getEquipe1(), $bdd );
                                 afficherIconeEquipe($demiFinale->getEquipe2(), $bdd );
                                ?>

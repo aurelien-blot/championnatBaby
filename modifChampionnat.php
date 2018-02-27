@@ -16,7 +16,7 @@ function afficherForm($idMatchX, $bdd){
                 <option value="<?php echo($matchX->getEquipe1()->getIdEquipe()); ?>">
                     <?php echo($matchX->getEquipe1()->getNomEquipe()); ?> :
                 </option>
-                <option value="<?php echo($matchX->getEquipe1()->getIdEquipe()); ?>">
+                <option value="<?php echo($matchX->getEquipe2()->getIdEquipe()); ?>">
                     <?php echo($matchX->getEquipe2()->getNomEquipe()); ?> :
                 </option>
 
@@ -124,8 +124,7 @@ function afficherForm($idMatchX, $bdd){
                     // ON PREND TOUS LES MATCHS DE LA COMPET ET DE TYPE DEMI FINALE
                     $listeDemiFinaleTournoi= Match::listerMatchFromTournoi($_GET['modif'], 'demi', $bdd);
 
-                    for($i=0;$i<2;$i++){
-                        $demiFinale= $listeDemiFinaleTournoi[$i];
+                    foreach ($listeDemiFinaleTournoi as $demiFinale){
                         ?>
                         <div class="iconeMatch">
                             <?php
@@ -142,13 +141,8 @@ function afficherForm($idMatchX, $bdd){
                             }
                             ?>
                             <?php
-                            if($i==0){
-                                afficherIconeEquipe($demiFinale->getEquipe1(), $bdd );
-                            }
-                            if($i==1){
-                                afficherIconeEquipe($demiFinale->getEquipe2(), $bdd );
-                            }
-
+                            afficherIconeEquipe($demiFinale->getEquipe1(), $bdd );
+                            afficherIconeEquipe($demiFinale->getEquipe2(), $bdd );
                             ?>
 
                         </div>

@@ -48,6 +48,24 @@ while($donnees2 = $reqIdCompetM->fetch()) {
 
 $reqIdCompetM->closeCursor();
 
+$reqFinaleTerminee=$bdd->prepare('SELECT * FROM competitions JOIN matchs ON competitions.id_competition = matchs.id_compet WHERE id_compet =? ');
+$reqFinaleTerminee->execute(array($idCompet));
+
+while($donnees3=$reqFinaleTerminee->fetch()){
+    if($donnees3['type_match']=="finale"){
+        if($donnees3['vainqueur']!=null){
+            $reqCompetFinie = $bdd->prepare('UPDATE competitions SET terminee= :terminee WHERE id_competition = :id_competition');
+            $reqCompetFinie->execute(array(
+               'id_competition'=>$idCompet,
+               'terminee'=>1
+            ));
+        }
+    }
+
+}
+//$reqFinaleTerminee=$bdd->prepare('UPDATE competitions SET terminee= :terminee WHERE id_competition = :id_competition');
+
+
 
 //echo("ca marche ?");
 header('location:../championnat.php?idC='.$idCompet);
