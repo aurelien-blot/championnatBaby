@@ -16,11 +16,25 @@ class Equipe
     private $nomEquipe;
     private $joueur1;
     private $joueur2;
-
-
+    private $pointsPoule;
 
     //endregion
     //region Getters/Setters
+    /**
+     * @return int
+     */
+    public function getPointsPoule()
+    {
+        return $this->pointsPoule;
+    }
+
+    /**
+     * @param int $pointsPoule
+     */
+    public function setPointsPoule($pointsPoule)
+    {
+        $this->pointsPoule = $pointsPoule;
+    }
 
     /**
      * @return mixed
@@ -136,6 +150,7 @@ class Equipe
         $this->joueursEquipe[]= $joueur2;
         $this->joueur1 = $joueur1;
         $this->joueur2 = $joueur2;
+        $this->pointsPoule=0;
         $this->nomEquipe= ($joueur1->getPrenom().' - '.$joueur2->getPrenom());
 
 
@@ -172,6 +187,7 @@ class Equipe
         while ($donnees =  $detailEquipe->fetch()){
             $equipeX = new Equipe(intval($donnees['id_compet']), (Joueur::findJoueur(intval($donnees['joueur1']), $bdd)), (Joueur::findJoueur(intval($donnees['joueur2']), $bdd)));
             $equipeX->setIdEquipe($idEquipe);
+            $equipeX->setPointsPoule($donnees['pointsPoule']);
         }
         $detailEquipe->closeCursor();
         return $equipeX;

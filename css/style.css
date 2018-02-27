@@ -66,4 +66,19 @@ a.banniere{
 .iconeEquipes{
 	display: flex;
 	justify-content: space-between;
+
+
+}
+
+#tableauPoules{
+	width: 70%;
+	border-collapse: collapse;
+	margin: auto;
+	text-align: center;
+	margin-bottom: 50px;
+
+}
+#tableauPoules th,td{
+	border: black 1px solid;
+	height: 25px;
 }

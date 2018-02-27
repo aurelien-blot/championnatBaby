@@ -256,8 +256,43 @@ class Tournoi
             }
 
         }
-        else if(count($this->listeEquipes)==6){
-            echo('RATE');
+        else if(count($this->listeEquipes)==5){
+            $match1=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[1]);
+            $match2=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[2]);
+            $match3=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[3]);
+            $match4=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[4]);
+            $match5=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[2]);
+            $match6=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[3]);
+            $match7=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[4]);
+            $match8=  new Match($this->idCompet,'poule', $this->listeEquipes[2], $this->listeEquipes[3]);
+            $match9=  new Match($this->idCompet,'poule', $this->listeEquipes[2], $this->listeEquipes[4]);
+            $match10=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[4]);
+            $match11=  new Match($this->idCompet,'demi', null, null);
+            $match12=  new Match($this->idCompet,'demi',null, null);
+            $match13=  new Match($this->idCompet,'fausseFinale',null, null);
+            $match14=  new Match($this->idCompet,'finale',null, null);
+            $this->listeMatchs[]=$match1;
+            $this->listeMatchs[]=$match2;
+            $this->listeMatchs[]=$match3;
+            $this->listeMatchs[]=$match4;
+            $this->listeMatchs[]=$match5;
+            $this->listeMatchs[]=$match6;
+            $this->listeMatchs[]=$match7;
+            $this->listeMatchs[]=$match8;
+            $this->listeMatchs[]=$match9;
+            $this->listeMatchs[]=$match10;
+            $this->listeMatchs[]=$match11;
+            $this->listeMatchs[]=$match12;
+            $this->listeMatchs[]=$match13;
+            $this->listeMatchs[]=$match14;
+
+            foreach ($this->listeMatchs as $matchX) {
+                if ($matchX->getEquipe1() != null AND $matchX->getEquipe1() != null) {
+                    $matchX->insererMatch($bdd);
+                } else {
+                    $matchX->insererMatchVide($bdd);
+                }
+            }
         }
     }
 
@@ -342,6 +377,7 @@ class Tournoi
         while ($donnees =  $listeEquipes->fetch()){
             $equipeX = new Equipe($donnees['id_compet'],Joueur::findJoueur($donnees['joueur1'], $bdd),Joueur::findJoueur($donnees['joueur2'], $bdd),$bdd);
             $equipeX->setIdEquipe($donnees['id_Equipe']);
+            $equipeX->setPointsPoule($donnees['pointsPoule']);
             $listEquipesFromTournoi[]=$equipeX;
         }
         $listeEquipes->closeCursor();
