@@ -36,7 +36,7 @@ if(isset($_GET['idJ'])){
             while ($donnees = $listeJoueurs->fetch()) {
                 ?>
                 <div class="liendetailJoueur">
-                <a href="joueurs.php?idJ=<?php echo $donnees['id_Joueur']; ?>"><img id="photoJoueur"
+                <a href="joueurs.php?idJ=<?php echo $donnees['id_Joueur']; ?>"><img class="photoJoueur"
                                                                                     src="<?php echo $donnees['photo']; ?>"></a>
                 <p id="nomJoueur"><?php echo $donnees['surnom']; ?></p>
                 </div>
@@ -47,7 +47,7 @@ if(isset($_GET['idJ'])){
             while ($donnees =  $detailJoueur->fetch()){
                 ?>
                 <h2 id="surnomJoueur"><?php echo $donnees['surnom']; ?></h2>
-                <img src="<?php echo $donnees['photo']; ?>">
+                <img class="imgDetailJoueurs" src="<?php echo $donnees['photo']; ?>">
                 <h3 id="nomCompletJoueur"><?php echo $donnees['nom']; ?> <?php echo $donnees['prenom']; ?></h3>
                 <h3>Championnats remportés : <?php echo $donnees['victoireChamp']; ?></h3>
                 <p>Qualité : <?php echo $donnees['qualite']; ?></p>

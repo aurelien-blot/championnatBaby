@@ -1,0 +1,120 @@
+-- phpMyAdmin SQL Dump
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  mer. 28 fév. 2018 à 10:38
+-- Version du serveur :  5.7.19
+-- Version de PHP :  7.1.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données :  `championnatbaby`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `competitions`
+--
+
+DROP TABLE IF EXISTS `competitions`;
+CREATE TABLE IF NOT EXISTS `competitions` (
+  `id_competition` int(11) NOT NULL AUTO_INCREMENT,
+  `nomChamp` varchar(25) DEFAULT NULL,
+  `nbreJoueurs` int(25) NOT NULL,
+  `terminee` tinyint(1) NOT NULL DEFAULT '0',
+  `dateDebut` date DEFAULT NULL,
+  PRIMARY KEY (`id_competition`)
+) ENGINE=InnoDB AUTO_INCREMENT=320039 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `equipes`
+--
+
+DROP TABLE IF EXISTS `equipes`;
+CREATE TABLE IF NOT EXISTS `equipes` (
+  `id_Equipe` int(11) NOT NULL AUTO_INCREMENT,
+  `joueur1` int(11) NOT NULL,
+  `joueur2` int(11) NOT NULL,
+  `id_compet` int(11) NOT NULL,
+  `pointsPoule` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_Equipe`),
+  KEY `fk_joueur1` (`joueur1`),
+  KEY `fk_joueur2` (`joueur2`),
+  KEY `FK_EquipeCompet` (`id_compet`)
+) ENGINE=InnoDB AUTO_INCREMENT=835 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `joueurs`
+--
+
+DROP TABLE IF EXISTS `joueurs`;
+CREATE TABLE IF NOT EXISTS `joueurs` (
+  `id_Joueur` int(25) NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `surnom` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `meilleureperformance` varchar(255) DEFAULT NULL,
+  `defaut` varchar(255) DEFAULT NULL,
+  `qualite` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT 'img/photo_default.png',
+  `victoireChamp` int(25) DEFAULT NULL,
+  PRIMARY KEY (`id_Joueur`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `matchs`
+--
+
+DROP TABLE IF EXISTS `matchs`;
+CREATE TABLE IF NOT EXISTS `matchs` (
+  `id_Match` int(11) NOT NULL AUTO_INCREMENT,
+  `equipe1` varchar(255) DEFAULT NULL,
+  `equipe2` varchar(255) DEFAULT NULL,
+  `butEquipe1` int(25) DEFAULT '0',
+  `butEquipe2` int(25) DEFAULT '0',
+  `vainqueur` int(25) DEFAULT NULL,
+  `id_compet` int(11) NOT NULL,
+  `type_match` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_Match`),
+  KEY `FK_match_compet` (`id_compet`)
+) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=latin1;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `equipes`
+--
+ALTER TABLE `equipes`
+  ADD CONSTRAINT `FK_EquipeCompet` FOREIGN KEY (`id_compet`) REFERENCES `competitions` (`id_competition`);
+
+--
+-- Contraintes pour la table `matchs`
+--
+ALTER TABLE `matchs`
+  ADD CONSTRAINT `FK_match_compet` FOREIGN KEY (`id_compet`) REFERENCES `competitions` (`id_competition`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

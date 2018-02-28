@@ -234,7 +234,6 @@ class Tournoi
 
             $match1=  new Match($this->idCompet,'demi', null, null);
             $match2=  new Match($this->idCompet,'demi',null, null);
-
             $match3=  new Match($this->idCompet,'finale',null, null);
             $this->listeMatchs[]=$match1;
             $this->listeMatchs[]=$match2;
@@ -443,13 +442,39 @@ class Tournoi
                 $premiereEquipe[]= Equipe::findEquipe(($donnees2['id_Equipe']),$bdd);
             }
             $reqEquipesPoules->closeCursor();
+            $vainqueurPoule = $premiereEquipe[0];
 
+            //SI EGALITE : le vainqueur poule sera :
             if(count($premiereEquipe)>1){
+                $equipeWin=0;
+                foreach ($premiereEquipe as $equipeW) {
+                    $reqDuelPoule = $bdd->prepare('SELECT SUM(butEquipe1)as sum1 FROM matchs WHERE (equipe1 = ?)');
+                    $reqDuelPoule->execute(array($equipeW->getIdEquipe()
+                    ));
+                    while($donnees=$reqDuelPoule->fetch()){
+                        $total = intval($donnees['sum1']);
+                    }
 
+                    $reqDuelPoule->closeCursor();
+                    $reqDuelPoule2 = $bdd->prepare('SELECT SUM(butEquipe2) as sum2 FROM matchs WHERE (equipe2 = ?)');
+                    $reqDuelPoule2->execute(array($equipeW->getIdEquipe()
+                    ));
+                    while($donnees=$reqDuelPoule2->fetch()){
+                        $total += intval($donnees['sum2']);
+                    }
+                    $reqDuelPoule2->closeCursor();
+
+
+                    if($total>$equipeWin){
+                        $equipeWin=$total;
+                        $vainqueurPoule=$equipeW;
+                    }
+                }
             }
 
-            $idVainqueurPoule = $premiereEquipe[0]->getIdEquipe();
+            $idVainqueurPoule = $vainqueurPoule->getIdEquipe();
             $matchFinale= Match::listerMatchByType('finale',$idTournoi,$bdd);
+
             $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
             $insEquipe1->execute(array(
                 'equipe1' => $idVainqueurPoule,
@@ -459,13 +484,16 @@ class Tournoi
 
             //ON RECUP LES EQUIPES EN MATCH DE DEMI
             $autresEquipes= array();
-            $reqAutresEquipes=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND pointsPoule != (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
+            $reqAutresEquipes=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND id_Equipe != :id_Equipe');
             $reqAutresEquipes->execute(array(
                 'id_compet'=>$idTournoi,
-                'id_compet2'=>$idTournoi
+                'id_Equipe'=>$idVainqueurPoule
             ));
             while($donnees2=$reqAutresEquipes->fetch()){
-                $autresEquipes[]= Equipe::findEquipe(($donnees2['id_Equipe']),$bdd);
+
+                $eq=Equipe::findEquipe((intval($donnees2['id_Equipe'])),$bdd);
+                $autresEquipes[]= $eq;
+
             }
             $reqAutresEquipes->closeCursor();
 

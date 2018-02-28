@@ -82,3 +82,9 @@ a.banniere{
 	border: black 1px solid;
 	height: 25px;
 }
+.imgDetailJoueurs{
+	width: 800px;
+}
+.photoJoueur{
+	width: 300px;
+}
