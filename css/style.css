@@ -88,3 +88,14 @@ a.banniere{
 .photoJoueur{
 	width: 300px;
 }
+
+.divPoules{
+	display: flex;
+}
+.poules{
+	width: 50%;
+}
+.poules table{
+	height: 200px;
+	width: 450px;
+}

@@ -293,6 +293,34 @@ class Tournoi
                 }
             }
         }
+        elseif (count($this->listeEquipes)==6){
+            $match1=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[1]);
+            $match2=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[2]);
+            $match3=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[2]);
+            $match4=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[4]);
+            $match5=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[5]);
+            $match6=  new Match($this->idCompet,'poule', $this->listeEquipes[4], $this->listeEquipes[5]);
+            $match7=  new Match($this->idCompet,'demi', null, null);
+            $match8=  new Match($this->idCompet,'demi',null, null);
+            $match9=  new Match($this->idCompet,'finale',null, null);
+            $this->listeMatchs[]=$match1;
+            $this->listeMatchs[]=$match2;
+            $this->listeMatchs[]=$match3;
+            $this->listeMatchs[]=$match4;
+            $this->listeMatchs[]=$match5;
+            $this->listeMatchs[]=$match6;
+            $this->listeMatchs[]=$match7;
+            $this->listeMatchs[]=$match8;
+            $this->listeMatchs[]=$match9;
+
+            foreach ($this->listeMatchs as $matchX) {
+                if ($matchX->getEquipe1() != null AND $matchX->getEquipe1() != null) {
+                    $matchX->insererMatch($bdd);
+                } else {
+                    $matchX->insererMatchVide($bdd);
+                }
+            }
+        }
     }
 
     public  function afficherNomEquipe($equipeMatch){
@@ -556,6 +584,36 @@ class Tournoi
                 ));
                 $insEquipe2->closeCursor();
             }
+        }
+    }
+
+    public static function misAJourMatchPoule12($idTournoi,$vainqMatch, $bdd){
+
+        $reqPoule = $bdd->prepare('SELECT * FROM equipes WHERE id_Equipe =?');
+        $reqPoule->execute(array($vainqMatch));
+
+        while($donnees = $reqPoule->fetch()) {
+            $pointsPoules = $donnees['pointsPoule']+1;
+            $updPointsPoule = $bdd->prepare('UPDATE equipes SET pointsPoule = :pointsPoule WHERE id_Equipe = :id_Equipe');
+            $updPointsPoule->execute(array(
+                'id_Equipe'=>$vainqMatch,
+                'pointsPoule'=>$pointsPoules
+            ));
+        }
+        $reqPoule->closeCursor();
+
+        $listeMatchsPoules= Match::listerMatchByType('poule',$idTournoi,$bdd);
+        $pouleTerminee =true;
+        foreach($listeMatchsPoules as $matchP){
+            if($matchP->getVainqueurMatch()==null){
+                $pouleTerminee =false;
+            }
+        }
+        if($pouleTerminee){
+
+            //DETERMINER VAINQUEUR
+
+            //ENSUITE INSERER DANS MATCH
         }
     }
 }

@@ -39,7 +39,7 @@ include 'utilCompilDir.php';
                <?php
            }
 
-           else if(isset($_GET['nbreJoueurs']) AND ($_GET['nbreJoueurs'] ==8 OR $_GET['nbreJoueurs']==10)){
+           else if(isset($_GET['nbreJoueurs']) AND ($_GET['nbreJoueurs'] ==8 OR $_GET['nbreJoueurs']==10 OR $_GET['nbreJoueurs']==12 OR $_GET['nbreJoueurs']==14)){
                $nbre = $_GET['nbreJoueurs'];
 
 
