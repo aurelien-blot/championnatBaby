@@ -251,6 +251,12 @@ include 'include/util/functionChampShared.php';
                     </div>
                     <?php
                 }
+                elseif($tournoi1->getNbreJoueurs() == 12){
+
+                }
+                elseif($tournoi1->getNbreJoueurs() == 14){
+
+                }
                 if($tournoi1->getFini()==false AND isset($_GET['X'])) {
                     ?>
                     <a href="modifChampionnat.php?modif=<?php echo($_GET['idC']); ?>">

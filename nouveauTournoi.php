@@ -31,6 +31,8 @@ include 'utilCompilDir.php';
                <select name="nbreJoueurs">
                    <option value="8" selected>8 joueurs</option>
                    <option value="10">10 joueurs</option>
+                   <option value="12">12 joueurs</option>
+                   <option value="14">14 joueurs</option>
                </select>
                <input type="submit" value="Valider"/>
                </form>

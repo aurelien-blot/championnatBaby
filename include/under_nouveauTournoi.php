@@ -37,13 +37,29 @@ $tournoiX->ajouterJoueur($j6);
 $tournoiX->ajouterJoueur($j7);
 $tournoiX->ajouterJoueur($j8);
 
-if($nbreJoueurs==10){
+if($nbreJoueurs>=10){
     //$j9 = Joueur::findJoueur($_POST['joueur9'], $bdd);
     //$j10 = Joueur::findJoueur($_POST['joueur10'], $bdd);
     $j9 = Joueur::findJoueur(9, $bdd);
     $j10 = Joueur::findJoueur(10, $bdd);
     $tournoiX->ajouterJoueur($j9);
     $tournoiX->ajouterJoueur($j10);
+}
+if($nbreJoueurs>=12){
+    //$j11 = Joueur::findJoueur($_POST['joueur11'], $bdd);
+    //$j12 = Joueur::findJoueur($_POST['joueur12'], $bdd);
+    $j11 = Joueur::findJoueur(11, $bdd);
+    $j12 = Joueur::findJoueur(12, $bdd);
+    $tournoiX->ajouterJoueur($j11);
+    $tournoiX->ajouterJoueur($j12);
+}
+if($nbreJoueurs>=14){
+    //$j13 = Joueur::findJoueur($_POST['joueur13'], $bdd);
+    //$j14 = Joueur::findJoueur($_POST['joueur14'], $bdd);
+    $j13 = Joueur::findJoueur(13, $bdd);
+    $j14 = Joueur::findJoueur(14, $bdd);
+    $tournoiX->ajouterJoueur($j13);
+    $tournoiX->ajouterJoueur($j14);
 }
 
 
