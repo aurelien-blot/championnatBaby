@@ -14,13 +14,22 @@ $insModifScore->closeCursor();
 $matchZ = Match::findMatch($_GET['modifM'],$bdd);
 $idCompet = $matchZ->getIdCompetMatch();
 $typeMatch= $matchZ->getTypeMatch();
+$tournoiX=Tournoi::findTournoi($idCompet,$bdd);
+
 if($typeMatch=='demi'){
-    Tournoi::misAJourMatchFinale($idCompet, intval($_POST['vainq']),$bdd);
+    if($tournoiX->getNbreJoueurs()==8){
+        Tournoi::misAJourMatchFinale($idCompet, intval($_POST['vainq']),$bdd);
+    }
+    elseif ($tournoiX->getNbreJoueurs()==10){
+        Tournoi::misAJourMatchFausseFinale($idCompet, intval($_POST['vainq']),$bdd);
+    }
+
 }
 elseif ($typeMatch == 'poule'){
-   $listeMatchsPoules= Match::listerMatchByType('poule',$idCompet,$bdd);
-
-
+    Tournoi::misAJourMatchPoule($idCompet, intval($_POST['vainq']), $bdd);
+}
+elseif ($typeMatch == 'fausseFinale'){
+    Tournoi::misAJourMatchFinale($idCompet, intval($_POST['vainq']),$bdd);
 }
 
 

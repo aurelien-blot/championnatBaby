@@ -163,7 +163,7 @@ include 'include/util/functionChampShared.php';
 
 
                         $listeMatchCompetFFinale = Match::listerMatchFromTournoi($_GET['idC'], "fausseFinale", $bdd);
-                        foreach ($listeMatchCompet as $matchFausseFinale) {
+                        foreach ($listeMatchCompetFFinale as $matchFausseFinale) {
                         ?>
                         <div class="iconeMatch fausseFinale">
                             <?php
@@ -228,7 +228,7 @@ include 'include/util/functionChampShared.php';
                                     <td><?php echo(Equipe::findEquipe($pouleX->getEquipe2(),$bdd)->getNomEquipe());?></td>
                                     <td><?php echo($pouleX->getButsEquipe1());?></td>
                                     <td><?php echo($pouleX->getButsEquipe2());?></td>
-                                    <td><?php if($pouleX->getVainqueurMatch()!=null){echo((Equipe::findEquipe($pouleX->getEquipe1(), $bdd)->getNomEquipe()));}?></td>
+                                    <td><?php if($pouleX->getVainqueurMatch()!=null){echo((Equipe::findEquipe($pouleX->getVainqueurMatch    (), $bdd)->getNomEquipe()));}?></td>
                                 </tr>
                                 <?php
                             }
@@ -251,7 +251,7 @@ include 'include/util/functionChampShared.php';
                     </div>
                     <?php
                 }
-                if($tournoi1->getFini()==false) {
+                if($tournoi1->getFini()==false AND isset($_GET['X'])) {
                     ?>
                     <a href="modifChampionnat.php?modif=<?php echo($_GET['idC']); ?>">
                         <button id="boutonModif">Modifier</button>

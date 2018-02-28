@@ -435,7 +435,7 @@ class Tournoi
         if($pouleTerminee){
             $premiereEquipe= array();
             $reqEquipesPoules=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND pointsPoule = (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
-            $reqEquipesPoules= $bdd->execute(array(
+            $reqEquipesPoules->execute(array(
                 'id_compet'=>$idTournoi,
                 'id_compet2'=>$idTournoi
             ));
@@ -453,14 +453,65 @@ class Tournoi
             $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
             $insEquipe1->execute(array(
                 'equipe1' => $idVainqueurPoule,
-                'id_Match' => $matchFinale->getIdMatch()
+                'id_Match' => $matchFinale[0]->getIdMatch()
             ));
             $insEquipe1->closeCursor();
-            //RESTE A INSERER LES EQUIPES EN MATCH DE DEMI
 
-            //$this->listeMatchs[10];
-            //$this->listeMatchs[11];
+            //ON RECUP LES EQUIPES EN MATCH DE DEMI
+            $autresEquipes= array();
+            $reqAutresEquipes=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND pointsPoule != (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
+            $reqAutresEquipes->execute(array(
+                'id_compet'=>$idTournoi,
+                'id_compet2'=>$idTournoi
+            ));
+            while($donnees2=$reqAutresEquipes->fetch()){
+                $autresEquipes[]= Equipe::findEquipe(($donnees2['id_Equipe']),$bdd);
+            }
+            $reqAutresEquipes->closeCursor();
 
+            //ON RECUP LES MATCHS
+            $matchDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
+            $i =0;
+            foreach ($matchDemi as $mDemi){
+                $mDemi->setEquipe1($autresEquipes[$i]);$i++;
+                $mDemi->setEquipe2($autresEquipes[$i]);$i++;
+
+                $insEquipes = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1, equipe2= :equipe2 WHERE id_Match = :id_Match');
+                $insEquipes->execute(array(
+                    'equipe1' => $mDemi->getEquipe1()->getIdEquipe(),
+                    'equipe2' => $mDemi->getEquipe2()->getIdEquipe(),
+                    'id_Match' => $mDemi->getIdMatch()
+                ));
+                $insEquipes->closeCursor();
+            }
+
+
+
+
+        }
+    }
+
+    public static function misAJourMatchFausseFinale($idTournoi, $vainqMatch, $bdd){
+        $matchFausseFinale= Match::listerMatchByType('fausseFinale', $idTournoi, $bdd);
+        foreach ($matchFausseFinale as $matchZ){
+            //on insere les donnnees match
+
+            if($matchZ->getEquipe1()==null){
+                $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+                $insEquipe1->execute(array(
+                    'equipe1' => $vainqMatch,
+                    'id_Match' => $matchZ->getIdMatch()
+                ));
+                $insEquipe1->closeCursor();
+            }
+            elseif($matchZ->getEquipe2()==null){
+                $insEquipe2 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
+                $insEquipe2->execute(array(
+                    'equipe2' => $vainqMatch,
+                    'id_Match' => $matchZ->getIdMatch()
+                ));
+                $insEquipe2->closeCursor();
+            }
         }
     }
 }

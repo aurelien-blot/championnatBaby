@@ -183,7 +183,7 @@ function afficherForm($idMatchX, $bdd){
 
 
                         $listeMatchCompetFFinale = Match::listerMatchFromTournoi($_GET['modif'], "fausseFinale", $bdd);
-                        foreach ($listeMatchCompet as $matchFausseFinale) {
+                        foreach ($listeMatchCompetFFinale as $matchFausseFinale) {
                             ?>
                             <div class="iconeMatch fausseFinale">
                                 <?php
@@ -255,13 +255,12 @@ function afficherForm($idMatchX, $bdd){
                                             <td><?php echo(Equipe::findEquipe($pouleX->getEquipe2(),$bdd)->getNomEquipe());?></td>
                                             <td><?php echo($pouleX->getButsEquipe1());?></td>
                                             <td><?php echo($pouleX->getButsEquipe2());?></td>
-                                            <?php
-                                            if (($pouleX->getVainqueurMatch()== null)){
-                                                ?>
-                                                <td><?php afficherForm(intval($pouleX->getIdMatch()), $bdd);?></td>
-                                                <?php
-                                            }?>
+                                            <td><?php
+                                            if (($pouleX->getVainqueurMatch()== null)){ afficherForm(intval($pouleX->getIdMatch()), $bdd);
+                                            }
+                                            else{echo((Equipe::findEquipe($pouleX->getVainqueurMatch    (), $bdd)->getNomEquipe()));}
 
+                                            ?></td>
 
                                         </tr>
                                         <?php
