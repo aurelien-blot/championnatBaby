@@ -175,12 +175,12 @@ class Joueur
      * Joueur constructor.
      * @param $nom
      */
-    public function __construct($nom, $prenom, $surnom, $meilleureperformance, $defaut, $qualite, $photo, $victoireChamp)
+    public function __construct($nom, $prenom, $surnom, $defaut, $qualite, $photo, $victoireChamp)
     {
         $this->nom = $nom;
         $this->prenom =$prenom;
         $this->surnom = $surnom;
-        $this->meilleureperformance = $meilleureperformance;
+        $this->meilleureperformance = '';
         $this->defaut = $defaut;
         $this->qualite = $qualite;
         $this->photo = 'img/photo_default.png';
@@ -216,8 +216,9 @@ public static function findJoueur($idJoueur, $bdd){
     $joueurX=null;
 
     while ($donnees =  $detailJoueur->fetch()){
-        $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['meilleureperformance'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
+        $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
         $joueurX->setIdJoueur(intval($idJoueur));
+        $joueurX->setMeilleureperformance($donnees['meilleurePerformance']);
     }
     $detailJoueur->closeCursor();
     return $joueurX;
@@ -229,8 +230,9 @@ public static function findAllJoueurByNom($bdd){
     $listeJoueur=array();
 
     while ($donnees =  $listerJoueurs->fetch()){
-        $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['meilleureperformance'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
+        $joueurX = new Joueur($donnees['nom'],$donnees['prenom'],$donnees['surnom'],$donnees['defaut'],$donnees['qualite'], $donnees['photo'], $donnees['victoireChamp']);
         $joueurX->setIdJoueur(intval($donnees['id_Joueur']));
+        $joueurX->setMeilleureperformance($donnees['meilleurePerformance']);
         $listeJoueur[]=$joueurX;
     }
     $listerJoueurs->closeCursor();
