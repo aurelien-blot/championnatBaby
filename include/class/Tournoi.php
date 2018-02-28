@@ -445,7 +445,23 @@ class Tournoi
             $vainqueurPoule = $premiereEquipe[0];
 
             //SI EGALITE : le vainqueur poule sera :
-            if(count($premiereEquipe)>1){
+            if(count($premiereEquipe)==2) {
+                $reqDuelPoule=$bdd('SELECT * FROM matchs WHERE (equipe1 = :equipe1 AND equipe2 = :equipe2) OR (equipe1 = :equipe2 AND equipe2 = :equipe1)');
+                $reqDuelPoule->execute(array(
+                   'equipe1'=>$premiereEquipe[0]->getIdEquipe(),
+                   'equipe2'=>$premiereEquipe[1]->getIdEquipe()
+                ));
+
+                while($donnees=$reqDuelPoule->fetch()) {
+                    if($premiereEquipe[1]->getIdEquipe() == intval($donnees['vainqueur'])){
+                        $vainqueurPoule = $premiereEquipe[1];
+                    }
+                }
+                $reqDuelPoule->closeCursor();
+
+            }
+
+            elseif(count($premiereEquipe)>2){
                 $equipeWin=0;
                 foreach ($premiereEquipe as $equipeW) {
                     $reqDuelPoule = $bdd->prepare('SELECT SUM(butEquipe1)as sum1 FROM matchs WHERE (equipe1 = ?)');
