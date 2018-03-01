@@ -359,7 +359,9 @@ include 'include/util/functionChampShared.php';
                                             <td><?php echo(Equipe::findEquipe($pouleX->getEquipe2(),$bdd)->getNomEquipe());?></td>
                                             <td><?php echo($pouleX->getButsEquipe1());?></td>
                                             <td><?php echo($pouleX->getButsEquipe2());?></td>
-                                            <td><?php if($pouleX->getVainqueurMatch()!=null){echo((Equipe::findEquipe($pouleX->getVainqueurMatch    (), $bdd)->getNomEquipe()));}?></td>
+                                            <td><?php if($pouleX->getVainqueurMatch()!=null){
+                                                echo((Equipe::findEquipe($pouleX->getVainqueurMatch(),$bdd)->getNomEquipe()));
+                                            }?></td>
                                         </tr>
                                         <?php
                                     }

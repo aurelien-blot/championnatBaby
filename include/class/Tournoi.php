@@ -18,9 +18,12 @@ class Tournoi
     private $dateDebut;
     private $nomTournoi;
     private $listeMatchs;
+
 //endregion
 
 //region Getters/Setters
+
+
     /**
      * @return mixed
      */
@@ -295,11 +298,17 @@ class Tournoi
         }
         elseif (count($this->listeEquipes)==6){
             $match1=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[1]);
+            $match1->setNumPoule(1);
             $match2=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[2]);
+            $match2->setNumPoule(1);
             $match3=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[2]);
+            $match3->setNumPoule(1);
             $match4=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[4]);
+            $match4->setNumPoule(2);
             $match5=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[5]);
+            $match5->setNumPoule(2);
             $match6=  new Match($this->idCompet,'poule', $this->listeEquipes[4], $this->listeEquipes[5]);
+            $match6->setNumPoule(2);
             $match7=  new Match($this->idCompet,'demi', null, null);
             $match8=  new Match($this->idCompet,'demi',null, null);
             $match9=  new Match($this->idCompet,'finale',null, null);
@@ -490,30 +499,7 @@ class Tournoi
             }
 
             elseif(count($premiereEquipe)>2){
-                $equipeWin=0;
-                foreach ($premiereEquipe as $equipeW) {
-                    $reqDuelPoule = $bdd->prepare('SELECT SUM(butEquipe1)as sum1 FROM matchs WHERE (equipe1 = ?)');
-                    $reqDuelPoule->execute(array($equipeW->getIdEquipe()
-                    ));
-                    while($donnees=$reqDuelPoule->fetch()){
-                        $total = intval($donnees['sum1']);
-                    }
-
-                    $reqDuelPoule->closeCursor();
-                    $reqDuelPoule2 = $bdd->prepare('SELECT SUM(butEquipe2) as sum2 FROM matchs WHERE (equipe2 = ?)');
-                    $reqDuelPoule2->execute(array($equipeW->getIdEquipe()
-                    ));
-                    while($donnees=$reqDuelPoule2->fetch()){
-                        $total += intval($donnees['sum2']);
-                    }
-                    $reqDuelPoule2->closeCursor();
-
-
-                    if($total>$equipeWin){
-                        $equipeWin=$total;
-                        $vainqueurPoule=$equipeW;
-                    }
-                }
+               $vainqueurPoule=Tournoi::goalAverage($premiereEquipe, $bdd);
             }
 
             $idVainqueurPoule = $vainqueurPoule->getIdEquipe();
@@ -612,9 +598,138 @@ class Tournoi
         if($pouleTerminee){
 
             //DETERMINER VAINQUEUR
+            $matchsDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
 
+            for($i=1;$i<3;$i++){
+                $premiereEquipe= array();
+                $reqEquipesPoules=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND num_poule = :num_poule AND pointsPoule = (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
+                $reqEquipesPoules->execute(array(
+                    'id_compet'=>$idTournoi,
+                    'id_compet2'=>$idTournoi,
+                    'num_poule'=>intval($i)
+                ));
+                while($donnees2=$reqEquipesPoules->fetch()){
+                    $premiereEquipe[]= (Equipe::findEquipe(($donnees2['id_Equipe']),$bdd));
+                }
+                $vainqueurPoule = $premiereEquipe[0];
+                $reqEquipesPoules->closeCursor();
+
+                $deuxiemeEquipe= array();
+                $reqEquipesPoules2=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND num_poule = :num_poule ORDER BY pointsPoule DESC');
+                $reqEquipesPoules2->execute(array(
+                    'id_compet'=>$idTournoi,
+                    'num_poule'=>$i
+                ));
+                while($donnees2=$reqEquipesPoules2->fetch()){
+                    $deuxiemeEquipe[]= Equipe::findEquipe(($donnees2['id_Equipe']),$bdd);
+                }
+                $deuxiemePoule=$deuxiemeEquipe[1];
+                $reqEquipesPoules2->closeCursor();
+
+
+                if(count($premiereEquipe)==3){
+                    $vainqueurPoule=Tournoi::goalAverage($premiereEquipe, $bdd);
+                    $idVainqueurPoule = $vainqueurPoule->getIdEquipe();
+                    $equipesRestantes=array();
+                    $reqEquipesRestantes=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND num_poule = :num_poule AND id_Equipe != :id_Equipe AND pointsPoule = (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
+                    $reqEquipesRestantes->execute(array(
+                        'id_compet'=>$idTournoi,
+                        'id_compet2'=>$idTournoi,
+                        'num_poule'=>$i,
+                        'id_Equipe'=>$idVainqueurPoule
+                    ));
+                    while($donnees3=$reqEquipesRestantes->fetch()){
+                        $equipesRestantes[]= Equipe::findEquipe(($donnees3['id_Equipe']),$bdd);
+                    }
+                    $reqEquipesRestantes->closeCursor();
+                    $deuxiemePoule = Tournoi::goalAverage($equipesRestantes, $bdd);
+                }
+                $idVainqueurPoule = $vainqueurPoule->getIdEquipe();
+                $idDeuxiemePoule = $deuxiemePoule->getIdEquipe();
+                if($i=0){
+                    $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+                    $insEquipe1->execute(array(
+                        'equipe1' => $idVainqueurPoule,
+                        'id_Match' => $matchsDemi[0]->getIdMatch()
+                    ));
+                    $insEquipe1->closeCursor();
+
+                    $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+                    $insEquipe1->execute(array(
+                        'equipe1' => $idDeuxiemePoule,
+                        'id_Match' => $matchsDemi[1]->getIdMatch()
+                    ));
+                    $insEquipe1->closeCursor();
+                }
+                elseif ($i=1){
+
+                    $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
+                    $insEquipe1->execute(array(
+                        'equipe1' => $idVainqueurPoule,
+                        'id_Match' => $matchsDemi[1]->getIdMatch()
+                    ));
+                    $insEquipe1->closeCursor();
+
+                    $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
+                    $insEquipe1->execute(array(
+                        'equipe1' => $idDeuxiemePoule,
+                        'id_Match' => $matchsDemi[0]->getIdMatch()
+                    ));
+                    $insEquipe1->closeCursor();
+                }
+            }
+            /*foreach ($tableauxPoules as $tabPoule){
+                $vainqueurPoule=null;
+                $maxPts=0;
+                $equipesAEgalite= array();
+                $vainqueurPoule=null;
+                foreach($tabPoule as $matchP){
+                    $matchX= Match::findMatch($matchP, $bdd);
+                    $unVainqueur = false;
+
+                    if($matchX->getNumPoule()==2){
+                        $unVainqueur=true;
+                        $vainqueurPoule=$matchX->getVainqueurMatch();
+                    }
+                    else{
+                        $equipesAEgalite[]=$matchX;
+                    }
+                    if(!$unVainqueur){
+                        $vainqueurPoule=Tournoi::goalAverage($equipesAEgalite,$bdd);
+                    }
+
+                }
+            }*/
             //ENSUITE INSERER DANS MATCH
         }
+    }
+
+    public static function goalAverage($listeEquipesPoulesEgalite, $bdd){
+        $equipeWin=0;
+        foreach ($listeEquipesPoulesEgalite as $equipeW) {
+            $reqDuelPoule = $bdd->prepare('SELECT SUM(butEquipe1)as sum1 FROM matchs WHERE (equipe1 = ?)');
+            $reqDuelPoule->execute(array($equipeW->getIdEquipe()
+            ));
+            while($donnees=$reqDuelPoule->fetch()){
+                $total = intval($donnees['sum1']);
+            }
+
+            $reqDuelPoule->closeCursor();
+            $reqDuelPoule2 = $bdd->prepare('SELECT SUM(butEquipe2) as sum2 FROM matchs WHERE (equipe2 = ?)');
+            $reqDuelPoule2->execute(array($equipeW->getIdEquipe()
+            ));
+            while($donnees=$reqDuelPoule2->fetch()){
+                $total += intval($donnees['sum2']);
+            }
+            $reqDuelPoule2->closeCursor();
+
+
+            if($total>$equipeWin){
+                $equipeWin=$total;
+                $vainqueurPoule=$equipeW;
+            }
+        }
+        return $vainqueurPoule;
     }
 }
 ?>

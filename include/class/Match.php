@@ -19,7 +19,7 @@ class Match
     private $butsEquipe1;
     private $butsEquipe2;
     private $idCompetMatch;
-
+    private $numPoule;
 
 
 
@@ -27,6 +27,22 @@ class Match
 //endregion
 
     //region Getters/Setters
+
+    /**
+     * @return mixed
+     */
+    public function getNumPoule()
+    {
+        return $this->num_poule;
+    }
+
+    /**
+     * @param mixed $num_poule
+     */
+    public function setNumPoule($num_poule)
+    {
+        $this->num_poule = $num_poule;
+    }
     /**
      * @return mixed
      */
@@ -206,20 +222,22 @@ class Match
         $this->equipesMatch[]=$equipe2;
         $this->matchFini =false;
         $this->vainqueurMatch = null;
-        $this->typeMatch = $type;// VEFIFIER VRAIE BDD
+        $this->typeMatch = $type;
+        $this->num_poule=null;
     }
 
 //endregion
 
 //region Methods
     public function insererMatch($connexion){
-        $insertMatch = $connexion->prepare('INSERT INTO matchs(equipe1, equipe2, id_compet, type_match) VALUES(:equipe1, :equipe2, :id_compet, :type_match)');
+        $insertMatch = $connexion->prepare('INSERT INTO matchs(equipe1, equipe2, id_compet, type_match, num_poule) VALUES(:equipe1, :equipe2, :id_compet, :type_match, :num_poule)');
 
         $insertMatch->execute(array(
             'equipe1' => ($this->equipe1->getIdEquipe()),
             'equipe2' => $this->equipe2->getIdEquipe(),
             'id_compet' => $this->idCompetMatch,
-            'type_match'=>$this->getTypeMatch()
+            'type_match'=>$this->getTypeMatch(),
+            'num_poule'=>$this->num_poule
         ));
         $insertMatch->closeCursor();
 
@@ -260,7 +278,7 @@ class Match
             $MatchX->setButsEquipe1($donnees['butEquipe1']);
             $MatchX->setButsEquipe2($donnees['butEquipe2']);
             $MatchX->setVainqueurMatch($donnees['vainqueur']);
-
+            $MatchX->setNumPoule($donnees['num_poule']);
         }
         $detailMatch->closeCursor();
         return $MatchX;
@@ -281,6 +299,7 @@ class Match
             $MatchX->setButsEquipe1($donnees['butEquipe1']);
             $MatchX->setButsEquipe2($donnees['butEquipe2']);
             $MatchX->setVainqueurMatch($donnees['vainqueur']);
+            $MatchX->setNumPoule($donnees['num_poule']);
             $listMatchFromTournoi[]=$MatchX;
         }
         $matchsCompet->closeCursor();
@@ -303,6 +322,7 @@ class Match
             $MatchX->setButsEquipe1($donnees['butEquipe1']);
             $MatchX->setButsEquipe2($donnees['butEquipe2']);
             $MatchX->setVainqueurMatch($donnees['vainqueur']);
+            $MatchX->setNumPoule($donnees['num_poule']);
             $listeMatchByType[] = $MatchX;
         }
         $listMatchs->closeCursor();
