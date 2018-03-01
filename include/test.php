@@ -1,6 +1,7 @@
 <?php
 
 include 'utilCompil.php';
-$matchY = Match::findMatch(123, $bdd);
-echo($matchY->getEquipe1()->getNomEquipe());
+$equipeX= Equipe::findEquipe(936, $bdd);
+$equipeX->attribuerNumPoule(7, $bdd);
+echo'OK';
 ?>

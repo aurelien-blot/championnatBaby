@@ -17,9 +17,28 @@ class Equipe
     private $joueur1;
     private $joueur2;
     private $pointsPoule;
+    private $numPoule;
 
     //endregion
     //region Getters/Setters
+
+
+    /**
+     * @return null
+     */
+    public function getNumPoule()
+    {
+        return $this->numPoule;
+    }
+
+    /**
+     * @param null $numPoule
+     */
+    public function setNumPoule($numPoule)
+    {
+        $this->numPoule = $numPoule;
+    }
+
     /**
      * @return int
      */
@@ -152,6 +171,7 @@ class Equipe
         $this->joueur2 = $joueur2;
         $this->pointsPoule=0;
         $this->nomEquipe= ($joueur1->getPrenom().' - '.$joueur2->getPrenom());
+        $this->numPoule=null;
 
 
     }
@@ -188,12 +208,23 @@ class Equipe
             $equipeX = new Equipe(intval($donnees['id_compet']), (Joueur::findJoueur(intval($donnees['joueur1']), $bdd)), (Joueur::findJoueur(intval($donnees['joueur2']), $bdd)));
             $equipeX->setIdEquipe($idEquipe);
             $equipeX->setPointsPoule($donnees['pointsPoule']);
+            $equipeX->setNumPoule($donnees['num_poule']);
+
         }
         $detailEquipe->closeCursor();
         return $equipeX;
 
     }
 
+    public function attribuerNumPoule($numPoule, $bdd){
+        $this->setNumPoule($numPoule);
+        $upNumPoule=$bdd->prepare('UPDATE equipes SET num_poule = :num_poule WHERE id_Equipe = :id_Equipe');
+        $upNumPoule->execute(array(
+            'num_poule'=>$this->numPoule,
+            'id_Equipe'=>$this->getIdEquipe()
+        ));
+        $upNumPoule->closeCursor();
+    }
     //endregion
 }
 

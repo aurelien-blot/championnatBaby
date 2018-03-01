@@ -67,7 +67,7 @@ a.banniere{
 }
 
 #boutonModif{
-	margin: auto;
+margin-bottom:30px;
 }
 .iconeEquipes{
 	display: flex;

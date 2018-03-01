@@ -12,7 +12,7 @@ function afficherForm($idMatchX, $bdd){
         <form action="include/under_modifChamp.php?modifM=<?php echo($matchX->getIdMatch()); ?>" method="post">
 
             <label for="vainq">Vainqueur :</label>
-            <select name="vainq">
+            <select name="vainq" required>
                 <option value="<?php echo($matchX->getEquipe1()->getIdEquipe()); ?>">
                     <?php echo($matchX->getEquipe1()->getNomEquipe()); ?> :
                 </option>
