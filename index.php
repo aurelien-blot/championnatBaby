@@ -10,7 +10,6 @@ include'include/connexionBdd.php';
     </head>
     <body>
         <header>
-
 			<div class="wrap">
             	<?php include'include/banniere.php' ?>
 				<?php include'include/menuPrincipal.php' ?>
@@ -19,14 +18,13 @@ include'include/connexionBdd.php';
 
 		<div id="content">
 			<div class="wrap">
-
+			
 			</div>
         </div>
         <footer>
 			<div class="wrap">
             	<?php include'include/footer.php' ?>
 			</div>
-
         </footer>
     </body>
 </html>

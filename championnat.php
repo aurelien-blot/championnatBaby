@@ -17,7 +17,6 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
     </head>
     <body>
         <header>
-
 			<div class="wrap">
             	<?php include'include/banniere.php' ?>
 				<nav>
@@ -35,6 +34,7 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                     // SI PAGE CHAMPIONNAT (EN COURS)
                     if(!isset($_GET['histo'])){
                         ?>
+                    
                         <h1>CHAMPIONNATS EN COURS</h1>
                         <?php
                         while ($donnees = $reqCencours->fetch()) {
@@ -43,6 +43,7 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                             <p id="dateDebut">commencée le <?php echo $donnees['dateDebut']; ?></p>
                             <?php
                         }
+						
                     }
                     // SI PAGE HISTORIQUE
                     else if(isset($_GET['histo'])){
