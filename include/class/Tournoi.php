@@ -785,10 +785,31 @@ class Tournoi
             $tableau4Vainqueurs =array();
             $premiereEquipe=Tournoi::listerJoueursPoulesParPosition($idTournoi,0, $bdd);
             $i=0;
-            while(count($tableau4Vainqueurs)<4){
 
-                $tableau4Vainqueurs[] = $premiereEquipe[$i];
-                $i++;
+            $scoreEquipe4 = $premiereEquipe[3];
+            $egalite=false;
+            foreach ($premiereEquipe as $equipe){
+                if($equipe->getPointsPoule() == $scoreEquipe4){
+                    $egalite=true;
+                }
+            }
+            if(!$egalite){
+                while(count($tableau4Vainqueurs)<4){
+
+                    $tableau4Vainqueurs[] = $premiereEquipe[$i];
+                    $i++;
+                }
+            }
+            else{
+
+            }
+            function calculerClassement4Premiers($tableau){
+                $tableauRetour=array();
+                foreach ($tableau as $equipeX){
+                    //VOIR USORT
+                }
+
+                return $tableauRetour;
             }
 
             $matchDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
