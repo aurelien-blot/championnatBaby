@@ -7,12 +7,18 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
+
 <body>
 <header>
 	<div class="wrap">
     	<?php include'include/banniere.php' ?>
 	</div>
 </header>
+
+<nav>     
+        <div class="wrap">
+			</div>
+</nav>
 
 <div id="content">
 	<div class="wrap">

@@ -17,6 +17,12 @@ include'include/connexionBdd.php';?>
 	</div>
 </header>
 
+<nav>     
+        <div class="wrap">
+		</div>
+</nav>
+
+
 <div id="content">
 	<div class="wrap">
 		<form method="post" action="include/under_connexion.php">

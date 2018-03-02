@@ -10,60 +10,55 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
 
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Championnat de babyfoot</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-    </head>
-    <body>
-        <header>
-
+	<head>
+		<meta charset="UTF-8">
+		<title>Championnat de babyfoot</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body>
+		<header>
 			<div class="wrap">
-            	<?php include'include/banniere.php' ?>
-				<nav>
-					<?php include'include/navChamp.php'?>
-				</nav>
+				<?php include'include/banniere.php' ?>
 			</div>
-        </header>
-
-        <div id="content">
+		</header>
+		<nav>
 			<div class="wrap">
+				<?php include'include/navChamp.php'?>
+			</div>
+		</nav> 
 
-                <?php
-                // SI PAGE DE BASE :
-                if(!isset($_GET['idC']) && !isset($_GET['comp'])){
-                    // SI PAGE CHAMPIONNAT (EN COURS)
-                    if(!isset($_GET['histo'])){
-                        ?>
-                        <h1>CHAMPIONNATS EN COURS</h1>
-                        <?php
-                        while ($donnees = $reqCencours->fetch()) {
-                            ?>
-                            <a href="championnat.php?idC=<?php echo $donnees['id_competition']; ?>"><?php echo($donnees['nomChamp']); ?></a>
-                            <p id="dateDebut">commencée le <?php echo $donnees['dateDebut']; ?></p>
-                            <?php
-                        }
-                    }
-                    // SI PAGE HISTORIQUE
-                    else if(isset($_GET['histo'])){
-                        ?>
-                        <h1>HISTORIQUE DES CHAMPIONNATS</h1>
-                        <?php
-                        while ($donnees = $listeCompet->fetch()) {
-                            ?>
-                            <a href="championnat.php?idC=<?php echo $donnees['id_competition']; ?>"><?php echo($donnees['nomChamp']); ?></a>
-                            <p id="dateDebut">commencée le <?php echo $donnees['dateDebut']; ?></p>
-                            <?php
-
-                        }
-                    }
-
-
-                    $listeCompet->closeCursor();
-                }
-
-
-                // SI ON VEUT VOIR UN CHAMPIONNAT EN PARTICULIER
+		<div class="content">
+			<div class="wrap">
+				<?php
+				// SI PAGE DE BASE :
+				if(!isset($_GET['idC']) && !isset($_GET['comp'])){
+				// SI PAGE CHAMPIONNAT (EN COURS)
+				if(!isset($_GET['histo'])){
+				?>
+					<h1 class="titreChampionnat">CHAMPIONNATS EN COURS</h1>
+					<?php
+					while ($donnees = $reqCencours->fetch()) {
+				?>
+				<a class=id_competition href="championnat.php?idC=<?php echo $donnees['id_competition']; ?>"><?php echo($donnees['nomChamp']); ?></a>
+				<p class="dateDebut">commencé le <?php echo $donnees['dateDebut']; ?></p>
+				<?php
+				}
+				}
+// SI PAGE HISTORIQUE
+else if(isset($_GET['histo'])){
+?>
+<h1 class="titreChampionnat">HISTORIQUE DES CHAMPIONNATS</h1>
+<?php
+while ($donnees = $listeCompet->fetch()) {
+?>
+<a class=id_competition href="championnat.php?idC=<?php echo $donnees['id_competition']; ?>"><?php echo($donnees['nomChamp']); ?></a>
+<p class="dateDebut">commencé le <?php echo $donnees['dateDebut']; ?></p>
+<?php
+}
+}
+$listeCompet->closeCursor();
+}
+// SI ON VEUT VOIR UN CHAMPIONNAT EN PARTICULIER
                 else if(isset($_GET['idC'])){
                     $detailCompet->execute(array($_GET['idC']));
 
@@ -197,7 +192,6 @@ $reqEquipes = $bdd->prepare('SELECT id_Equipe, J1.id_Joueur AS J1id, J2.id_Joueu
                     }
             }
             ?>
-
 			</div>
         </div>
         <footer>
