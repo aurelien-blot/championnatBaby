@@ -336,6 +336,66 @@ class Tournoi
                 }
             }
         }
+        elseif(count($this->listeEquipes)==7){
+            $match1=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[1]);
+            $match2=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[2]);
+            $match3=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[3]);
+            $match4=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[4]);
+            $match5=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[5]);
+            $match6=  new Match($this->idCompet,'poule', $this->listeEquipes[0], $this->listeEquipes[6]);
+            $match7=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[2]);
+            $match8=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[3]);
+            $match9=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[4]);
+            $match10=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[5]);
+            $match11=  new Match($this->idCompet,'poule', $this->listeEquipes[1], $this->listeEquipes[6]);
+            $match12=  new Match($this->idCompet,'poule', $this->listeEquipes[2], $this->listeEquipes[3]);
+            $match13=  new Match($this->idCompet,'poule', $this->listeEquipes[2], $this->listeEquipes[4]);
+            $match14=  new Match($this->idCompet,'poule', $this->listeEquipes[2], $this->listeEquipes[5]);
+            $match15=  new Match($this->idCompet,'poule', $this->listeEquipes[2], $this->listeEquipes[6]);
+            $match16=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[4]);
+            $match17=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[5]);
+            $match18=  new Match($this->idCompet,'poule', $this->listeEquipes[3], $this->listeEquipes[6]);
+            $match19=  new Match($this->idCompet,'poule', $this->listeEquipes[4], $this->listeEquipes[5]);
+            $match20=  new Match($this->idCompet,'poule', $this->listeEquipes[4], $this->listeEquipes[6]);
+            $match21=  new Match($this->idCompet,'poule', $this->listeEquipes[5], $this->listeEquipes[6]);
+            $match22=  new Match($this->idCompet,'demi', null, null);
+            $match23=  new Match($this->idCompet,'demi',null, null);
+            $match24=  new Match($this->idCompet,'fausseFinale',null, null);
+            $match25=  new Match($this->idCompet,'finale',null, null);
+            $this->listeMatchs[]=$match1;
+            $this->listeMatchs[]=$match2;
+            $this->listeMatchs[]=$match3;
+            $this->listeMatchs[]=$match4;
+            $this->listeMatchs[]=$match5;
+            $this->listeMatchs[]=$match6;
+            $this->listeMatchs[]=$match7;
+            $this->listeMatchs[]=$match8;
+            $this->listeMatchs[]=$match9;
+            $this->listeMatchs[]=$match10;
+            $this->listeMatchs[]=$match11;
+            $this->listeMatchs[]=$match12;
+            $this->listeMatchs[]=$match13;
+            $this->listeMatchs[]=$match14;
+            $this->listeMatchs[]=$match15;
+            $this->listeMatchs[]=$match16;
+            $this->listeMatchs[]=$match17;
+            $this->listeMatchs[]=$match18;
+            $this->listeMatchs[]=$match19;
+            $this->listeMatchs[]=$match20;
+            $this->listeMatchs[]=$match21;
+            $this->listeMatchs[]=$match22;
+            $this->listeMatchs[]=$match23;
+            $this->listeMatchs[]=$match24;
+            $this->listeMatchs[]=$match25;
+
+            foreach ($this->listeMatchs as $matchX) {
+                if ($matchX->getEquipe1() != null AND $matchX->getEquipe1() != null) {
+                    $matchX->insererMatch($bdd);
+                } else {
+                    $matchX->insererMatchVide($bdd);
+                }
+            }
+        }
     }
 
     public  function afficherNomEquipe($equipeMatch){
@@ -579,14 +639,22 @@ class Tournoi
 
                 if(count($premiereEquipe)==1) {
 
-                    $equipesPoules = Tournoi::listerJoueursPoulesParPosition();
-                    $vainqueurPoule1 = $premiereEquipe[0];
-                    $deuxiemePoule1=$equipesPoules[0];
+                    $equipesPoules = Tournoi::listerJoueursPoulesParPosition($idTournoi,$i,$bdd);
 
-                }/*
+                    if($i==1){
+                        $vainqueurPoule1 = $premiereEquipe[0];
+                        $deuxiemePoule1=$equipesPoules[1];
+                    }
+                    elseif ($i==2){
+                        $vainqueurPoule2 = $premiereEquipe[0];
+                        $deuxiemePoule2=$equipesPoules[1];
+                    }
+
+
+                }
                 elseif(count($premiereEquipe)==3){
 
-                }*/
+                }
             }
             // on rentre les équipes dans les matchs
             $idVainqueurPoule1=$vainqueurPoule1->getIdEquipe();
@@ -708,5 +776,56 @@ class Tournoi
         }
         return $equipesPoules;
     }
+
+    public static function misAjourMatchPoule14($idTournoi, $vainqMatch,$bdd){
+        Tournoi::majPointsPoule($vainqMatch, $bdd);
+        $pouleTerminee = Tournoi::verifPoulesTerminees($idTournoi, $bdd);
+
+        if($pouleTerminee){
+            $tableau4Vainqueurs =array();
+            $premiereEquipe=Tournoi::listerJoueursPoulesParPosition($idTournoi,0, $bdd);
+            $i=0;
+            while(count($tableau4Vainqueurs)<4){
+
+                $tableau4Vainqueurs[] = $premiereEquipe[$i];
+                $i++;
+            }
+
+            $matchDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
+            $vainqueurPoule = $premiereEquipe[0];
+
+
+            $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+            $insEquipe1->execute(array(
+                'equipe1' => $tableau4Vainqueurs[0]->getIdEquipe(),
+                'id_Match' => $matchDemi[0]->getIdMatch()
+            ));
+            $insEquipe1->closeCursor();
+
+            $insEquipe2 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
+            $insEquipe2->execute(array(
+                'equipe2' => $tableau4Vainqueurs[2]->getIdEquipe(),
+                'id_Match' => $matchDemi[0]->getIdMatch()
+            ));
+            $insEquipe2->closeCursor();
+
+
+            $insEquipe3 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
+            $insEquipe3->execute(array(
+                'equipe1' => $tableau4Vainqueurs[1]->getIdEquipe(),
+                'id_Match' => $matchDemi[1]->getIdMatch()
+            ));
+            $insEquipe3->closeCursor();
+
+            $insEquipe4 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
+            $insEquipe4->execute(array(
+                'equipe2' => $tableau4Vainqueurs[3]->getIdEquipe(),
+                'id_Match' => $matchDemi[1]->getIdMatch()
+            ));
+            $insEquipe4->closeCursor();
+
+        }
+    }
+
 }
 ?>

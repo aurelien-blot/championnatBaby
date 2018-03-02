@@ -17,7 +17,7 @@ $typeMatch= $matchZ->getTypeMatch();
 $tournoiX=Tournoi::findTournoi($idCompet,$bdd);
 
 if($typeMatch=='demi'){
-    if($tournoiX->getNbreJoueurs()==8 OR $tournoiX->getNbreJoueurs()==12){
+    if($tournoiX->getNbreJoueurs()==8 OR $tournoiX->getNbreJoueurs()==12 OR $tournoiX->getNbreJoueurs()==14){
         Tournoi::misAJourMatchFinale($idCompet, intval($_POST['vainq']),$bdd);
     }
     elseif ($tournoiX->getNbreJoueurs()==10){
@@ -31,6 +31,9 @@ elseif ($typeMatch == 'poule'){
     }
     elseif ($tournoiX->getNbreJoueurs()==10) {
         Tournoi::misAJourMatchPoule($idCompet, intval($_POST['vainq']), $bdd);
+    }
+    elseif ($tournoiX->getNbreJoueurs()==14) {
+        Tournoi::misAJourMatchPoule14($idCompet, intval($_POST['vainq']), $bdd);
     }
 }
 elseif ($typeMatch == 'fausseFinale'){
