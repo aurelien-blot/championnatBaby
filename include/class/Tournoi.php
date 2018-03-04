@@ -784,32 +784,37 @@ class Tournoi
         if($pouleTerminee){
             $tableau4Vainqueurs =array();
             $premiereEquipe=Tournoi::listerJoueursPoulesParPosition($idTournoi,0, $bdd);
-            $i=0;
 
-            $scoreEquipe4 = $premiereEquipe[3];
-            $egalite=false;
-            foreach ($premiereEquipe as $equipe){
-                if($equipe->getPointsPoule() == $scoreEquipe4){
-                    $egalite=true;
-                }
-            }
-            if(!$egalite){
-                while(count($tableau4Vainqueurs)<4){
-
-                    $tableau4Vainqueurs[] = $premiereEquipe[$i];
+            //MEGA FORMULE POUR EGALITE POULE
+            while(count($tableau4Vainqueurs)<4){
+                $i=0;
+                if($premiereEquipe[$i]!=$premiereEquipe[$i+1]){
+                    $tableau4Vainqueurs[]=$premiereEquipe[$i];
                     $i++;
                 }
-            }
-            else{
+                else{
+                    $tableauEgalite=array();
+                    foreach ($premiereEquipe as $vxx){
+                        if($vxx->getPointsPoule()==$premiereEquipe[$i]->getPointsPoule()){
+                            $tableauEgalite[]=$vxx;
+                        }
+                    }
+                    if(count($tableau4Vainqueurs)+count($tableauEgalite)<=4){
+                        foreach ($tableauEgalite as $tabEgal){
+                            $tableau4Vainqueurs[]=$tabEgal;
+                            $i++;
+                        }
+                    }
+                    else{
+                        $nbreEquipesAInserer=4-count($tableau4Vainqueurs);
+                        for($j=0;$j<=$nbreEquipesAInserer;$j++){
+                            $premierGoalAverage = Tournoi::goalAverage($tableauEgalite,$bdd);
+                            $i++;
+                            //REVOIR GOALAVERAGE CAR RENVOIE UNE EQUIPE AU LIEU D UN ARRAY D EQUIPEs
+                        }
 
-            }
-            function calculerClassement4Premiers($tableau){
-                $tableauRetour=array();
-                foreach ($tableau as $equipeX){
-                    //VOIR USORT
+                    }
                 }
-
-                return $tableauRetour;
             }
 
             $matchDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
@@ -847,6 +852,14 @@ class Tournoi
 
         }
     }
-
+    public static function calculerClassement4Premiers($tableau, $obj1, $obj2){
+                function trierTab($obj1, $obj2){
+                    $a=$obj1;
+                    $b=$obj2;
+                    return strcasecmp($b, $a);
+                }
+                uasort($tableau, "trierTab");
+                return $tableau;
+            }
 }
 ?>
