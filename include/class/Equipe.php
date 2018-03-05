@@ -225,6 +225,25 @@ class Equipe
         ));
         $upNumPoule->closeCursor();
     }
+
+    public function totalButsPoule($bdd){
+            $reqDuelPoule = $bdd->prepare('SELECT SUM(butEquipe1)as sum1 FROM matchs WHERE (equipe1 = ?)');
+            $reqDuelPoule->execute(array($this->getIdEquipe()
+            ));
+            while($donnees=$reqDuelPoule->fetch()){
+                $total = intval($donnees['sum1']);
+            }
+
+            $reqDuelPoule->closeCursor();
+            $reqDuelPoule2 = $bdd->prepare('SELECT SUM(butEquipe2) as sum2 FROM matchs WHERE (equipe2 = ?)');
+            $reqDuelPoule2->execute(array($this->getIdEquipe()
+            ));
+            while($donnees=$reqDuelPoule2->fetch()){
+                $total += intval($donnees['sum2']);
+            }
+            $reqDuelPoule2->closeCursor();
+            return $total;
+    }
     //endregion
 }
 

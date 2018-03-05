@@ -360,8 +360,7 @@ class Tournoi
             $match21=  new Match($this->idCompet,'poule', $this->listeEquipes[5], $this->listeEquipes[6]);
             $match22=  new Match($this->idCompet,'demi', null, null);
             $match23=  new Match($this->idCompet,'demi',null, null);
-            $match24=  new Match($this->idCompet,'fausseFinale',null, null);
-            $match25=  new Match($this->idCompet,'finale',null, null);
+            $match24=  new Match($this->idCompet,'finale',null, null);
             $this->listeMatchs[]=$match1;
             $this->listeMatchs[]=$match2;
             $this->listeMatchs[]=$match3;
@@ -386,7 +385,6 @@ class Tournoi
             $this->listeMatchs[]=$match22;
             $this->listeMatchs[]=$match23;
             $this->listeMatchs[]=$match24;
-            $this->listeMatchs[]=$match25;
 
             foreach ($this->listeMatchs as $matchX) {
                 if ($matchX->getEquipe1() != null AND $matchX->getEquipe1() != null) {
@@ -405,6 +403,7 @@ class Tournoi
         return ($equipeMatch->getNomEquipe());
 
     }
+
     public function detaillerMatchs($type){
         echo($this->nomTournoi.' : <br/>');
 
@@ -540,7 +539,7 @@ class Tournoi
             }
 
             elseif(count($premiereEquipe)>2){
-               $vainqueurPoule=Tournoi::goalAverage($premiereEquipe, $bdd);
+               $vainqueurPoule=Tournoi::vainqueurGoalAverage($premiereEquipe, $bdd);
             }
 
             $idVainqueurPoule = $vainqueurPoule->getIdEquipe();
@@ -693,25 +692,10 @@ class Tournoi
         }
     }
 
-    public static function goalAverage($listeEquipesPoulesEgalite, $bdd){
+    public static function vainqueurGoalAverage($listeEquipesPoulesEgalite, $bdd){
         $equipeWin=0;
         foreach ($listeEquipesPoulesEgalite as $equipeW) {
-            $reqDuelPoule = $bdd->prepare('SELECT SUM(butEquipe1)as sum1 FROM matchs WHERE (equipe1 = ?)');
-            $reqDuelPoule->execute(array($equipeW->getIdEquipe()
-            ));
-            while($donnees=$reqDuelPoule->fetch()){
-                $total = intval($donnees['sum1']);
-            }
-
-            $reqDuelPoule->closeCursor();
-            $reqDuelPoule2 = $bdd->prepare('SELECT SUM(butEquipe2) as sum2 FROM matchs WHERE (equipe2 = ?)');
-            $reqDuelPoule2->execute(array($equipeW->getIdEquipe()
-            ));
-            while($donnees=$reqDuelPoule2->fetch()){
-                $total += intval($donnees['sum2']);
-            }
-            $reqDuelPoule2->closeCursor();
-
+            $total=$equipeW->totalButsPoule($bdd);
 
             if($total>$equipeWin){
                 $equipeWin=$total;
@@ -719,6 +703,21 @@ class Tournoi
             }
         }
         return $vainqueurPoule;
+    }
+    public static function classementGoalAverage($listeEquipesPoulesEgalite, $bdd){
+
+            function trierTab($obj1, $obj2){
+                $co= new ConnexionBdd();
+                $bdd=$co->getBdd();
+                $a=$obj1->totalButsPoule($bdd);
+                $b=$obj2->totalButsPoule($bdd);
+
+                return ($a > $b) ? -1 : 1;
+            }
+            uasort($listeEquipesPoulesEgalite, "trierTab");
+
+
+        return $listeEquipesPoulesEgalite;
     }
 
     public static function majPointsPoule($vainqueur, $bdd){
@@ -786,9 +785,10 @@ class Tournoi
             $premiereEquipe=Tournoi::listerJoueursPoulesParPosition($idTournoi,0, $bdd);
 
             //MEGA FORMULE POUR EGALITE POULE
+            $i=0;
             while(count($tableau4Vainqueurs)<4){
-                $i=0;
-                if($premiereEquipe[$i]!=$premiereEquipe[$i+1]){
+
+                if($premiereEquipe[$i]->getPointsPoule()!=$premiereEquipe[$i+1]->getPointsPoule()){
                     $tableau4Vainqueurs[]=$premiereEquipe[$i];
                     $i++;
                 }
@@ -807,10 +807,10 @@ class Tournoi
                     }
                     else{
                         $nbreEquipesAInserer=4-count($tableau4Vainqueurs);
+                        $tableauEgaliteClasse = Tournoi::classementGoalAverage($tableauEgalite, $bdd);
                         for($j=0;$j<=$nbreEquipesAInserer;$j++){
-                            $premierGoalAverage = Tournoi::goalAverage($tableauEgalite,$bdd);
+                            $tableau4Vainqueurs[]=$tableauEgaliteClasse[$j];
                             $i++;
-                            //REVOIR GOALAVERAGE CAR RENVOIE UNE EQUIPE AU LIEU D UN ARRAY D EQUIPEs
                         }
 
                     }
@@ -818,8 +818,6 @@ class Tournoi
             }
 
             $matchDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
-            $vainqueurPoule = $premiereEquipe[0];
-
 
             $insEquipe1 = $bdd->prepare('UPDATE matchs SET equipe1 = :equipe1 WHERE id_Match = :id_Match');
             $insEquipe1->execute(array(
@@ -852,7 +850,8 @@ class Tournoi
 
         }
     }
-    public static function calculerClassement4Premiers($tableau, $obj1, $obj2){
+
+    public static function calculerClassement($tableau){
                 function trierTab($obj1, $obj2){
                     $a=$obj1;
                     $b=$obj2;
