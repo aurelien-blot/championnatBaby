@@ -167,8 +167,8 @@ function creerEquipesetMajMatch($departIdEquipe, $departIdmatch, $tournoiX, $bdd
 
     $insModifScore->execute(array(
         'vainqueur'=> intval($iDe2),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
+        'butEquipe1'=> intval(4),
+        'butEquipe2'=> intval(5),
         'id_Match' => intval($departIdmatch)
     ));
     $departIdmatch++;
@@ -180,8 +180,8 @@ function creerEquipesetMajMatch($departIdEquipe, $departIdmatch, $tournoiX, $bdd
 
     $insModifScore->execute(array(
         'vainqueur'=> intval($iDe2),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
+        'butEquipe1'=> intval(6),
+        'butEquipe2'=> intval(9),
         'id_Match' => intval($departIdmatch)
     ));
     $departIdmatch++;
@@ -189,6 +189,97 @@ function creerEquipesetMajMatch($departIdEquipe, $departIdmatch, $tournoiX, $bdd
     Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe2, $bdd);
 
     //MATCH 9
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe2),
+        'butEquipe1'=> intval(3),
+        'butEquipe2'=> intval(9),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe2, $bdd);
+
+    //MATCH 10
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe3),
+        'butEquipe1'=> intval(4),
+        'butEquipe2'=> intval(0),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
+
+    //MATCH 11
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe3),
+        'butEquipe1'=> intval(1),
+        'butEquipe2'=> intval(2),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
+
+    //MATCH 12
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe3),
+        'butEquipe1'=> intval(9),
+        'butEquipe2'=> intval(4),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
+
+    //MATCH 13
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe4),
+        'butEquipe1'=> intval(2),
+        'butEquipe2'=> intval(0),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe4, $bdd);
+
+    //MATCH 14
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe4),
+        'butEquipe1'=> intval(3),
+        'butEquipe2'=> intval(1),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe4, $bdd);
+
+    //MATCH 15
+    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
+
+    $insModifScore->execute(array(
+        'vainqueur'=> intval($iDe4),
+        'butEquipe1'=> intval(4),
+        'butEquipe2'=> intval(5),
+        'id_Match' => intval($departIdmatch)
+    ));
+    $departIdmatch++;
+    $insModifScore->closeCursor();
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe4, $bdd);
+
+    //MATCH 16
     $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
 
     $insModifScore->execute(array(
@@ -201,122 +292,31 @@ function creerEquipesetMajMatch($departIdEquipe, $departIdmatch, $tournoiX, $bdd
     $insModifScore->closeCursor();
     Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe5, $bdd);
 
-    //MATCH 10
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe2),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe2, $bdd);
-
-    //MATCH 11
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe2),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe2, $bdd);
-
-    //MATCH 12
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe3),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
-
-    //MATCH 13
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe3),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
-
-    //MATCH 14
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe3),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
-
-    //MATCH 15
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe3),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe3, $bdd);
-
-    //MATCH 16
-    $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
-
-    $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe4),
-        'butEquipe1'=> intval(0),
-        'butEquipe2'=> intval(0),
-        'id_Match' => intval($departIdmatch)
-    ));
-    $departIdmatch++;
-    $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe4, $bdd);
-
     //MATCH 17
     $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
 
     $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe4),
+        'vainqueur'=> intval($iDe5),
         'butEquipe1'=> intval(1),
         'butEquipe2'=> intval(3),
         'id_Match' => intval($departIdmatch)
     ));
     $departIdmatch++;
     $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe4, $bdd);
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe5, $bdd);
 
     //MATCH 18
     $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
 
     $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe4),
+        'vainqueur'=> intval($iDe5),
         'butEquipe1'=> intval(4),
         'butEquipe2'=> intval(2),
         'id_Match' => intval($departIdmatch)
     ));
     $departIdmatch++;
     $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe4, $bdd);
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe5, $bdd);
 
     //MATCH 19
     $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
@@ -335,21 +335,22 @@ function creerEquipesetMajMatch($departIdEquipe, $departIdmatch, $tournoiX, $bdd
     $insModifScore = $bdd->prepare('UPDATE matchs SET vainqueur = :vainqueur, butEquipe1 = :butEquipe1, butEquipe2=:butEquipe2 WHERE id_Match = :id_Match');
 
     $insModifScore->execute(array(
-        'vainqueur'=> intval($iDe5),
+        'vainqueur'=> intval($iDe1),
         'butEquipe1'=> intval(5),
         'butEquipe2'=> intval(3),
         'id_Match' => intval($departIdmatch)
     ));
     $departIdmatch++;
     $insModifScore->closeCursor();
-    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe5, $bdd);
+    Tournoi::misAJourMatchPoule14($tournoiX->getIdCompet(), $iDe1, $bdd);
 
 }
 
-$departEquipe =1192;//+7
-$idCompet= 320095;//+1
-$match0 = 1225;//+24
+$departEquipe =1283;//+7
+$idCompet= 320108;//+1
+$match0 = 1537;//+24
 creerEquipesetMajMatch($departEquipe, $match0,$tournoiX,$bdd);
+
 
 header('location:../modifChampionnat.php?modif='.$idCompet);
 ?>

@@ -807,8 +807,13 @@ class Tournoi
                     }
                     else{
                         $nbreEquipesAInserer=4-count($tableau4Vainqueurs);
-                        $tableauEgaliteClasse = Tournoi::classementGoalAverage($tableauEgalite, $bdd);
-                        for($j=0;$j<=$nbreEquipesAInserer;$j++){
+                        $tableauEgaliteClasse=array();
+                        $tableauEgaliteInt = Tournoi::classementGoalAverage($tableauEgalite, $bdd);
+                        foreach ($tableauEgaliteInt as $tab){
+                            $tableauEgaliteClasse[]=$tab;
+                        }
+
+                        for($j=0;$j<$nbreEquipesAInserer;$j++){
                             $tableau4Vainqueurs[]=$tableauEgaliteClasse[$j];
                             $i++;
                         }
@@ -828,7 +833,7 @@ class Tournoi
 
             $insEquipe2 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
             $insEquipe2->execute(array(
-                'equipe2' => $tableau4Vainqueurs[2]->getIdEquipe(),
+                'equipe2' => $tableau4Vainqueurs[3]->getIdEquipe(),
                 'id_Match' => $matchDemi[0]->getIdMatch()
             ));
             $insEquipe2->closeCursor();
@@ -843,7 +848,7 @@ class Tournoi
 
             $insEquipe4 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
             $insEquipe4->execute(array(
-                'equipe2' => $tableau4Vainqueurs[3]->getIdEquipe(),
+                'equipe2' => $tableau4Vainqueurs[2]->getIdEquipe(),
                 'id_Match' => $matchDemi[1]->getIdMatch()
             ));
             $insEquipe4->closeCursor();

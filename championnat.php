@@ -482,13 +482,13 @@ include 'include/util/functionChampShared.php';
                     </div>
                     <?php
                 }
-                //if($tournoi1->getFini()==false AND isset($_GET['X'])) {
+                if($tournoi1->getFini()==false AND isset($_GET['X'])) {
                     ?>
                     <a href="modifChampionnat.php?modif=<?php echo($_GET['idC']); ?>">
                         <button id="boutonModif">Modifier</button>
                     </a>
                     <?php
-                //}
+                }
             }
             ?>
 

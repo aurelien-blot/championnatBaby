@@ -14,7 +14,14 @@ foreach ($listeEq as $esq){
 }
 echo('efjseiojfoiezsjfoiesjidfkzpoesdkfpozek');
 $liste2 =Tournoi::classementGoalAverage($listeEq, $bdd);
-foreach ($liste2 as $esq){
+
+
+$liste3=array();
+foreach ( $liste2 as $l2) {
+    $liste3[]=$l2;
+}
+foreach ($liste3 as $esq){
+
     echo($esq->getNomEquipe().'  : '.$esq->totalButsPoule($bdd));
 }
 
