@@ -617,45 +617,71 @@ class Tournoi
 
         Tournoi::majPointsPoule($vainqMatch, $bdd);
         $pouleTerminee = Tournoi::verifPoulesTerminees($idTournoi, $bdd);
+        $tournoiX = Tournoi::findTournoi($idTournoi, $bdd);
 
         if($pouleTerminee){
 
             //DETERMINER VAINQUEUR
             $matchsDemi= Match::listerMatchByType('demi',$idTournoi,$bdd);
-            $vainqueurPoule1=null;
-            $vainqueurPoule2=null;
-            $deuxiemePoule1=null;
-            $deuxiemePoule2=null;
 
             //On prend toutes les équipes dans un tableau
 
-           ///REFAIRE ICI !!!
-            $equipesTab=array();
+            function trierTabF($obj1, $obj2){
+                $co= new ConnexionBdd();
+                $bdd=$co->getBdd();
+                $a=$obj1->getPointsPoule();
+                $b=$obj2->getPointsPoule();
+
+                return ($a > $b) ? -1 : 1;
+            }
+            function trierTabM($obj1, $obj2){
+                $co= new ConnexionBdd();
+                $bdd=$co->getBdd();
+                $a=$obj1->totalButsPoule($bdd);
+                $b=$obj2->totalButsPoule($bdd);
+                return ($a > $b) ? -1 : 1;
+            }
+            $tabDeTabEquipesPoules=array();
+
 
             for($i=1;$i<3;$i++) {
-
                 $premiereEquipe=Tournoi::listerVainqueursPoules($idTournoi,$i, $bdd);
+                $equipesParPoule = $tournoiX->listerEquipesTournoiParPoules($i, $bdd);
+                $tableauEquipesParPoulesClassee=array();
 
                 if(count($premiereEquipe)==1) {
 
-                    $equipesPoules = Tournoi::listerJoueursPoulesParPosition($idTournoi,$i,$bdd);
 
-                    if($i==1){
-                        $vainqueurPoule1 = $premiereEquipe[0];
-                        $deuxiemePoule1=$equipesPoules[1];
+                    uasort($equipesParPoule, "trierTabF");
+                    foreach ($equipesParPoule as $equipeV){
+                        $tableauEquipesParPoulesClassee[]=$equipeV;
                     }
-                    elseif ($i==2){
-                        $vainqueurPoule2 = $premiereEquipe[0];
-                        $deuxiemePoule2=$equipesPoules[1];
-                    }
-
 
                 }
                 elseif(count($premiereEquipe)==3){
 
+                    uasort($equipesParPoule, "trierTabM");
+
+                    foreach ($equipesParPoule as $equipeV){
+                        $tableauEquipesParPoulesClassee[]=$equipeV;
+                    }
                 }
+                else{echo'MERDE';}
+                $tabEquipe=array();
+                $tabEquipe[]=$tableauEquipesParPoulesClassee[0];
+                $tabEquipe[]=$tableauEquipesParPoulesClassee[1];
+                $tabDeTabEquipesPoules[]=$tabEquipe;
+
             }
             // on rentre les équipes dans les matchs
+            //var_dump($tabDeTabEquipesPoules);
+            $poule1=$tabDeTabEquipesPoules[0];
+            $poule2=$tabDeTabEquipesPoules[1];
+            $vainqueurPoule1 = $poule1[0];
+            $deuxiemePoule1 = $poule1[1];
+            $vainqueurPoule2= $poule2[0];
+            $deuxiemePoule2 = $poule2[1];
+
             $idVainqueurPoule1=$vainqueurPoule1->getIdEquipe();
             $idVainqueurPoule2=$vainqueurPoule2->getIdEquipe();
             $idDeuxiemePoule1=$deuxiemePoule1->getIdEquipe();
@@ -677,14 +703,14 @@ class Tournoi
 
             $insEquipe3 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
             $insEquipe3->execute(array(
-                'equipe1' => $idVainqueurPoule2,
+                'equipe2' => $idVainqueurPoule2,
                 'id_Match' => $matchsDemi[1]->getIdMatch()
             ));
             $insEquipe3->closeCursor();
 
             $insEquipe4 = $bdd->prepare('UPDATE matchs SET equipe2 = :equipe2 WHERE id_Match = :id_Match');
             $insEquipe4->execute(array(
-                'equipe1' => $idDeuxiemePoule2,
+                'equipe2' => $idDeuxiemePoule2,
                 'id_Match' => $matchsDemi[0]->getIdMatch()
             ));
             $insEquipe4->closeCursor();
@@ -749,7 +775,7 @@ class Tournoi
     public static function listerVainqueursPoules($idTournoi, $numPoule,$bdd){
 
         $premiereEquipe=array();
-        $reqEquipesPoules=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND num_poule= :num_poule AND pointsPoule = (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2)');
+        $reqEquipesPoules=$bdd->prepare('SELECT * FROM equipes WHERE id_compet= :id_compet AND num_poule= :num_poule AND pointsPoule = (SELECT MAX(pointsPoule) FROM equipes WHERE id_compet= :id_compet2 AND num_poule= :num_poule)');
         $reqEquipesPoules->execute(array(
             'id_compet'=>$idTournoi,
             'id_compet2'=>$idTournoi,
@@ -761,6 +787,24 @@ class Tournoi
         $reqEquipesPoules->closeCursor();
 
         return $premiereEquipe;
+    }
+
+    public function listerEquipesTournoiParPoules($numPoule, $bdd){
+        $listEquipesFromTournoi= array();
+        $listeEquipes= $bdd->prepare('SELECT * FROM equipes WHERE id_compet = :id_compet AND num_poule = :num_poule');
+        $listeEquipes->execute(array(
+            'id_compet'=>$this->idCompet,
+            'num_poule'=>$numPoule
+        ));
+        while ($donnees =  $listeEquipes->fetch()){
+            $equipeX = new Equipe($donnees['id_compet'],Joueur::findJoueur($donnees['joueur1'], $bdd),Joueur::findJoueur($donnees['joueur2'], $bdd),$bdd);
+            $equipeX->setIdEquipe($donnees['id_Equipe']);
+            $equipeX->setPointsPoule($donnees['pointsPoule']);
+            $equipeX->setNumPoule($donnees['num_poule']);
+            $listEquipesFromTournoi[]=$equipeX;
+        }
+        $listeEquipes->closeCursor();
+        return $listEquipesFromTournoi;
     }
 
     public static function listerJoueursPoulesParPosition($idTournoi,$numPoules, $bdd){
@@ -856,14 +900,5 @@ class Tournoi
         }
     }
 
-    public static function calculerClassement($tableau){
-                function trierTab($obj1, $obj2){
-                    $a=$obj1;
-                    $b=$obj2;
-                    return strcasecmp($b, $a);
-                }
-                uasort($tableau, "trierTab");
-                return $tableau;
-            }
 }
 ?>

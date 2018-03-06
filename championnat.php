@@ -127,15 +127,6 @@ include 'include/util/functionChampShared.php';
                             }
                             ?>
                         </div>
-                        <div class="iconeEquipes">
-                            <?php
-
-                            $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['idC']), $bdd)->listerEquipesFromTournoi($bdd);
-                            foreach ($listeEquipeTournoi as $equipeZ) {
-                                afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
-                            }
-                            ?>
-                        </div>
                     </div>
                     <?php
                     }
@@ -242,15 +233,7 @@ include 'include/util/functionChampShared.php';
                                 </table>
                             </div>
                         </div>
-                        <div class="iconeEquipes">
-                            <?php
 
-                            $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['idC']), $bdd)->listerEquipesFromTournoi($bdd);
-                            foreach ($listeEquipeTournoi as $equipeZ) {
-                                afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
-                            }
-                            ?>
-                        </div>
                         <?php
                         }
                         ?>
@@ -374,15 +357,6 @@ include 'include/util/functionChampShared.php';
                                 </table>
                             </div>
                         </div>
-                        <div class="iconeEquipes">
-                            <?php
-
-                            $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['idC']), $bdd)->listerEquipesFromTournoi($bdd);
-                            foreach ($listeEquipeTournoi as $equipeZ) {
-                                afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
-                            }
-                            ?>
-                        </div>
                     </div>
                     <?php
                 }
@@ -467,21 +441,24 @@ include 'include/util/functionChampShared.php';
                                     </table>
                                 </div>
                             </div>
-                            <div class="iconeEquipes">
-                                <?php
 
-                                $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['idC']), $bdd)->listerEquipesFromTournoi($bdd);
-                                foreach ($listeEquipeTournoi as $equipeZ) {
-                                    afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
-                                }
-                                ?>
-                            </div>
                             <?php
                         }
                         ?>
                     </div>
                     <?php
                 }
+                ?>
+                <div class="iconeEquipes">
+                    <?php
+
+                    $listeEquipeTournoi = Tournoi::findTournoi(intval($_GET['idC']), $bdd)->listerEquipesFromTournoi($bdd);
+                    foreach ($listeEquipeTournoi as $equipeZ) {
+                        afficherIconeEquipe($equipeZ->getIdEquipe(), $bdd);
+                    }
+                    ?>
+                </div>
+                <?php
                 if($tournoi1->getFini()==false AND isset($_GET['X'])) {
                     ?>
                     <a href="modifChampionnat.php?modif=<?php echo($_GET['idC']); ?>">
